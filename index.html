@@ -1,0 +1,3001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>mystic // OPERATOR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #111214;
+      --gunmetal: #22262b;
+      --steel: #363c42;
+      --amber: #f5a623;
+      --amber-dim: #c4841a;
+      --amber-glow: rgba(245, 166, 35, 0.15);
+      --nvg-green: #39ff14;
+      --text-primary: #e8e4de;
+      --text-dim: #9a9690;
+      --border: rgba(245, 166, 35, 0.35);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text-primary);
+      font-family: 'Share Tech Mono', monospace;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+
+    /* ── MYSTIC NAME EFFECT ── */
+    .mystic-name {
+      position: relative;
+      display: inline-block;
+      color: var(--amber);
+      letter-spacing: 0.18em;
+      animation: mystic-flicker 6s infinite;
+    }
+
+    .mystic-name::before,
+    .mystic-name::after {
+      content: 'mystic';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .mystic-name::before {
+      color: #39ff14;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+      animation: mystic-glitch-top 6s infinite;
+      opacity: 0;
+    }
+
+    .mystic-name::after {
+      color: #ff3a3a;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      animation: mystic-glitch-bot 6s infinite;
+      opacity: 0;
+    }
+
+    @keyframes mystic-flicker {
+      0%, 94%, 100% { opacity: 1; text-shadow: 0 0 12px rgba(245,166,35,0.6); }
+      95%            { opacity: 0.85; }
+      96%            { opacity: 1; }
+      97%            { opacity: 0.7; }
+      98%            { opacity: 1; }
+    }
+
+    @keyframes mystic-glitch-top {
+      0%, 90%, 100%  { opacity: 0; transform: translate(0,0); }
+      91%            { opacity: 0.9; transform: translate(-3px, -2px); }
+      92%            { opacity: 0; }
+      93%            { opacity: 0.7; transform: translate(3px, 0); }
+      94%            { opacity: 0; }
+    }
+
+    @keyframes mystic-glitch-bot {
+      0%, 90%, 100%  { opacity: 0; transform: translate(0,0); }
+      91%            { opacity: 0.8; transform: translate(3px, 2px); }
+      92%            { opacity: 0; }
+      93%            { opacity: 0.6; transform: translate(-2px, 0); }
+      94%            { opacity: 0; }
+    }
+
+    /* Apply to nav logo and hero tag too */
+    .nav-logo,
+    .hero-tag {
+      position: relative;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--amber); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--text-dim); font-size: 0.8rem; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--amber); }
+
+    /* ── NVG INDICATOR ── */
+    .nvg-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      color: var(--nvg-green);
+      letter-spacing: 0.1em;
+    }
+
+    .nvg-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--nvg-green);
+      box-shadow: 0 0 8px var(--nvg-green);
+      animation: pulse-nvg 2s infinite;
+    }
+
+    @keyframes pulse-nvg {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%,
+        transparent 55%,
+        rgba(10,10,10,0.25) 80%,
+        rgba(10,10,10,0.5) 100%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,166,35,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,166,35,0.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Scanning line */
+    .hero-scan {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(245,166,35,0.75), transparent);
+      animation: scan 6s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes scan {
+      0% { top: 0; opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-shadow: 0 0 60px rgba(245,166,35,0.2);
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-name .highlight { color: var(--amber); }
+
+    .hero-sub {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      margin-top: 1.5rem;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+
+    .hero-divider {
+      width: 80px;
+      height: 2px;
+      background: var(--amber);
+      margin: 1.5rem 0;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+
+    .hero-desc {
+      max-width: 500px;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      opacity: 0;
+      animation: fadeUp 0.7s 1s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section {
+      padding: 6rem 4rem;
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-num {
+      font-size: 0.65rem;
+      color: var(--amber);
+      letter-spacing: 0.2em;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 200px;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--gunmetal); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .about-text p strong { color: var(--amber); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .stat-box {
+      background: var(--gunmetal);
+      padding: 2rem;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .stat-box:hover { background: var(--amber-glow); }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--amber);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+
+    .interest-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .interest-box:hover {
+      background: var(--amber-glow);
+      border-color: var(--amber);
+      transform: translateY(-3px);
+    }
+
+    .interest-box .stat-num {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .interest-hint {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity 0.2s;
+      text-transform: uppercase;
+    }
+
+    .interest-box:hover .interest-hint {
+      opacity: 1;
+    }
+
+
+    /* ── OSRS ACCOUNT CARD ── */
+    .osrs-expand {
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .osrs-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .osrs-account-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      background: rgba(245,166,35,0.05);
+    }
+
+    .osrs-account-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+    }
+
+    .osrs-account-type {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .osrs-overall {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .osrs-stat-big {
+      text-align: center;
+    }
+
+    .osrs-stat-big .val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--amber);
+      letter-spacing: 0.08em;
+      display: block;
+    }
+
+    .osrs-stat-big .lbl {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .osrs-skills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .osrs-skill {
+      background: var(--black);
+      padding: 0.35rem 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .osrs-skill:hover { background: var(--amber-glow); }
+
+    .osrs-skill-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .osrs-skill-lvl {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .osrs-skill-lvl.maxed { color: var(--amber); }
+
+    .osrs-hiscores-img {
+      width: 100%;
+      border: 1px solid var(--border);
+      display: block;
+      image-rendering: auto;
+    }
+
+    .osrs-img-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.48rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      padding: 0.4rem 0.6rem;
+      background: var(--gunmetal);
+      border: 1px solid var(--border);
+      border-top: none;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .osrs-layout { grid-template-columns: 1fr; }
+    }
+
+
+    /* ── BOSS KC ── */
+    .boss-kc-wrap {
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.2rem;
+    }
+
+    .boss-kc-header {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--amber);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .boss-kc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .boss-row {
+      background: var(--black);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.7rem;
+      transition: background 0.15s;
+    }
+
+    .boss-row:hover { background: var(--amber-glow); }
+
+    .boss-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .boss-kc {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* ── GAMING ── */
+    #gaming { background: var(--black); }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .game-card {
+      background: var(--black);
+      padding: 2rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--amber);
+      transition: height 0.3s;
+    }
+
+    .game-card:hover::before { height: 100%; }
+    .game-card:hover { background: var(--amber-glow); }
+
+    .game-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+    .game-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .game-genre {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .game-desc {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+
+    /* ── GAMING SETUP FULL-PAGE OVERLAY ── */
+    #gaming-setup-page {
+      position: fixed;
+      inset: 0;
+      z-index: 8000;
+      background: #0a0a0a;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 0;
+    }
+    #gaming-setup-page.open {
+      transform: translateX(0);
+    }
+    .setup-page-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    .setup-page-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .setup-page-breadcrumb {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+    }
+    .setup-page-breadcrumb span { color: var(--amber); }
+    .setup-page-close {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-transform: uppercase;
+    }
+    .setup-page-close:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .setup-page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: 0.15em;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .setup-page-title span { color: var(--amber); }
+    .setup-page-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      margin-bottom: 3.5rem;
+    }
+    .setup-page-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .setup-page-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── NASA SPACESTATION ── */
+    .spacestation-wrap {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+    }
+
+    .spacestation-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .spacestation-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      letter-spacing: 0.15em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .spacestation-title span {
+      color: var(--amber);
+    }
+
+    .spacestation-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: var(--text-dim);
+      margin-bottom: 3rem;
+    }
+
+    /* Layout: spec sheet left, media right */
+    .station-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* SPEC SHEET */
+    .spec-sheet {
+      border: 1px solid var(--border);
+      background: var(--gunmetal);
+    }
+
+    .spec-sheet-header {
+      background: var(--amber);
+      padding: 0.6rem 1.2rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: #000;
+      text-transform: uppercase;
+    }
+
+    .spec-category {
+      padding: 0.5rem 1.2rem 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-top: 0.8rem;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.45rem 1.2rem;
+      border-bottom: 1px solid rgba(245,166,35,0.06);
+      gap: 1rem;
+    }
+
+    .spec-row:last-child { border-bottom: none; }
+
+    .spec-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .spec-value {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #fff;
+      text-align: right;
+    }
+
+    .spec-value.highlight { color: var(--amber); }
+
+    .pc-name-badge {
+      margin: 1rem 1.2rem;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--amber);
+      background: rgba(245,166,35,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pc-name-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+    }
+
+    .pc-name-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+    }
+
+    /* MEDIA PANEL */
+    .station-media {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .media-cell {
+      position: relative;
+      overflow: hidden;
+      background: var(--steel);
+      border: 1px solid var(--border);
+      aspect-ratio: 16/10;
+    }
+
+    .media-cell img,
+    .media-cell video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .media-cell:hover img,
+    .media-cell:hover video {
+      transform: scale(1.03);
+    }
+
+    .media-cell .media-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.4rem 0.6rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    .media-cell.wide {
+      grid-column: span 2;
+      aspect-ratio: 21/9;
+    }
+
+    .media-cell video {
+      cursor: pointer;
+    }
+
+    /* Peripheral tags */
+    .peripheral-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .peripheral-tag {
+      padding: 0.35rem 0.8rem;
+      border: 1px solid var(--border);
+      background: var(--gunmetal);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .peripheral-tag:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .peripheral-tag span {
+      color: #fff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.65rem;
+      display: block;
+      margin-top: 0.15rem;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 900px) {
+      .station-layout { grid-template-columns: 1fr; }
+      .media-cell.wide { aspect-ratio: 16/9; }
+    }
+
+    /* YouTube embed section */
+    .clips-header {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .youtube-embed {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      aspect-ratio: 16/9;
+      background: var(--steel);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .youtube-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .embed-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 1rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .embed-placeholder .play-btn {
+      width: 64px; height: 64px;
+      border: 2px solid var(--amber);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--amber);
+    }
+
+    .embed-placeholder .play-btn:hover {
+      background: var(--amber);
+      color: var(--black);
+    }
+
+    .embed-placeholder p {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── MUSIC ── */
+    #music { background: var(--gunmetal); }
+
+    .sc-player-wrap {
+      position: relative;
+      border: 1px solid var(--border);
+      background: var(--black);
+      overflow: hidden;
+    }
+
+    .sc-player-wrap::before {
+      content: '// SOUNDCLOUD FEED — CHOP //';
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--amber);
+      padding: 0.75rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--gunmetal);
+    }
+
+    .sc-player-wrap iframe {
+      display: block;
+      width: 100%;
+      border: none;
+    }
+
+    .music-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .playlist-box {
+      border: 1px solid var(--border);
+    }
+
+    .playlist-header {
+      background: var(--steel);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .playlist-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+    }
+
+    .playlist-count {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+    }
+
+    .track-list { list-style: none; max-height: 420px; overflow-y: auto; }
+    .track-list::-webkit-scrollbar { width: 3px; }
+    .track-list::-webkit-scrollbar-thumb { background: var(--amber); }
+
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid rgba(245,166,35,0.08);
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .track:hover { background: var(--amber-glow); }
+    .track:last-child { border-bottom: none; }
+
+    .track-thumb {
+      width: 36px; height: 36px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--steel);
+    }
+
+    .track-thumb-placeholder {
+      width: 36px; height: 36px;
+      background: var(--steel);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; flex-shrink: 0;
+    }
+
+    .track-num {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      width: 16px;
+      text-align: center;
+    }
+
+    .track:hover .track-num { color: var(--amber); }
+
+    .track-info { flex: 1; min-width: 0; }
+
+    .track-name {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-source {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    .track-source.spotify { border-color: #1DB954; color: #1DB954; }
+    .track-source.youtube { border-color: #FF0000; color: #FF0000; }
+    .track-source.soundcloud { border-color: #FF5500; color: #FF5500; }
+
+    .track-remove {
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 0.8rem; padding: 0.2rem 0.4rem;
+      transition: color 0.2s; display: none;
+    }
+    .track:hover .track-remove { display: block; }
+    .track-remove:hover { color: #ff4444; }
+
+    .genres-box h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .genre-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .tag:hover, .tag.active {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-glow);
+    }
+
+    .now-playing {
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      background: var(--black);
+      margin-bottom: 1.5rem;
+    }
+
+    .np-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--nvg-green);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .np-label::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--nvg-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--nvg-green);
+      animation: pulse-nvg 1.5s infinite;
+    }
+
+    .np-track {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .np-artist {
+      font-size: 0.75rem;
+      color: var(--amber);
+    }
+
+    /* ── ADMIN PANEL ── */
+    #admin-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #admin-overlay.open { display: flex; }
+
+    .admin-panel {
+      background: var(--gunmetal);
+      border: 1px solid var(--amber);
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .admin-panel::-webkit-scrollbar { width: 3px; }
+    .admin-panel::-webkit-scrollbar-thumb { background: var(--amber); }
+
+    .admin-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-sub {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      margin-bottom: 2rem;
+    }
+
+    .admin-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .admin-close:hover { border-color: var(--amber); color: var(--amber); }
+
+    .admin-search-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .admin-platform {
+      background: var(--steel);
+      border: 1px solid var(--border);
+      color: var(--amber);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .admin-input {
+      flex: 1;
+      background: var(--black);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.6rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .admin-input:focus { border-color: var(--amber); }
+    .admin-input::placeholder { color: var(--text-dim); }
+
+    .admin-btn {
+      background: var(--amber);
+      color: var(--black);
+      border: none;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .admin-btn:hover { background: #fff; }
+    .admin-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .search-results {
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      max-height: 280px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .search-results.visible { display: block; }
+    .search-results::-webkit-scrollbar { width: 3px; }
+    .search-results::-webkit-scrollbar-thumb { background: var(--amber); }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(245,166,35,0.08);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .result-item:hover { background: var(--amber-glow); }
+    .result-item:last-child { border-bottom: none; }
+
+    .result-thumb {
+      width: 44px; height: 44px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--steel);
+    }
+
+    .result-info { flex: 1; min-width: 0; }
+
+    .result-name {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .result-artist {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    .result-add {
+      font-size: 0.65rem;
+      color: var(--nvg-green);
+      letter-spacing: 0.1em;
+      flex-shrink: 0;
+    }
+
+    .admin-status {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      padding: 0.5rem 0;
+      min-height: 1.5rem;
+    }
+
+    .admin-status.ok { color: var(--nvg-green); }
+    .admin-status.err { color: #ff4444; }
+    .admin-status.loading { color: var(--amber); }
+
+    /* Password screen */
+    #admin-lock {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #admin-content { display: none; }
+
+    .lock-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    .admin-trigger {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--gunmetal);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      padding: 0.5rem 0.9rem;
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.2s;
+    }
+
+    .admin-trigger:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ── GUNS ── */
+    #guns { background: var(--black); }
+
+    .guns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    /* ── GUNS PHOTO+SPECS ── */
+    .guns-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .gun-entry {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      background: var(--black);
+      transition: background 0.3s;
+      min-height: 260px;
+    }
+
+    .gun-entry:hover { background: rgba(245,166,35,0.04); }
+
+    .gun-photo {
+      position: relative;
+      overflow: hidden;
+      background: var(--steel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gun-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gun-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      height: 100%;
+      padding: 2rem;
+    }
+
+    .gun-photo-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.3; }
+
+    .gun-photo-placeholder p {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .gun-photo-placeholder .ph-hint {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      opacity: 0.5;
+      text-align: center;
+    }
+
+    .gun-details {
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 1px solid var(--border);
+    }
+
+    .gun-badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      background: var(--amber);
+      color: var(--black);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      align-self: flex-start;
+    }
+
+    .gun-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .gun-cal {
+      font-size: 0.7rem;
+      color: var(--amber);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.25rem;
+    }
+
+    .gun-specs {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(57,255,20,0.12);
+    }
+
+    .spec-row:last-child { border-bottom: none; }
+
+    .spec-row span:first-child {
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .spec-row span:last-child {
+      color: var(--nvg-green);
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 8px rgba(57,255,20,0.4);
+    }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--gunmetal); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 4px;
+    }
+
+    .gallery-item {
+      background: var(--steel);
+      aspect-ratio: 1;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item.wide {
+      grid-column: span 2;
+      aspect-ratio: 2/1;
+    }
+
+    .gallery-item.tall {
+      grid-row: span 2;
+      aspect-ratio: 1/2;
+    }
+
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--steel);
+      transition: background 0.3s;
+    }
+
+    .gallery-item:hover .gallery-placeholder {
+      background: var(--amber-glow);
+    }
+
+    .gallery-placeholder .icon {
+      font-size: 2rem;
+      opacity: 0.4;
+    }
+
+    .gallery-placeholder p {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,10,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-overlay span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    .gallery-note {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .contact-info h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-glow);
+    }
+
+    .social-icon { font-size: 1.1rem; }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-row label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    .form-row input,
+    .form-row textarea {
+      background: var(--gunmetal);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-row input:focus,
+    .form-row textarea:focus {
+      border-color: var(--amber);
+    }
+
+    .form-row input::placeholder,
+    .form-row textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn-send {
+      padding: 0.9rem 2rem;
+      background: var(--amber);
+      color: var(--black);
+      border: none;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: crosshair;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+
+    .btn-send:hover {
+      background: #fff;
+      box-shadow: 0 0 20px rgba(245,166,35,0.4);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gunmetal);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+    }
+
+    .footer-copy {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-coords {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 0 1.5rem; }
+
+      .about-grid,
+      .music-layout,
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item.wide { grid-column: span 1; aspect-ratio: 1; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+
+    /* ── INTRO CSS ── */
+    /* Hide main site until intro finishes */
+    body.site-hidden > nav,
+    body.site-hidden > section,
+    body.site-hidden > footer {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+    nav, section, footer {
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #intro1 {
+      position: fixed; inset: 0; z-index: 9999; opacity: 1;
+      background: #0d0f0d;
+      animation: intro1Out 0.8s ease 3.8s forwards;
+    }
+    @keyframes intro1Out { to { opacity: 0; pointer-events: none; } }
+
+    .data-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+    .sys-text {
+      position: absolute; font-family: 'Share Tech Mono', monospace;
+      color: rgba(0,255,65,0.2); letter-spacing: 0.1em; opacity: 0;
+    }
+    .sys-text.s1  { top:6%;  left:4%;  font-size:0.55rem; animation: typeIn 0.3s steps(10) 0.2s forwards; }
+    .sys-text.s2  { top:9%;  left:4%;  font-size:0.5rem;  animation: typeIn 0.3s steps(10) 0.5s forwards; }
+    .sys-text.s3  { top:12%; left:4%;  font-size:0.5rem;  animation: typeIn 0.3s steps(10) 0.8s forwards; }
+    .sys-text.s4  { top:15%; left:4%;  font-size:0.48rem; animation: typeIn 0.3s steps(10) 1.0s forwards; }
+    .sys-text.s5  { top:6%;  right:4%; font-size:0.55rem; text-align:right; color:rgba(255,40,40,0.45); animation: typeIn 0.3s steps(10) 0.3s forwards; }
+    .sys-text.s6  { top:9%;  right:4%; font-size:0.5rem;  text-align:right; color:rgba(255,40,40,0.45); animation: typeIn 0.3s steps(10) 0.6s forwards; }
+    .sys-text.s7  { top:12%; right:4%; font-size:0.5rem;  text-align:right; color:rgba(255,40,40,0.45); animation: typeIn 0.3s steps(10) 0.9s forwards; }
+    .sys-text.s8  { top:15%; right:4%; font-size:0.48rem; text-align:right; color:rgba(255,40,40,0.45); animation: typeIn 0.3s steps(10) 1.1s forwards; }
+    .sys-text.s9  { bottom:15%; left:4%;  font-size:0.48rem; animation: typeIn 0.3s steps(10) 1.0s forwards; }
+    .sys-text.s10 { bottom:12%; left:4%;  font-size:0.5rem;  animation: typeIn 0.3s steps(10) 1.2s forwards; }
+    .sys-text.s11 { bottom:9%;  left:4%;  font-size:0.5rem;  animation: typeIn 0.3s steps(10) 1.4s forwards; }
+    .sys-text.s12 { bottom:6%;  left:4%;  font-size:0.55rem; animation: typeIn 0.3s steps(10) 1.5s forwards; }
+    .sys-text.s13 { bottom:15%; right:4%; font-size:0.48rem; text-align:right; animation: typeIn 0.3s steps(10) 0.7s forwards; }
+    .sys-text.s14 { bottom:12%; right:4%; font-size:0.5rem;  text-align:right; animation: typeIn 0.3s steps(10) 1.1s forwards; }
+    .sys-text.s15 { bottom:9%;  right:4%; font-size:0.5rem;  text-align:right; animation: typeIn 0.3s steps(10) 1.3s forwards; }
+    .sys-text.s16 { bottom:6%;  right:4%; font-size:0.55rem; text-align:right; animation: typeIn 0.3s steps(10) 1.6s forwards; }
+
+    @keyframes typeIn { from { opacity:0; letter-spacing:0.5em; } to { opacity:1; letter-spacing:0.1em; } }
+
+    .data-scroll { position:absolute; left:3%; top:25%; bottom:25%; width:110px; overflow:hidden; opacity:0; animation: i1FadeIn 0.8s ease 1.2s forwards; }
+    .data-scroll-inner { font-family:'Share Tech Mono',monospace; font-size:0.42rem; color:rgba(0,255,65,0.14); line-height:1.9; letter-spacing:0.1em; animation: scrollUp 20s linear infinite; }
+    .data-scroll-r { position:absolute; right:3%; top:25%; bottom:25%; width:110px; overflow:hidden; text-align:right; opacity:0; animation: i1FadeIn 0.8s ease 1.2s forwards; }
+    .data-scroll-r .data-scroll-inner { animation: scrollDown 25s linear infinite; }
+    @keyframes scrollUp { to { transform: translateY(-50%); } }
+    @keyframes scrollDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
+    .classified-stamp { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-8deg); font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,12vw,8rem); font-weight:900; color:transparent; -webkit-text-stroke:1px rgba(0,255,65,0.025); letter-spacing:0.2em; z-index:2; pointer-events:none; text-transform:uppercase; }
+    .hline { position:absolute; height:1px; background:rgba(0,255,65,0.04); z-index:2; }
+    .hline1 { top:22%; left:0; width:100%; } .hline2 { top:78%; left:0; width:100%; }
+    .hline3 { top:50%; left:0; width:12%; } .hline4 { top:50%; right:0; width:12%; }
+
+    .radar-container { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:480px; height:480px; z-index:5; opacity:0; animation: i1FadeIn 1s ease 0.5s forwards; }
+    .radar-circle { position:absolute; border:1px solid rgba(0,255,65,0.07); border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); }
+    .rc1 { width:100px; height:100px; } .rc2 { width:200px; height:200px; } .rc3 { width:320px; height:320px; } .rc4 { width:460px; height:460px; }
+    .radar-crosshair-h { position:absolute; top:50%; left:0; width:100%; height:1px; background:rgba(0,255,65,0.04); }
+    .radar-crosshair-v { position:absolute; left:50%; top:0; width:1px; height:100%; background:rgba(0,255,65,0.04); }
+    .radar-diag1 { position:absolute; top:50%; left:50%; width:140%; height:1px; background:rgba(0,255,65,0.025); transform-origin:0 0; transform:rotate(45deg) translateX(-50%); }
+    .radar-diag2 { position:absolute; top:50%; left:50%; width:140%; height:1px; background:rgba(0,255,65,0.025); transform-origin:0 0; transform:rotate(-45deg) translateX(-50%); }
+    .radar-sweep-wrapper { position:absolute; top:50%; left:50%; width:0; height:0; z-index:6; overflow:visible; }
+    .radar-sweep { position:absolute; top:-120px; left:0; width:240px; height:240px; transform-origin:0px 120px; animation: sweep 3s linear infinite; background: conic-gradient(from -2deg at 0% 50%, rgba(0,255,65,0.3) 0deg, rgba(0,255,65,0.1) 15deg, transparent 35deg); }
+    @keyframes sweep { to { transform: rotate(360deg); } }
+    .blip { position:absolute; width:3px; height:3px; background:#00ff41; border-radius:50%; box-shadow:0 0 6px #00ff41,0 0 15px rgba(0,255,65,0.25); z-index:7; animation: blipPulse 3s ease infinite; }
+    .blip1 { top:28%; left:33%; } .blip2 { top:67%; left:72%; animation-delay:1s; }
+    .blip3 { top:23%; left:60%; animation-delay:1.8s; } .blip4 { top:74%; left:28%; animation-delay:0.5s; }
+    .blip5 { top:42%; left:78%; animation-delay:2.2s; } .blip6 { top:55%; left:22%; animation-delay:1.2s; }
+    @keyframes blipPulse { 0%,100% { opacity:0.15; transform:scale(1); } 50% { opacity:0.9; transform:scale(1.6); } }
+    .pulse-ring { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:10px; height:10px; border:1px solid rgba(0,255,65,0.2); border-radius:50%; animation: radarPulse 3.5s ease-out infinite; }
+    .pulse-ring:nth-child(13) { animation-delay:1.2s; } .pulse-ring:nth-child(14) { animation-delay:2.4s; }
+    @keyframes radarPulse { 0% { width:10px; height:10px; opacity:0.5; } 100% { width:480px; height:480px; opacity:0; } }
+    .center-dot { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:5px; height:5px; background:#00ff41; border-radius:50%; box-shadow:0 0 12px #00ff41; z-index:8; }
+    .intro-content { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:30; text-align:center; margin-top:20px; }
+    .intro-bar { width:180px; height:2px; background:rgba(0,255,65,0.08); margin:0 auto; overflow:hidden; opacity:0; animation: i1FadeIn 0.3s ease 2s forwards; }
+    .intro-bar-fill { height:100%; width:0; background:#00ff41; box-shadow:0 0 12px #00ff41; animation: loadBar 1.5s ease 2.2s forwards; }
+    @keyframes i1FadeIn { to { opacity:1; } }
+    @keyframes loadBar { to { width:100%; } }
+
+    /* INTRO 2 */
+    #intro2 { position:fixed; inset:0; z-index:9998; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; animation: intro2In 0.6s ease 4.6s forwards; }
+    @keyframes intro2In { to { opacity:1; pointer-events:auto; } }
+    .iris-container { position:relative; width:200px; height:200px; display:flex; align-items:center; justify-content:center; }
+    .iris-ring-outer { position:absolute; width:180px; height:180px; border:1px solid rgba(0,255,65,0.12); border-top:1px solid rgba(0,255,65,0.4); border-radius:50%; opacity:0; animation: spinFadeIn 3s linear 5s infinite; }
+    @keyframes spinFadeIn { 0% { transform:rotate(0deg); opacity:0.8; } 100% { transform:rotate(360deg); opacity:0.8; } }
+    .iris-ring-mid { position:absolute; width:130px; height:130px; border:1px solid rgba(0,255,65,0.1); border-bottom:1px solid rgba(0,255,65,0.35); border-radius:50%; opacity:0; animation: spinReverse 2.5s linear 5s infinite, i2FadeIn 0.4s ease 5s forwards; }
+    @keyframes spinReverse { to { transform:rotate(-360deg); } }
+    .iris-ring-inner { position:absolute; width:85px; height:85px; border:1.5px solid rgba(0,255,65,0.2); border-radius:50%; opacity:0; animation: i2FadeIn 0.5s ease 5.1s forwards; }
+    .iris-detail { position:absolute; width:1px; height:65px; background:linear-gradient(transparent,rgba(0,255,65,0.08),transparent); top:50%; left:50%; transform-origin:0 0; }
+    .id1{transform:rotate(0deg) translateY(-32px);} .id2{transform:rotate(30deg) translateY(-32px);} .id3{transform:rotate(60deg) translateY(-32px);}
+    .id4{transform:rotate(90deg) translateY(-32px);} .id5{transform:rotate(120deg) translateY(-32px);} .id6{transform:rotate(150deg) translateY(-32px);}
+    .id7{transform:rotate(180deg) translateY(-32px);} .id8{transform:rotate(210deg) translateY(-32px);} .id9{transform:rotate(240deg) translateY(-32px);}
+    .id10{transform:rotate(270deg) translateY(-32px);} .id11{transform:rotate(300deg) translateY(-32px);} .id12{transform:rotate(330deg) translateY(-32px);}
+    .i2-pupil { width:24px; height:24px; background:radial-gradient(circle,#00ff41 0%,rgba(0,255,65,0.3) 40%,transparent 70%); border-radius:50%; box-shadow:0 0 20px #00ff41,0 0 40px rgba(0,255,65,0.3); z-index:5; opacity:0; animation: pupilReveal 0.6s ease 5.1s forwards; }
+    @keyframes pupilReveal { from { opacity:0; transform:scale(0.3); } to { opacity:1; transform:scale(1); } }
+    .scan-pulse { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:20px; height:20px; border:1.5px solid rgba(0,255,65,0.5); border-radius:50%; opacity:0; animation: scanPulse 1.2s ease-out 5.6s forwards; }
+    .scan-pulse.sp2 { animation-delay:5.9s; } .scan-pulse.sp3 { animation-delay:6.2s; }
+    @keyframes scanPulse { 0% { width:20px; height:20px; opacity:0.8; } 100% { width:220px; height:220px; opacity:0; } }
+    .hud-label { position:absolute; font-family:'Share Tech Mono',monospace; font-size:0.45rem; letter-spacing:0.15em; color:rgba(0,255,65,0.2); opacity:0; animation: i2FadeIn 0.4s ease 5.4s forwards; }
+    .hud-top { top:-25px; left:50%; transform:translateX(-50%); } .hud-bottom { bottom:-25px; left:50%; transform:translateX(-50%); }
+    .hud-left { left:-60px; top:50%; transform:translateY(-50%); } .hud-right { right:-60px; top:50%; transform:translateY(-50%); }
+    .accept-flash { position:fixed; inset:0; background:rgba(0,255,65,0.08); opacity:0; animation: flash 0.3s ease 7s forwards; pointer-events:none; z-index:95; }
+    @keyframes flash { 0% { opacity:0; } 50% { opacity:1; } 100% { opacity:0; } }
+    .h-scan-line { position:fixed; top:-2px; left:0; width:100vw; height:2px; background:#00ff41; box-shadow:0 0 12px #00ff41,0 0 30px rgba(0,255,65,0.4),0 0 60px rgba(0,255,65,0.15); z-index:91; opacity:0; pointer-events:none; animation: hScan 3.5s ease-in-out 4.9s forwards; }
+    .h-scan-line::before { content:''; position:absolute; top:0; left:0; width:100%; height:80px; background:linear-gradient(180deg,rgba(0,255,65,0.08),transparent); }
+    @keyframes hScan { 0% { top:-2px; opacity:0; } 3% { opacity:1; } 48% { top:100%; opacity:1; } 52% { top:100%; opacity:1; } 97% { top:-2px; opacity:1; } 100% { top:-2px; opacity:0; } }
+    .bio-text { font-family:'Share Tech Mono',monospace; font-size:0.8rem; letter-spacing:0.35em; color:#00ff41; margin-top:2.5rem; text-transform:uppercase; opacity:0; animation: stampReveal 0.15s ease 7.1s forwards; text-shadow:0 0 15px rgba(0,255,65,0.5); }
+    .welcome-text { font-family:'Share Tech Mono',monospace; font-size:0.8rem; letter-spacing:0.05em; color:#00ff41; margin-top:0.8rem; text-shadow:0 0 20px rgba(0,255,65,0.4),0 0 50px rgba(0,255,65,0.15); opacity:0; animation: i2FadeIn 0.6s ease 7.5s forwards; }
+    @keyframes i2FadeIn { to { opacity:1; } }
+    @keyframes stampReveal { from { opacity:0; transform:scale(1.3); } to { opacity:1; transform:scale(1); } }
+    body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:200; background:repeating-linear-gradient(transparent,transparent 2px,rgba(0,255,65,0.02) 2px,rgba(0,255,65,0.02) 4px); }
+
+  </style>
+</head>
+<body class="site-hidden">
+
+  <!-- ========== INTRO 1: RADAR + SYSTEM DATA ========== -->
+  <div id="intro1">
+    <div class="data-layer">
+      <div class="sys-text s1">SYS.INIT &gt; KERNEL LOADED</div>
+      <div class="sys-text s2">NET.STATUS: ENCRYPTED [AES-256]</div>
+      <div class="sys-text s3">UPLINK: ACTIVE // LATENCY 12ms</div>
+      <div class="sys-text s4">PROXY: ROUTED // CHAIN: 4 NODES</div>
+      <div class="sys-text s5">COORD: <span id="visitor-coord">LOCATING...</span></div>
+      <div class="sys-text s6">TIMESTAMP: 2026.03.11 // 00:47:33Z</div>
+      <div class="sys-text s7">IP ADDRESS: <span id="visitor-ip">RESOLVING...</span></div>
+      <div class="sys-text s8">DEVICE: <span id="visitor-device">DETECTING...</span></div>
+      <div class="sys-text s9">MEM.ALLOC: 4096MB / 8192MB</div>
+      <div class="sys-text s10">PROC: 47 THREADS ACTIVE</div>
+      <div class="sys-text s11">FIREWALL: ENGAGED // NO BREACH</div>
+      <div class="sys-text s12">SYS.INTEGRITY: 100% NOMINAL</div>
+      <div class="sys-text s13">SIGNAL STRENGTH: ████████░░ 82%</div>
+      <div class="sys-text s14">DNS: SPOOFED // ROUTE: TOR-3</div>
+      <div class="sys-text s15">DISK I/O: 340MB/s READ</div>
+      <div class="sys-text s16">WATCHDOG: ACTIVE // ALL CLEAR</div>
+
+      <div class="data-scroll">
+        <div class="data-scroll-inner">
+          0x4A 0xFF 0x0C 0x91<br>PKT_RECV: 14,302<br>HASH: 9a1f...e3b7<br>NODE: ALPHA-7<br>
+          PING: 8ms OK<br>0xBE 0x47 0xD3 0x1A<br>SESSION: 0x7FFA<br>ENTROPY: HIGH<br>
+          KEY_ROT: 00:15:00<br>CIPHER: ACTIVE<br>HMAC: VERIFIED<br>NONCE: 0x93FA21<br>
+          0x4A 0xFF 0x0C 0x91<br>PKT_RECV: 14,302<br>HASH: 9a1f...e3b7<br>NODE: ALPHA-7<br>
+          PING: 8ms OK<br>0xBE 0x47 0xD3 0x1A<br>SESSION: 0x7FFA<br>ENTROPY: HIGH<br>
+          KEY_ROT: 00:15:00<br>CIPHER: ACTIVE<br>HMAC: VERIFIED<br>NONCE: 0x93FA21<br>
+        </div>
+      </div>
+      <div class="data-scroll-r">
+        <div class="data-scroll-inner">
+          VECTOR: 270.5°<br>ALT: 0m AGL<br>GRID: JM-0547<br>SECTOR: CLEAR<br>
+          THREAT: NONE<br>TEMP: 18.4°C<br>WIND: 4kn NNW<br>VIS: 12km<br>
+          BARO: 1013hPa<br>SAT: 11 LOCKED<br>HEADING: 187°<br>SPD: 0.0 kn<br>
+          VECTOR: 270.5°<br>ALT: 0m AGL<br>GRID: JM-0547<br>SECTOR: CLEAR<br>
+          THREAT: NONE<br>TEMP: 18.4°C<br>WIND: 4kn NNW<br>VIS: 12km<br>
+          BARO: 1013hPa<br>SAT: 11 LOCKED<br>HEADING: 187°<br>SPD: 0.0 kn<br>
+        </div>
+      </div>
+
+      <div class="hline hline1"></div>
+      <div class="hline hline2"></div>
+      <div class="hline hline3"></div>
+      <div class="hline hline4"></div>
+      <div class="classified-stamp">CLASSIFIED</div>
+    </div>
+
+    <div class="radar-container">
+      <div class="radar-circle rc1"></div>
+      <div class="radar-circle rc2"></div>
+      <div class="radar-circle rc3"></div>
+      <div class="radar-circle rc4"></div>
+      <div class="radar-crosshair-h"></div>
+      <div class="radar-crosshair-v"></div>
+      <div class="radar-diag1"></div>
+      <div class="radar-diag2"></div>
+      <div class="radar-sweep-wrapper"><div class="radar-sweep"></div></div>
+      <div class="center-dot"></div>
+      <div class="blip blip1"></div>
+      <div class="blip blip2"></div>
+      <div class="blip blip3"></div>
+      <div class="blip blip4"></div>
+      <div class="blip blip5"></div>
+      <div class="blip blip6"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+    </div>
+
+    <div class="intro-content">
+      <div class="intro-bar"><div class="intro-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ========== INTRO 2: EYE SCAN ========== -->
+  <div id="intro2">
+    <div class="accept-flash"></div>
+    <div class="h-scan-line"></div>
+
+    <div class="iris-container">
+      <div class="iris-ring-outer"></div>
+      <div class="iris-ring-mid"></div>
+      <div class="iris-ring-inner"></div>
+      <div class="iris-detail id1"></div>
+      <div class="iris-detail id2"></div>
+      <div class="iris-detail id3"></div>
+      <div class="iris-detail id4"></div>
+      <div class="iris-detail id5"></div>
+      <div class="iris-detail id6"></div>
+      <div class="iris-detail id7"></div>
+      <div class="iris-detail id8"></div>
+      <div class="iris-detail id9"></div>
+      <div class="iris-detail id10"></div>
+      <div class="iris-detail id11"></div>
+      <div class="iris-detail id12"></div>
+      <div class="i2-pupil"></div>
+      <div class="scan-pulse sp1"></div>
+      <div class="scan-pulse sp2"></div>
+      <div class="scan-pulse sp3"></div>
+      <div class="hud-label hud-top">RETINAL SCAN</div>
+      <div class="hud-label hud-bottom">MATCH: 99.7%</div>
+      <div class="hud-label hud-left">L-EYE</div>
+      <div class="hud-label hud-right">VERIFIED</div>
+    </div>
+
+    <div class="bio-text">Biometric Accepted.</div>
+    <div class="welcome-text">welcome</div>
+  </div>
+
+  <script>
+    const SHEET_LOG_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+    // Device detection
+    let visitorDevice = 'UNKNOWN';
+    (function() {
+      const ua = navigator.userAgent;
+      if (/iPhone/.test(ua)) visitorDevice = 'APPLE iPHONE';
+      else if (/iPad/.test(ua)) visitorDevice = 'APPLE iPAD';
+      else if (/Macintosh/.test(ua)) visitorDevice = 'APPLE macOS';
+      else if (/Android.*Mobile/.test(ua)) visitorDevice = 'ANDROID MOBILE';
+      else if (/Android/.test(ua)) visitorDevice = 'ANDROID TABLET';
+      else if (/Windows/.test(ua)) visitorDevice = 'WINDOWS PC';
+      else if (/Linux/.test(ua)) visitorDevice = 'LINUX SYSTEM';
+      else if (/CrOS/.test(ua)) visitorDevice = 'CHROMEBOOK';
+      document.getElementById('visitor-device').textContent = visitorDevice;
+    })();
+
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(data => {
+        const ip = data.ip || 'ENCRYPTED';
+        document.getElementById('visitor-ip').textContent = ip;
+        let coords = 'CLASSIFIED';
+        if (data.latitude && data.longitude) {
+          const lat = Math.abs(data.latitude).toFixed(4) + '° ' + (data.latitude >= 0 ? 'N' : 'S');
+          const lon = Math.abs(data.longitude).toFixed(4) + '° ' + (data.longitude >= 0 ? 'E' : 'W');
+          coords = lat + ', ' + lon;
+        }
+        document.getElementById('visitor-coord').textContent = coords;
+        if (SHEET_LOG_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+          fetch(SHEET_LOG_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ip, coordinates: coords, device: visitorDevice, city: data.city || 'Unknown', region: data.region || 'Unknown', country: data.country_name || 'Unknown' })
+          }).catch(() => {});
+        }
+      })
+      .catch(() => {
+        document.getElementById('visitor-ip').textContent = 'ENCRYPTED';
+        document.getElementById('visitor-coord').textContent = 'CLASSIFIED';
+      });
+
+    // Auto-dismiss intro2 after eye scan completes (~9s total) and reveal site
+    setTimeout(() => {
+      const i2 = document.getElementById('intro2');
+      if (i2) {
+        i2.style.transition = 'opacity 0.8s ease';
+        i2.style.opacity = '0';
+        // Reveal the main site
+        document.body.classList.remove('site-hidden');
+        setTimeout(() => i2.remove(), 900);
+      }
+    }, 9200);
+
+    // Remove intro1 from DOM after fade
+    setTimeout(() => { const i1 = document.getElementById('intro1'); if(i1) i1.remove(); }, 5500);
+  </script>
+
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo"><span class="mystic-name">mystic</span> <span>// OPR</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#gaming">Gaming</a></li>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#guns">Guns</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nvg-status">
+      <div class="nvg-dot"></div>
+      NVG // ACTIVE
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-scan"></div>
+
+    <div class="hero-content">
+      <p class="hero-tag">// OPERATOR PROFILE // ONLINE //</p>
+      <h1 class="hero-name"><span class="mystic-name" style="font-size:inherit;letter-spacing:0.15em;">mystic</span></h1>
+      <p class="hero-sub">Gaming · Music · Guns · No Compromises</p>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">
+        pimping aint easy when your white and sleazy
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">01 //</span>
+      <h2 class="section-title">ABOUT</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          <strong><span class="mystic-name" style="font-size:inherit;letter-spacing:0.05em;">mystic</span></strong> &mdash; also known as <strong>mysticstyle</strong>. Built different. This is my space.
+        </p>
+        <p>
+          Sports, guns, hunting, music, gaming, fitness, outdoors &mdash; if it demands focus, I&apos;m in. More info below on each.
+        </p>
+        <p>
+          Click the sections below to learn more. Hope you enjoy &mdash; thanks for being here.
+        </p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box interest-box" onclick="document.getElementById('gaming').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <span class="stat-num">&#127918;</span>
+          <span class="stat-label">Gaming</span>
+          <span class="interest-hint">// click to explore</span>
+        </div>
+        <div class="stat-box interest-box" onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <span class="stat-num">&#127925;</span>
+          <span class="stat-label">Music</span>
+          <span class="interest-hint">// click to explore</span>
+        </div>
+        <div class="stat-box interest-box" onclick="document.getElementById('guns').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <span class="stat-num">&#128299;</span>
+          <span class="stat-label">Guns &amp; Hunting</span>
+          <span class="interest-hint">// click to explore</span>
+        </div>
+        <div class="stat-box interest-box" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <span class="stat-num">&#9889;</span>
+          <span class="stat-label">Sports &amp; Outdoors</span>
+          <span class="interest-hint">// click to explore</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMING -->
+  <section id="gaming">
+    <div class="section-header">
+      <span class="section-num">02 //</span>
+      <h2 class="section-title">GAMING</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="games-grid">
+      <div class="game-card">
+        <div class="game-icon">🪖</div>
+        <div class="game-title">Arma Reforger</div>
+        <div class="game-genre">Military Sim / Tactical</div>
+        <div class="game-desc">The next generation of milsim. Squad coordination, real-world tactics, and authentic weapon handling. This is where the operator mindset translates directly — communication wins, lone wolves lose.</div>
+
+        <div style="margin-top:1.2rem;border-top:1px solid var(--border);padding-top:1.2rem;display:flex;flex-direction:column;gap:0.7rem;">
+
+          <div style="display:flex;align-items:baseline;gap:0.75rem;flex-wrap:wrap;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Clan</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--amber);">Phantoms of War</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--text-dim);letter-spacing:0.08em;">// not to be confused with Prisoner of War</span>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:0.75rem;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Unit</span>
+            <span style="font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:0.08em;color:#fff;">Never Sober</span>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:0.75rem;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Role</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#fff;">Covert Operations &mdash; Flanking Ukrainian Forces</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Servers</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.08em;padding:0.2rem 0.7rem;border:1px solid var(--border);color:var(--amber);">NA Spearhead 2</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.08em;padding:0.2rem 0.7rem;border:1px solid var(--border);color:var(--amber);">NA Spearhead 3</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="game-card" style="grid-column: 1 / -1;">
+        <div class="game-icon">⚔️</div>
+        <div class="game-title">Old School RuneScape</div>
+        <div class="game-genre">MMORPG / Ironman Grind</div>
+        <div class="game-desc">The grind never ends and that's the point. OSRS is pure discipline — hours of skilling, bossing, and PvP. Running a full Ironman account under <strong>mysticstyle</strong>.</div>
+
+        <div class="osrs-expand">
+          <div class="osrs-layout">
+
+            <!-- LEFT: Account stats -->
+            <div>
+              <div class="osrs-account-badge">
+                <div>
+                  <div class="osrs-account-name">mysticstyle</div>
+                  <div class="osrs-account-type">⚔ Ironman &nbsp;|&nbsp; Rank #25,946 &nbsp;|&nbsp; Clan: Not So Alone</div>
+                  <div class="osrs-account-type" style="margin-top:0.2rem;">// Recorded: March 12, 2026</div>
+                </div>
+              </div>
+
+              <div class="osrs-overall">
+                <div class="osrs-stat-big">
+                  <span class="val">2,276</span>
+                  <span class="lbl">Total Level</span>
+                </div>
+                <div class="osrs-stat-big">
+                  <span class="val">280.7M</span>
+                  <span class="lbl">Total XP</span>
+                </div>
+                <div class="osrs-stat-big">
+                  <span class="val">#25,946</span>
+                  <span class="lbl">Overall Rank</span>
+                </div>
+              </div>
+
+              <div class="osrs-skills">
+                <div class="osrs-skill"><span class="osrs-skill-name">Attack</span><span class="osrs-skill-lvl">97</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Defence</span><span class="osrs-skill-lvl">97</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Strength</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Hitpoints</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Ranged</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Prayer</span><span class="osrs-skill-lvl">85</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Magic</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Cooking</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Woodcut</span><span class="osrs-skill-lvl">93</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Fletching</span><span class="osrs-skill-lvl">94</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Fishing</span><span class="osrs-skill-lvl">92</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Firemaking</span><span class="osrs-skill-lvl">90</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Crafting</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Smithing</span><span class="osrs-skill-lvl">91</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Mining</span><span class="osrs-skill-lvl">98</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Herblore</span><span class="osrs-skill-lvl">95</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Agility</span><span class="osrs-skill-lvl">93</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Thieving</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Slayer</span><span class="osrs-skill-lvl">96</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Farming</span><span class="osrs-skill-lvl">94</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Runecraft</span><span class="osrs-skill-lvl">86</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Hunter</span><span class="osrs-skill-lvl">84</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Construction</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+                <div class="osrs-skill"><span class="osrs-skill-name">Sailing</span><span class="osrs-skill-lvl maxed">99 ★</span></div>
+              </div>
+            </div>
+
+          </div><!-- /osrs-layout -->
+
+          <!-- BOSS KC PANEL -->
+          <div class="boss-kc-wrap">
+            <div class="boss-kc-header">// BOSS KILL COUNT</div>
+            <div class="boss-kc-grid">
+                  <div class="boss-row"><span class="boss-name">Abyssal Sire</span><span class="boss-kc">134</span></div>
+                  <div class="boss-row"><span class="boss-name">Alchemical Hydra</span><span class="boss-kc">148</span></div>
+                  <div class="boss-row"><span class="boss-name">Araxxor</span><span class="boss-kc" style="color:var(--amber);">268</span></div>
+                  <div class="boss-row"><span class="boss-name">Artio</span><span class="boss-kc">9</span></div>
+                  <div class="boss-row"><span class="boss-name">Barrows Chests</span><span class="boss-kc" style="color:var(--amber);">737</span></div>
+                  <div class="boss-row"><span class="boss-name">Brutus</span><span class="boss-kc">16</span></div>
+                  <div class="boss-row"><span class="boss-name">Bryophyta</span><span class="boss-kc">5</span></div>
+                  <div class="boss-row"><span class="boss-name">Calvar'ion</span><span class="boss-kc">95</span></div>
+                  <div class="boss-row"><span class="boss-name">Cerberus</span><span class="boss-kc" style="color:var(--amber);">1,340</span></div>
+                  <div class="boss-row"><span class="boss-name">Chambers of Xeric</span><span class="boss-kc">128</span></div>
+                  <div class="boss-row"><span class="boss-name">Chaos Fanatic</span><span class="boss-kc">138</span></div>
+                  <div class="boss-row"><span class="boss-name">Commander Zilyana</span><span class="boss-kc">5</span></div>
+                  <div class="boss-row"><span class="boss-name">Crazy Archaeologist</span><span class="boss-kc">44</span></div>
+                  <div class="boss-row"><span class="boss-name">Dagannoth Prime</span><span class="boss-kc">177</span></div>
+                  <div class="boss-row"><span class="boss-name">Dagannoth Rex</span><span class="boss-kc">81</span></div>
+                  <div class="boss-row"><span class="boss-name">Dagannoth Supreme</span><span class="boss-kc">51</span></div>
+                  <div class="boss-row"><span class="boss-name">Duke Sucellus</span><span class="boss-kc">1</span></div>
+                  <div class="boss-row"><span class="boss-name">General Graardor</span><span class="boss-kc" style="color:var(--amber);">578</span></div>
+                  <div class="boss-row"><span class="boss-name">Giant Mole</span><span class="boss-kc">6</span></div>
+                  <div class="boss-row"><span class="boss-name">Grotesque Guardians</span><span class="boss-kc">10</span></div>
+                  <div class="boss-row"><span class="boss-name">Hespori</span><span class="boss-kc">71</span></div>
+                  <div class="boss-row"><span class="boss-name">Kalphite Queen</span><span class="boss-kc">10</span></div>
+                  <div class="boss-row"><span class="boss-name">King Black Dragon</span><span class="boss-kc">108</span></div>
+                  <div class="boss-row"><span class="boss-name">Kraken</span><span class="boss-kc" style="color:var(--amber);">931</span></div>
+                  <div class="boss-row"><span class="boss-name">Kree'Arra</span><span class="boss-kc">1</span></div>
+                  <div class="boss-row"><span class="boss-name">K'ril Tsutsaroth</span><span class="boss-kc">92</span></div>
+                  <div class="boss-row"><span class="boss-name">Lunar Chests</span><span class="boss-kc">113</span></div>
+                  <div class="boss-row"><span class="boss-name">Mimic</span><span class="boss-kc">3</span></div>
+                  <div class="boss-row"><span class="boss-name">Nightmare</span><span class="boss-kc">8</span></div>
+                  <div class="boss-row"><span class="boss-name">Phantom Muspah</span><span class="boss-kc" style="color:var(--amber);">384</span></div>
+                  <div class="boss-row"><span class="boss-name">Sarachnis</span><span class="boss-kc">17</span></div>
+                  <div class="boss-row"><span class="boss-name">Skotizo</span><span class="boss-kc">22</span></div>
+                  <div class="boss-row"><span class="boss-name">Spindel</span><span class="boss-kc" style="color:var(--amber);">445</span></div>
+                  <div class="boss-row"><span class="boss-name">Tempoross</span><span class="boss-kc">121</span></div>
+                  <div class="boss-row"><span class="boss-name">The Corrupted Gauntlet</span><span class="boss-kc" style="color:var(--amber);">394</span></div>
+                  <div class="boss-row"><span class="boss-name">The Hueycoatl</span><span class="boss-kc">71</span></div>
+                  <div class="boss-row"><span class="boss-name">Thermonuclear Smoke Devil</span><span class="boss-kc" style="color:var(--amber);">233</span></div>
+                  <div class="boss-row"><span class="boss-name">Tombs of Amascut</span><span class="boss-kc">61</span></div>
+                  <div class="boss-row"><span class="boss-name">Tombs of Amascut: Expert</span><span class="boss-kc">39</span></div>
+                  <div class="boss-row"><span class="boss-name">Venenatis</span><span class="boss-kc">50</span></div>
+                  <div class="boss-row"><span class="boss-name">Vorkath</span><span class="boss-kc">4</span></div>
+                  <div class="boss-row"><span class="boss-name">Wintertodt</span><span class="boss-kc" style="color:var(--amber);">246</span></div>
+                  <div class="boss-row"><span class="boss-name">Yama</span><span class="boss-kc" style="color:var(--amber);">205</span></div>
+                  <div class="boss-row"><span class="boss-name">Zalcano</span><span class="boss-kc">78</span></div>
+                  <div class="boss-row"><span class="boss-name">Zulrah</span><span class="boss-kc" style="color:var(--amber);">934</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- MUSIC -->
+  <section id="music">
+    <div class="section-header">
+      <span class="section-num">03 //</span>
+      <h2 class="section-title">MUSIC</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="music-layout">
+      <!-- SoundCloud Widget — pulls live from your likes -->
+      <div class="sc-player-wrap" style="grid-column: 1 / -1;">
+        <iframe
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/chop&color=%23f5a623&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+          height="450">
+        </iframe>
+      </div>
+
+      <!-- Genre tags kept below -->
+      <div style="grid-column: 1 / -1; margin-top: 1.5rem;">
+        <div class="genres-box">
+          <h3>// Genres</h3>
+          <div class="genre-tags">
+            <span class="tag active">Dubstep</span>
+            <span class="tag active">House</span>
+            <span class="tag active">Old School Rap</span>
+            <span class="tag active">Rock</span>
+            <span class="tag">EDM</span>
+            <span class="tag">Hip-Hop</span>
+            <span class="tag">Classic Rock</span>
+            <span class="tag">Metal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUNS -->
+  <section id="guns">
+    <div class="section-header">
+      <span class="section-num">04 //</span>
+      <h2 class="section-title">HARDWARE</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="guns-list">
+
+      <!-- AR-15 -->
+      <div class="gun-entry">
+        <div class="gun-photo">
+          <div class="gun-photo-placeholder">
+            <div class="ph-icon">📷</div>
+            <p>AR-15 Photo</p>
+            <p class="ph-hint">Replace src with your image path:<br>&lt;img src="images/ar15.jpg"&gt;</p>
+          </div>
+        </div>
+        <div class="gun-details">
+          <span class="gun-badge">Primary</span>
+          <div class="gun-name">AR-15</div>
+          <div class="gun-cal">5.56 &times; 45mm NATO</div>
+          <div class="gun-specs">
+            <div class="spec-row"><span>Action</span><span>Semi-Automatic</span></div>
+            <div class="spec-row"><span>Trigger</span><span>Artius FRT / Rave 140 Curve</span></div>
+            <div class="spec-row"><span>Optic</span><span>Vortex Gen II HD MRAD</span></div>
+            <div class="spec-row"><span>Scope Mount</span><span>Antimatter Industries Scopeswitch 2.0</span></div>
+            <div class="spec-row"><span>Barrel</span><span>Criterion Core 13.9</span></div>
+            <div class="spec-row"><span>Rail</span><span>BCM Raider Rail M13</span></div>
+            <div class="spec-row"><span>Suppressor</span><span>Polo K</span></div>
+            <div class="spec-row"><span>Stock</span><span>B5 Systems Sopmod</span></div>
+            <div class="spec-row"><span>Lower</span><span>Sons of Liberty Angry Patriot Stripped</span></div>
+            <div class="spec-row"><span>Upper</span><span>BCM Blem</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Micro Draco -->
+      <div class="gun-entry">
+        <div class="gun-photo">
+          <div class="gun-photo-placeholder">
+            <div class="ph-icon">📷</div>
+            <p>Micro Draco Photo</p>
+            <p class="ph-hint">Replace src with your image path:<br>&lt;img src="images/microdraco.jpg"&gt;</p>
+          </div>
+        </div>
+        <div class="gun-details">
+          <span class="gun-badge">Pistol</span>
+          <div class="gun-name">Micro Draco</div>
+          <div class="gun-cal">7.62 &times; 39mm</div>
+          <div class="gun-specs">
+            <div class="spec-row"><span>Manufacturer</span><span>Century Arms</span></div>
+            <div class="spec-row"><span>Type</span><span>Semi-Auto Pistol / AK Platform</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mossberg 270 -->
+      <div class="gun-entry">
+        <div class="gun-photo">
+          <div class="gun-photo-placeholder">
+            <div class="ph-icon">📷</div>
+            <p>Mossberg 270 Photo</p>
+            <p class="ph-hint">Replace src with your image path:<br>&lt;img src="images/mossberg270.jpg"&gt;</p>
+          </div>
+        </div>
+        <div class="gun-details">
+          <span class="gun-badge">Hunting</span>
+          <div class="gun-name">Mossberg 270</div>
+          <div class="gun-cal">.270 Winchester</div>
+          <div class="gun-specs">
+            <div class="spec-row"><span>Action</span><span>Bolt Action</span></div>
+            <div class="spec-row"><span>Use</span><span>Hunting</span></div>
+          </div>
+        </div>
+      </div></div>
+
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-header">
+      <span class="section-num">05 //</span>
+      <h2 class="section-title">GALLERY</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item wide">
+        <div class="gallery-placeholder">
+          <div class="icon">📸</div>
+          <p>Range Day</p>
+        </div>
+        <div class="gallery-overlay"><span>// Add Photo //</span></div>
+      </div>
+
+      <div class="gallery-item" onclick="openGamingSetup()" style="cursor:pointer;">
+        <div class="gallery-placeholder">
+          <div class="icon">🎮</div>
+          <p>Gaming Setup</p>
+        </div>
+        <div class="gallery-overlay"><span>// VIEW SETUP //</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="icon">🔫</div>
+          <p>Collection</p>
+        </div>
+        <div class="gallery-overlay"><span>// Add Photo //</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="icon">🎵</div>
+          <p>Concert / Show</p>
+        </div>
+        <div class="gallery-overlay"><span>// Add Photo //</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="icon">🌙</div>
+          <p>Night Ops</p>
+        </div>
+        <div class="gallery-overlay"><span>// Add Photo //</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="icon">🏕️</div>
+          <p>Outdoor / Field</p>
+        </div>
+        <div class="gallery-overlay"><span>// Add Photo //</span></div>
+      </div>
+    </div>
+    <p class="gallery-note">// REPLACE PLACEHOLDERS WITH YOUR OWN IMAGES — see instructions below //</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-num">06 //</span>
+      <h2 class="section-title">CONTACT</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>GET IN TOUCH</h3>
+        <p>Whether you want to link up for a game session, talk firearms, or just say what's up — the comms are open.</p>
+        <div class="social-links">
+          <a href="https://discord.com/users/mysticalstyle" class="social-link"><span class="social-icon">🎮</span> mysticalstyle // Discord</a>
+          <a href="#" class="social-link"><span class="social-icon">📺</span> mystic // YouTube</a>
+          <a href="https://steamcommunity.com/id/chrispy2k" target="_blank" class="social-link"><span class="social-icon">🎮</span> chrispy2k // Steam</a>
+          <a href="https://x.com/mysticalstyle" target="_blank" class="social-link"><span class="social-icon">🐦</span> @mysticalstyle // X</a>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-row">
+          <label>Callsign / Name</label>
+          <input type="text" placeholder="Your name or handle"/>
+        </div>
+        <div class="form-row">
+          <label>Frequency / Email</label>
+          <input type="email" placeholder="your@email.com"/>
+        </div>
+        <div class="form-row">
+          <label>Transmission / Message</label>
+          <textarea rows="5" placeholder="Send your message..."></textarea>
+        </div>
+        <button class="btn-send">Send Nudes</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo"><span class="mystic-name">mystic</span></div>
+    <div class="footer-copy">© 2025 mystic // ALL RIGHTS RESERVED</div>
+    <div class="footer-coords">38°52'N 77°00'W // GRID LOCKED</div>
+  </footer>
+
+  <!-- ADMIN TRIGGER BUTTON -->
+  <button class="admin-trigger" onclick="document.getElementById('admin-overlay').classList.add('open')">
+    ⚙ ADMIN
+  </button>
+
+  <!-- ADMIN OVERLAY -->
+  <div id="admin-overlay">
+    <div class="admin-panel">
+      <div class="admin-title">ADMIN PANEL</div>
+      <div class="admin-sub">// mystic // MUSIC MANAGER //</div>
+      <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+
+      <!-- LOCK SCREEN -->
+      <div id="admin-lock">
+        <div class="lock-label">// Enter Access Code</div>
+        <div style="display:flex;gap:0.5rem;">
+          <input class="admin-input" type="password" id="pw-input" placeholder="Password..." onkeydown="if(event.key==='Enter')checkPassword()"/>
+          <button class="admin-btn" onclick="checkPassword()">UNLOCK</button>
+        </div>
+        <div class="admin-status" id="lock-status"></div>
+      </div>
+
+      <!-- ADMIN CONTENT (hidden until unlocked) -->
+      <div id="admin-content">
+        <div class="admin-search-row">
+          <select class="admin-platform" id="search-platform">
+            <option value="youtube">YouTube</option>
+            <option value="spotify">Spotify</option>
+            <option value="soundcloud">SoundCloud</option>
+          </select>
+          <input class="admin-input" type="text" id="search-input" placeholder="Search for a track..." onkeydown="if(event.key==='Enter')searchTrack()"/>
+          <button class="admin-btn" id="search-btn" onclick="searchTrack()">SEARCH</button>
+        </div>
+
+        <div class="admin-status" id="search-status"></div>
+        <div class="search-results" id="search-results"></div>
+
+        <div style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0.5rem;">
+          <div class="admin-sub" style="margin-bottom:0.75rem;">// CURRENT PLAYLIST (${tracks.length} tracks)</div>
+          <div id="admin-track-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--border);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── SHA-256 ──
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    const HASH = '39ef0a5fdb5f14c71535593687a346162c4dfc4e3ef25a60bb91972e0435d9b3';
+    let adminUnlocked = false;
+
+    async function checkPassword() {
+      const val = document.getElementById('pw-input').value;
+      const status = document.getElementById('lock-status');
+      if (!val) return;
+      status.textContent = '// VERIFYING...';
+      status.className = 'admin-status loading';
+      const hash = await sha256(val);
+      if (hash === HASH) {
+        document.getElementById('admin-lock').style.display = 'none';
+        document.getElementById('admin-content').style.display = 'block';
+        document.getElementById('pw-input').value = '';
+        adminUnlocked = true;
+        renderAdminList();
+        status.textContent = '';
+      } else {
+        status.textContent = '// ACCESS DENIED — INVALID CODE';
+        status.className = 'admin-status err';
+        document.getElementById('pw-input').value = '';
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById('admin-overlay').classList.remove('open');
+      if (adminUnlocked) {
+        document.getElementById('admin-lock').style.display = 'flex';
+        document.getElementById('admin-content').style.display = 'none';
+        adminUnlocked = false;
+      }
+    }
+
+    // ── TRACK STORE ──
+    let tracks = JSON.parse(localStorage.getItem('hd_tracks') || '[]');
+
+    function saveTracks() {
+      localStorage.setItem('hd_tracks', JSON.stringify(tracks));
+    }
+
+    function renderPlaylist() {
+      const list = document.getElementById('track-list');
+      const count = document.getElementById('track-count');
+      count.textContent = tracks.length + ' TRACK' + (tracks.length !== 1 ? 'S' : '');
+
+      if (tracks.length === 0) {
+        list.innerHTML = '<li style="padding:2rem;text-align:center;font-size:0.75rem;color:var(--text-dim);letter-spacing:0.1em;">// NO TRACKS ADDED YET — USE ADMIN PANEL //</li>';
+        document.getElementById('np-track').textContent = '—';
+        document.getElementById('np-artist').textContent = 'Add tracks via admin panel';
+        return;
+      }
+
+      list.innerHTML = tracks.map((t, i) => `
+        <li class="track" onclick="setNowPlaying(${i})">
+          <span class="track-num">${String(i+1).padStart(2,'0')}</span>
+          ${t.thumb ? `<img class="track-thumb" src="${t.thumb}" alt="" onerror="this.style.display='none'">` : `<div class="track-thumb-placeholder">🎵</div>`}
+          <div class="track-info">
+            <div class="track-name">${t.name}</div>
+            <div class="track-artist">${t.artist}</div>
+          </div>
+          <span class="track-source ${t.source}">${t.source.toUpperCase()}</span>
+          <button class="track-remove" onclick="removeTrack(event,${i})">✕</button>
+        </li>
+      `).join('');
+
+      // Set now playing to last added if nothing set
+      const np = tracks[tracks.length - 1];
+      if (np) {
+        document.getElementById('np-track').textContent = np.name;
+        document.getElementById('np-artist').textContent = np.artist;
+      }
+    }
+
+    function setNowPlaying(i) {
+      const t = tracks[i];
+      if (!t) return;
+      document.getElementById('np-track').textContent = t.name;
+      document.getElementById('np-artist').textContent = t.artist;
+    }
+
+    function removeTrack(e, i) {
+      e.stopPropagation();
+      tracks.splice(i, 1);
+      saveTracks();
+      renderPlaylist();
+      if (adminUnlocked) renderAdminList();
+    }
+
+    // ── SEARCH ──
+    async function searchTrack() {
+      const platform = document.getElementById('search-platform').value;
+      const query = document.getElementById('search-input').value.trim();
+      const status = document.getElementById('search-status');
+      const resultsBox = document.getElementById('search-results');
+
+      if (!query) return;
+
+      status.textContent = `// SEARCHING ${platform.toUpperCase()}...`;
+      status.className = 'admin-status loading';
+      resultsBox.classList.remove('visible');
+      resultsBox.innerHTML = '';
+
+      document.getElementById('search-btn').disabled = true;
+
+      try {
+        let results = [];
+
+        if (platform === 'youtube') {
+          results = await searchYouTube(query);
+        } else if (platform === 'spotify') {
+          results = await searchSpotify(query);
+        } else if (platform === 'soundcloud') {
+          results = await searchSoundCloud(query);
+        }
+
+        if (results.length === 0) {
+          status.textContent = '// NO RESULTS FOUND';
+          status.className = 'admin-status err';
+        } else {
+          status.textContent = `// ${results.length} RESULTS FOUND — SELECT TO ADD`;
+          status.className = 'admin-status ok';
+          resultsBox.innerHTML = results.map((r, i) => `
+            <div class="result-item" onclick="addTrack(${i}, '${platform}')">
+              ${r.thumb ? `<img class="result-thumb" src="${r.thumb}" alt="" onerror="this.style.display='none'">` : '<div class="result-thumb" style="background:var(--steel)"></div>'}
+              <div class="result-info">
+                <div class="result-name">${r.name}</div>
+                <div class="result-artist">${r.artist}</div>
+              </div>
+              <span class="result-add">+ ADD</span>
+            </div>
+          `).join('');
+          window._searchResults = results;
+          resultsBox.classList.add('visible');
+        }
+      } catch (err) {
+        status.textContent = '// SEARCH ERROR — CHECK API KEYS IN CODE';
+        status.className = 'admin-status err';
+      }
+
+      document.getElementById('search-btn').disabled = false;
+    }
+
+    // YouTube via oEmbed / invidious public API (no key required)
+    async function searchYouTube(query) {
+      // Using YouTube's public search suggestion endpoint as a fallback
+      // For real results, replace with your YouTube Data API v3 key below
+      const YT_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // <-- paste your key here
+
+      if (YT_API_KEY === 'YOUR_YOUTUBE_API_KEY') {
+        // Demo mode: return mock results
+        return mockResults(query, 'youtube');
+      }
+
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&videoCategoryId=10&maxResults=6&key=${YT_API_KEY}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      return (data.items || []).map(item => ({
+        name: item.snippet.title,
+        artist: item.snippet.channelTitle,
+        thumb: item.snippet.thumbnails?.default?.url || '',
+        url: `https://youtube.com/watch?v=${item.id.videoId}`
+      }));
+    }
+
+    // Spotify via public search (requires client credentials)
+    async function searchSpotify(query) {
+      const CLIENT_ID = 'YOUR_SPOTIFY_CLIENT_ID';       // <-- paste here
+      const CLIENT_SECRET = 'YOUR_SPOTIFY_CLIENT_SECRET'; // <-- paste here
+
+      if (CLIENT_ID === 'YOUR_SPOTIFY_CLIENT_ID') {
+        return mockResults(query, 'spotify');
+      }
+
+      const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + btoa(CLIENT_ID + ':' + CLIENT_SECRET) },
+        body: 'grant_type=client_credentials'
+      });
+      const tokenData = await tokenRes.json();
+      const token = tokenData.access_token;
+
+      const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=6`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      return (data.tracks?.items || []).map(t => ({
+        name: t.name,
+        artist: t.artists.map(a => a.name).join(', '),
+        thumb: t.album.images?.[2]?.url || '',
+        url: t.external_urls.spotify
+      }));
+    }
+
+    // SoundCloud via public widget API
+    async function searchSoundCloud(query) {
+      const SC_CLIENT_ID = 'YOUR_SOUNDCLOUD_CLIENT_ID'; // <-- paste here
+
+      if (SC_CLIENT_ID === 'YOUR_SOUNDCLOUD_CLIENT_ID') {
+        return mockResults(query, 'soundcloud');
+      }
+
+      const res = await fetch(`https://api.soundcloud.com/tracks?q=${encodeURIComponent(query)}&limit=6&client_id=${SC_CLIENT_ID}`);
+      const data = await res.json();
+      return (data || []).map(t => ({
+        name: t.title,
+        artist: t.user.username,
+        thumb: t.artwork_url || '',
+        url: t.permalink_url
+      }));
+    }
+
+    // Demo mock results (shown when no API keys are set)
+    function mockResults(query, source) {
+      return [
+        { name: `"${query}" — Result 1`, artist: 'Add API key to see real results', thumb: '', url: '#' },
+        { name: `"${query}" — Result 2`, artist: 'Add API key to see real results', thumb: '', url: '#' },
+        { name: `"${query}" — Result 3`, artist: 'Add API key to see real results', thumb: '', url: '#' },
+      ];
+    }
+
+    function addTrack(i, source) {
+      const results = window._searchResults || [];
+      const r = results[i];
+      if (!r) return;
+
+      // Check duplicate
+      if (tracks.find(t => t.name === r.name && t.artist === r.artist)) {
+        document.getElementById('search-status').textContent = '// TRACK ALREADY IN PLAYLIST';
+        document.getElementById('search-status').className = 'admin-status err';
+        return;
+      }
+
+      tracks.push({ name: r.name, artist: r.artist, thumb: r.thumb, url: r.url, source });
+      saveTracks();
+      renderPlaylist();
+      renderAdminList();
+      document.getElementById('search-status').textContent = `// "${r.name}" ADDED TO PLAYLIST`;
+      document.getElementById('search-status').className = 'admin-status ok';
+    }
+
+    function renderAdminList() {
+      const box = document.getElementById('admin-track-list');
+      if (!box) return;
+      if (tracks.length === 0) {
+        box.innerHTML = '<div style="padding:1rem;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.1em;">// PLAYLIST EMPTY</div>';
+        return;
+      }
+      box.innerHTML = tracks.map((t, i) => `
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 1rem;border-bottom:1px solid rgba(245,166,35,0.08);">
+          <span style="font-size:0.65rem;color:var(--text-dim);width:20px;">${i+1}</span>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:0.78rem;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.name}</div>
+            <div style="font-size:0.65rem;color:var(--text-dim);">${t.artist}</div>
+          </div>
+          <span class="track-source ${t.source}" style="font-size:0.58rem;">${t.source.toUpperCase()}</span>
+          <button onclick="removeTrack(event,${i})" style="background:none;border:1px solid rgba(255,68,68,0.3);color:#ff4444;font-size:0.65rem;padding:0.2rem 0.5rem;cursor:pointer;font-family:inherit;">✕</button>
+        </div>
+      `).join('');
+    }
+
+    // Init on load
+    renderPlaylist();
+  </script>
+
+
+  <!-- GAMING SETUP FULL-PAGE OVERLAY -->
+  <div id="gaming-setup-page">
+    <div class="setup-page-inner">
+
+      <div class="setup-page-topbar">
+        <div class="setup-page-breadcrumb">GALLERY // <span>GAMING SETUP</span></div>
+        <button class="setup-page-close" onclick="closeGamingSetup()">✕ CLOSE</button>
+      </div>
+
+      <div class="setup-page-title">NASA <span>SPACESTATION</span></div>
+      <div class="setup-page-sub">// DEDICATED GAMING STATION // PC: WINTER // STATUS: ONLINE //</div>
+
+      <div class="setup-page-layout">
+
+        <!-- SPEC SHEET -->
+        <div class="spec-sheet">
+          <div class="spec-sheet-header">⬛ SYSTEM SPECS — WINTER</div>
+
+          <div class="pc-name-badge">
+            <span class="pc-name-label">UNIT DESIGNATION</span>
+            <span class="pc-name-value">WINTER</span>
+          </div>
+
+          <div class="spec-category">// Core Hardware</div>
+          <div class="spec-row">
+            <span class="spec-label">CPU</span>
+            <span class="spec-value highlight">AMD Ryzen 9950X3D</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">GPU</span>
+            <span class="spec-value highlight">AORUS ICE PRO 5090</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">RAM</span>
+            <span class="spec-value">64GB G.Skill Trident Z5</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Storage</span>
+            <span class="spec-value">4TB Samsung 990 PCIe 4.0</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Motherboard</span>
+            <span class="spec-value">AORUS ICE X870E</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Case</span>
+            <span class="spec-value">HAVN HS420 White</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">PSU</span>
+            <span class="spec-value">Corsair HX1500i</span>
+          </div>
+
+          <div class="spec-category">// Display Array</div>
+          <div class="spec-row">
+            <span class="spec-label">Top</span>
+            <span class="spec-value">49" Samsung OLED 240Hz</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Bottom</span>
+            <span class="spec-value">45" LG 5K2K OLED 165Hz</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Side</span>
+            <span class="spec-value">27" Alienware AW2721D 240Hz</span>
+          </div>
+
+          <div class="spec-category">// Peripherals</div>
+          <div class="spec-row">
+            <span class="spec-label">Mouse</span>
+            <span class="spec-value">Logitech G Pro X Superlight 2</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Headset</span>
+            <span class="spec-value">Astro A50 Wireless</span>
+          </div>
+
+          <div style="padding: 0.8rem 1.2rem; border-top: 1px solid var(--border); margin-top: 0.5rem;">
+            <div class="peripheral-row">
+              <div class="peripheral-tag">Mouse<span>G Pro X SL2</span></div>
+              <div class="peripheral-tag">Headset<span>Astro A50</span></div>
+              <div class="peripheral-tag">PSU<span>1500W</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEDIA -->
+        <div class="station-media">
+          <div class="media-grid">
+            <div class="media-cell wide">
+              <img src="setup2.jpeg" alt="Dual OLED Monitor Stack" loading="lazy"/>
+              <div class="media-label">// Dual OLED Stack — 49" Samsung + 45" LG 5K2K</div>
+            </div>
+            <div class="media-cell">
+              <img src="setup1.jpeg" alt="Side Monitor" loading="lazy"/>
+              <div class="media-label">// Side Display — Alienware 27" 240Hz</div>
+            </div>
+            <div class="media-cell" id="sv1-cell">
+              <video id="setup-vid1" src="setup_vid1.mp4" muted loop playsinline
+                onclick="this.paused?this.play():this.pause()">
+              </video>
+              <div class="media-label">// Station Walkthrough ▶ Click to play</div>
+            </div>
+            <div class="media-cell" id="sv2-cell">
+              <video id="setup-vid2" src="setup_vid2.mp4" muted loop playsinline
+                onclick="this.paused?this.play():this.pause()">
+              </video>
+              <div class="media-label">// The Rig ▶ Click to play</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openGamingSetup() {
+      document.getElementById('gaming-setup-page').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeGamingSetup() {
+      document.getElementById('gaming-setup-page').classList.remove('open');
+      document.body.style.overflow = '';
+      // pause videos on close
+      ['setup-vid1','setup-vid2'].forEach(id => {
+        const v = document.getElementById(id);
+        if (v) v.pause();
+      });
+    }
+    // ESC key closes overlay
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeGamingSetup();
+    });
+  </script>
+
+</body>
+</html>
