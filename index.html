@@ -852,7 +852,7 @@
     .media-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
+      gap: 6px;
     }
 
     .media-cell {
@@ -860,7 +860,8 @@
       overflow: hidden;
       background: var(--steel);
       border: 1px solid var(--border);
-      aspect-ratio: 16/10;
+      aspect-ratio: 16/9;
+      min-height: 200px;
     }
 
     .media-cell img,
@@ -874,24 +875,40 @@
 
     .media-cell:hover img,
     .media-cell:hover video {
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .media-cell .media-label {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      padding: 0.4rem 0.6rem;
-      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 0.6rem 0.8rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.45rem;
-      letter-spacing: 0.15em;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
       color: var(--amber);
       text-transform: uppercase;
     }
 
+    /* Play overlay for videos */
+    .media-cell.is-video::before {
+      content: '▶';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      color: rgba(255,255,255,0.8);
+      z-index: 2;
+      pointer-events: none;
+      text-shadow: 0 0 20px rgba(0,0,0,0.8);
+      transition: opacity 0.2s;
+    }
+    .media-cell.is-video.playing::before { opacity: 0; }
+
     .media-cell.wide {
       grid-column: span 2;
       aspect-ratio: 21/9;
+      min-height: 280px;
     }
 
     .media-cell video {
@@ -934,7 +951,9 @@
 
     @media (max-width: 900px) {
       .station-layout { grid-template-columns: 1fr; }
-      .media-cell.wide { aspect-ratio: 16/9; }
+      .media-cell.wide { aspect-ratio: 16/9; min-height: 200px; }
+      .media-grid { grid-template-columns: 1fr; }
+      .media-cell { min-height: 220px; }
     }
 
     /* YouTube embed section */
@@ -1039,13 +1058,13 @@
 
     .sc-now-label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.12em;
-      color: var(--text-dim);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 400px;
+      max-width: 500px;
     }
 
     .sc-open-btn {
@@ -1070,7 +1089,7 @@
       display: flex;
       align-items: center;
       gap: 1.5rem;
-      padding: 0.9rem 1.2rem;
+      padding: 1.2rem 1.5rem;
       background: var(--gunmetal);
       border-top: 1px solid var(--border);
       flex-wrap: wrap;
@@ -1086,8 +1105,8 @@
       background: var(--steel);
       border: 1px solid var(--border);
       color: var(--text-dim);
-      font-size: 0.7rem;
-      width: 36px; height: 36px;
+      font-size: 0.85rem;
+      width: 48px; height: 48px;
       cursor: pointer;
       transition: background 0.2s, color 0.2s, border-color 0.2s;
       display: flex; align-items: center; justify-content: center;
@@ -1100,10 +1119,11 @@
     }
 
     .sc-play-btn {
-      width: 44px; height: 44px;
-      font-size: 1rem;
+      width: 60px; height: 60px;
+      font-size: 1.3rem;
       color: var(--amber);
       border-color: var(--amber);
+      box-shadow: 0 0 12px rgba(245,166,35,0.2);
     }
 
     .sc-vol-group {
@@ -1122,7 +1142,7 @@
     .sc-vol-slider {
       -webkit-appearance: none;
       appearance: none;
-      width: 110px;
+      width: 160px;
       height: 3px;
       background: var(--steel);
       outline: none;
@@ -1619,6 +1639,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 320px;
     }
 
     .gun-photo img {
@@ -1727,21 +1748,21 @@
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
-      gap: 4px;
+      grid-auto-rows: 260px;
+      gap: 6px;
     }
 
     .gallery-item {
       background: var(--steel);
-      aspect-ratio: 1;
       position: relative;
       overflow: hidden;
       cursor: pointer;
+      min-height: 200px;
     }
 
     .gallery-item.wide {
       grid-column: span 2;
-      aspect-ratio: 2/1;
+      grid-row: span 1;
     }
 
     .gallery-item.tall {
@@ -1766,12 +1787,12 @@
     }
 
     .gallery-placeholder .icon {
-      font-size: 2rem;
-      opacity: 0.4;
+      font-size: 3rem;
+      opacity: 0.5;
     }
 
     .gallery-placeholder p {
-      font-size: 0.65rem;
+      font-size: 0.8rem;
       letter-spacing: 0.15em;
       color: var(--text-dim);
       text-transform: uppercase;
@@ -2052,12 +2073,12 @@
 
       /* ── HARDWARE ── */
       .gun-entry { grid-template-columns: 1fr !important; }
-      .gun-photo { width: 100%; height: 220px; }
-      .gun-photo-placeholder { height: 220px; }
+      .gun-photo { width: 100%; min-height: 260px; }
+      .gun-photo-placeholder { min-height: 260px; }
       .gun-name { font-size: clamp(1.5rem, 6vw, 2rem); }
 
       /* ── GALLERY ── */
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
       .gallery-item.wide { grid-column: span 2; }
 
       /* Gaming setup overlay */
@@ -2673,7 +2694,7 @@
       <!-- SoundCloud iframe (controlled via Widget API) -->
       <iframe id="sc-iframe"
         src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/chop/sets/scape-trance&color=%23f5a623&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=true&show_artwork=true"
-        height="340" style="width:100%;border:none;display:block;">
+        height="500" style="width:100%;border:none;display:block;">
       </iframe>
 
       <!-- Controls bar -->
@@ -3307,13 +3328,13 @@
             </div>
             <div class="media-cell" id="sv1-cell">
               <video id="setup-vid1" src="setup_vid1.mp4" muted loop playsinline
-                onclick="this.paused?this.play():this.pause()">
+                onclick="this.paused?(this.play(),this.closest('.media-cell').classList.add('playing')):(this.pause(),this.closest('.media-cell').classList.remove('playing'))">
               </video>
               <div class="media-label">// Station Walkthrough ▶ Click to play</div>
             </div>
             <div class="media-cell" id="sv2-cell">
               <video id="setup-vid2" src="setup_vid2.mp4" muted loop playsinline
-                onclick="this.paused?this.play():this.pause()">
+                onclick="this.paused?(this.play(),this.closest('.media-cell').classList.add('playing')):(this.pause(),this.closest('.media-cell').classList.remove('playing'))">
               </video>
               <div class="media-label">// The Rig ▶ Click to play</div>
             </div>
