@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Humidor Log</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --cedar: #6b4f2e;
+    --cedar-dark: #4a3620;
+    --cedar-light: #8a6b42;
+    --parchment: #f4ecd8;
+    --parchment-dark: #e8dcc0;
+    --ember: #b5341f;
+    --ember-glow: #d4502f;
+    --gold: #b08d3e;
+    --ink: #2a2018;
+    --smoke: #9a8d78;
+    --leather: #3d2b1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Josefin Sans', sans-serif;
+    background:
+      radial-gradient(ellipse at top, #3d2b1a 0%, #2a1d12 60%, #1a1209 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+    background-attachment: fixed;
+  }
+
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
+
+  header { text-align: center; margin-bottom: 32px; }
+  header .mark {
+    font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 6px; font-weight: 500;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    font-size: clamp(38px, 8vw, 62px); color: var(--parchment);
+    line-height: 0.95; letter-spacing: 0.01em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  header .sub {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 18px; color: var(--smoke); margin-top: 8px;
+  }
+
+  .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap; }
+  .tab {
+    font-family: 'Josefin Sans'; font-size: 13px; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 11px 22px; border: 1px solid var(--cedar-light);
+    background: rgba(244,236,216,0.04); color: var(--parchment); cursor: pointer;
+    border-radius: 2px; transition: all 0.25s; font-weight: 400;
+  }
+  .tab:hover { background: rgba(244,236,216,0.1); }
+  .tab.active { background: var(--ember); border-color: var(--ember); color: #fff; }
+
+  .panel { display: none; animation: fade 0.4s ease; }
+  .panel.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card {
+    background:
+      linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+    border-radius: 4px; padding: 30px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.5);
+    position: relative; border: 1px solid rgba(107,79,46,0.2);
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 8px; border: 1px solid rgba(107,79,46,0.15);
+    border-radius: 2px; pointer-events: none;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--cedar); margin-bottom: 6px; font-weight: 600;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; background: rgba(255,255,255,0.5); border: none;
+    border-bottom: 1.5px dotted var(--cedar); padding: 8px 4px;
+    font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--ink);
+    outline: none; transition: all 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-bottom-color: var(--ember); background: rgba(255,255,255,0.8);
+  }
+  .field textarea { resize: vertical; min-height: 70px; border: 1.5px dotted var(--cedar); border-radius: 3px; padding: 10px; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  @media (max-width: 600px) { .row, .row-3 { grid-template-columns: 1fr; } }
+
+  /* Star rating */
+  .stars { display: flex; gap: 6px; }
+  .star {
+    font-size: 32px; color: rgba(107,79,46,0.25); cursor: pointer; transition: all 0.15s;
+    line-height: 1;
+  }
+  .star:hover, .star.lit { color: var(--gold); transform: scale(1.1); }
+  .star.lit { text-shadow: 0 0 10px rgba(176,141,62,0.5); }
+
+  /* Strength meter */
+  .strength-opts { display: flex; flex-direction: column; gap: 4px; }
+  .str-opt {
+    display: flex; align-items: center; gap: 10px; padding: 6px 10px; cursor: pointer;
+    border-radius: 3px; transition: all 0.2s; font-family: 'Cormorant Garamond', serif; font-size: 17px;
+  }
+  .str-opt:hover { background: rgba(107,79,46,0.08); }
+  .str-opt.sel { background: var(--ember); color: #fff; }
+  .str-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--cedar); }
+  .str-opt.sel .str-dot { background: #fff; border-color: #fff; }
+
+  /* Flavor wheel */
+  .wheel-wrap { display: flex; flex-direction: column; align-items: center; }
+  svg.wheel { max-width: 360px; width: 100%; height: auto; touch-action: manipulation; }
+  .wheel-hint { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--smoke); font-size: 15px; margin-top: 6px; text-align: center; }
+
+  .btn {
+    font-family: 'Josefin Sans'; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase;
+    background: var(--ember); color: #fff; border: none; padding: 15px 32px;
+    border-radius: 3px; cursor: pointer; transition: all 0.25s; font-weight: 500;
+    box-shadow: 0 4px 14px rgba(181,52,31,0.4);
+  }
+  .btn:hover { background: var(--ember-glow); transform: translateY(-2px); box-shadow: 0 7px 20px rgba(181,52,31,0.5); }
+  .btn-ghost { background: transparent; color: var(--cedar); border: 1px solid var(--cedar); box-shadow: none; }
+  .btn-ghost:hover { background: rgba(107,79,46,0.08); transform: none; }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600;
+    color: var(--cedar-dark); margin: 26px 0 14px; padding-bottom: 8px;
+    border-bottom: 1.5px solid rgba(107,79,46,0.25); display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: '❧'; color: var(--ember); font-size: 22px; }
+
+  /* Log entries */
+  .entry {
+    background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+    border-radius: 4px; padding: 22px 24px; margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-left: 4px solid var(--ember);
+    position: relative; transition: transform 0.2s;
+  }
+  .entry:hover { transform: translateX(3px); }
+  .entry-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+  .entry-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.05; }
+  .entry-maker { font-size: 13px; color: var(--cedar); letter-spacing: 0.05em; margin-top: 2px; }
+  .entry-stars { color: var(--gold); font-size: 18px; letter-spacing: 2px; white-space: nowrap; }
+  .entry-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--cedar-dark); font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+  .entry-meta span { display: inline-flex; align-items: center; gap: 5px; }
+  .entry-meta b { color: var(--ember); font-weight: 600; }
+  .entry-notes { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: #4a3c2c; margin-top: 12px; line-height: 1.4; }
+  .entry-flavors { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .flav-tag { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(107,79,46,0.12); color: var(--cedar-dark); padding: 4px 10px; border-radius: 20px; }
+  .del-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(107,79,46,0.4); cursor: pointer; font-size: 18px; transition: color 0.2s; }
+  .del-btn:hover { color: var(--ember); }
+  body.locked .del-btn { display: none; }
+  body.locked #export-btn { display: none; }
+  .buy-badge { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
+  .buy-yes { background: rgba(76,124,58,0.18); color: #3a6128; }
+  .buy-no { background: rgba(181,52,31,0.15); color: var(--ember); }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--smoke); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; }
+
+  /* Stats / taste profile */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .stat {
+    background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+    border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+  }
+  .stat .num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--ember); line-height: 1; }
+  .stat .lbl { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cedar); margin-top: 8px; }
+
+  .rec {
+    background: linear-gradient(135deg, #2a1d12 0%, #3d2b1a 100%);
+    border: 1px solid var(--gold); border-radius: 4px; padding: 22px 24px; margin-bottom: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+  }
+  .rec::after { content: '★'; position: absolute; top: -10px; right: 10px; font-size: 80px; color: rgba(176,141,62,0.08); }
+  .rec-name { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 700; color: var(--parchment); }
+  .rec-why { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gold); margin-top: 4px; }
+  .rec-meta { font-size: 13px; color: var(--smoke); margin-top: 10px; line-height: 1.5; }
+
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--ember); color: #fff; padding: 14px 28px; border-radius: 4px;
+    font-size: 14px; letter-spacing: 0.1em; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 100; transition: transform 0.35s cubic-bezier(.2,1.2,.3,1); text-transform: uppercase;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .loading { text-align: center; color: var(--smoke); padding: 40px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+  <header>
+    <div class="mark">Est. Your Humidor</div>
+    <h1>The Humidor Log</h1>
+    <div class="sub">a record of leaf, smoke &amp; memory</div>
+    <div id="mode-bar" style="margin-top:18px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <span id="mode-pill" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cedar);border:1px solid rgba(107,79,46,0.4);padding:6px 14px;border-radius:20px;">👁 Read-Only</span>
+      <button id="unlock-btn" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;background:none;border:1px solid var(--cedar);color:var(--cedar);padding:7px 16px;border-radius:3px;cursor:pointer;">🔓 Unlock Editing</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab" data-tab="new" id="tab-new">✎ New Entry</button>
+    <button class="tab active" data-tab="log">☰ My Log</button>
+    <button class="tab" data-tab="taste">◉ Taste Profile</button>
+    <button class="tab" data-tab="recs">★ Recommendations</button>
+  </div>
+
+  <!-- NEW ENTRY -->
+  <div class="panel" id="panel-new">
+    <div class="card">
+      <div class="row">
+        <div class="field"><label>Cigar Name</label><input id="f-name" placeholder="e.g. Padrón 1926 No. 9"></div>
+        <div class="field"><label>Maker</label><input id="f-maker" placeholder="e.g. Padrón"></div>
+      </div>
+      <div class="row-3">
+        <div class="field"><label>Origin</label><input id="f-origin" placeholder="Nicaragua"></div>
+        <div class="field"><label>Length / Ring</label><input id="f-size" placeholder='5.5" / 56'></div>
+        <div class="field"><label>Price</label><input id="f-price" placeholder="$18"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Date Smoked</label><input id="f-date" type="date"></div>
+        <div class="field"><label>Pairing (drink / occasion)</label><input id="f-pairing" placeholder="Bourbon, after dinner"></div>
+      </div>
+
+      <div class="field"><label>Tasting Notes</label><textarea id="f-notes" placeholder="First third was all cocoa and espresso, mellowed into leather and a touch of black pepper on the finish..."></textarea></div>
+
+      <div class="section-label">Rating</div>
+      <div class="stars" id="f-stars">
+        <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+
+      <div class="row" style="margin-top:20px;">
+        <div>
+          <div class="section-label">Strength</div>
+          <div class="strength-opts" id="f-strength">
+            <div class="str-opt" data-v="Mellow"><span class="str-dot"></span>Mellow</div>
+            <div class="str-opt" data-v="Mild"><span class="str-dot"></span>Mild</div>
+            <div class="str-opt" data-v="Medium"><span class="str-dot"></span>Medium</div>
+            <div class="str-opt" data-v="Med. Full"><span class="str-dot"></span>Medium-Full</div>
+            <div class="str-opt" data-v="Full"><span class="str-dot"></span>Full</div>
+          </div>
+          <div class="section-label" style="margin-top:24px;">Buy Again?</div>
+          <div class="strength-opts" id="f-buy">
+            <div class="str-opt" data-v="yes"><span class="str-dot"></span>Yes — absolutely</div>
+            <div class="str-opt" data-v="maybe"><span class="str-dot"></span>Maybe</div>
+            <div class="str-opt" data-v="no"><span class="str-dot"></span>No</div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Flavor Wheel</div>
+          <div class="wheel-wrap">
+            <svg class="wheel" id="wheel" viewBox="0 0 400 400"></svg>
+            <div class="wheel-hint">Tap each spoke to set intensity (0–5)</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
+        <button class="btn" id="save-btn">Save to Humidor Log</button>
+        <button class="btn btn-ghost" id="clear-btn">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="panel" id="panel-log">
+    <div style="text-align:right; margin-bottom:14px;">
+      <button class="btn btn-ghost" id="export-btn" style="font-size:12px; padding:9px 18px;">⬇ Back Up Log</button>
+    </div>
+    <div id="log-list"><div class="loading">Opening the humidor…</div></div>
+  </div>
+
+  <!-- TASTE PROFILE -->
+  <div class="panel" id="panel-taste">
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="card">
+      <div class="section-label">Your Palate</div>
+      <div class="wheel-wrap">
+        <svg class="wheel" id="taste-wheel" viewBox="0 0 400 400" style="max-width:420px;"></svg>
+        <div class="wheel-hint" id="taste-summary">Smoke and rate a few cigars to map your palate.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECS -->
+  <div class="panel" id="panel-recs">
+    <div id="rec-list"><div class="empty">Rate a few cigars 4★ or higher and I'll suggest what to try next.</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved ✓</div>
+
+<script>
+const FLAVORS = ["Body","Dark Fruit","Tropical Fruit","Herbal","Spicy","Sweet","Vanilla","Toffee","Chocolate","Nutty","Woody","Earthy","Leather","Bitter","Oily","Linger/Finish"];
+const wheelState = {};
+FLAVORS.forEach(f => wheelState[f] = 0);
+
+let stars = 0, strength = "", buyAgain = "";
+
+/* ---------- Flavor wheel renderer ---------- */
+function drawWheel(svg, state, interactive) {
+  const cx=200, cy=200, maxR=150, rings=5;
+  let html = '';
+  for (let r=1; r<=rings; r++){
+    html += `<circle cx="${cx}" cy="${cy}" r="${maxR*r/rings}" fill="none" stroke="rgba(107,79,46,0.18)" stroke-width="1"/>`;
+  }
+  const n = FLAVORS.length;
+  const pts = [];
+  FLAVORS.forEach((f,i)=>{
+    const ang = (i/n)*2*Math.PI - Math.PI/2;
+    const ex = cx+Math.cos(ang)*maxR, ey = cy+Math.sin(ang)*maxR;
+    html += `<line x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}" stroke="rgba(107,79,46,0.18)" stroke-width="1"/>`;
+    const v = state[f]||0;
+    const vr = maxR*v/rings;
+    pts.push([cx+Math.cos(ang)*vr, cy+Math.sin(ang)*vr]);
+    // label
+    const lx = cx+Math.cos(ang)*(maxR+22), ly = cy+Math.sin(ang)*(maxR+22);
+    let anchor = 'middle';
+    if (lx < cx-10) anchor='end'; else if (lx>cx+10) anchor='start';
+    html += `<text x="${lx}" y="${ly}" font-size="9" fill="#6b4f2e" text-anchor="${anchor}" dominant-baseline="middle" font-family="Josefin Sans" letter-spacing="0.05em">${f.toUpperCase()}</text>`;
+  });
+  // filled polygon
+  if (pts.some(p=>p[0]!==cx||p[1]!==cy)) {
+    const poly = pts.map(p=>p.join(',')).join(' ');
+    html += `<polygon points="${poly}" fill="rgba(181,52,31,0.25)" stroke="#b5341f" stroke-width="2"/>`;
+    pts.forEach(p=> html += `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#b5341f"/>`);
+  }
+  // interactive hit zones
+  if (interactive){
+    FLAVORS.forEach((f,i)=>{
+      const ang = (i/n)*2*Math.PI - Math.PI/2;
+      for (let lvl=1; lvl<=rings; lvl++){
+        const rr = maxR*lvl/rings;
+        const hx = cx+Math.cos(ang)*rr, hy=cy+Math.sin(ang)*rr;
+        html += `<circle cx="${hx}" cy="${hy}" r="13" fill="transparent" style="cursor:pointer" data-f="${f}" data-lvl="${lvl}"/>`;
+      }
+    });
+  }
+  svg.innerHTML = html;
+  if (interactive){
+    svg.querySelectorAll('[data-f]').forEach(el=>{
+      el.addEventListener('click',()=>{
+        const f = el.getAttribute('data-f'); const lvl=+el.getAttribute('data-lvl');
+        wheelState[f] = (wheelState[f]===lvl)?lvl-1:lvl;
+        drawWheel(svg, wheelState, true);
+      });
+    });
+  }
+}
+
+/* ---------- Stars / strength / buy ---------- */
+const starEls = document.querySelectorAll('#f-stars .star');
+starEls.forEach(s=>{
+  s.addEventListener('click',()=>{ stars=+s.dataset.v; paintStars(); });
+  s.addEventListener('mouseenter',()=>paintStars(+s.dataset.v));
+});
+document.getElementById('f-stars').addEventListener('mouseleave',()=>paintStars());
+function paintStars(hover){ starEls.forEach(s=> s.classList.toggle('lit', +s.dataset.v <= (hover||stars))); }
+
+function bindOpts(id, setter){
+  document.querySelectorAll('#'+id+' .str-opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      document.querySelectorAll('#'+id+' .str-opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel'); setter(o.dataset.v);
+    });
+  });
+}
+bindOpts('f-strength', v=>strength=v);
+bindOpts('f-buy', v=>buyAgain=v);
+
+/* ---------- Storage helpers (browser localStorage) ---------- */
+const STORE_KEY = 'humidorLog.entries';
+function readAll(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); }catch(e){ return []; }
+}
+function writeAll(arr){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }catch(e){}
+}
+async function loadEntries(){
+  return readAll().sort((a,b)=> (b.created||0)-(a.created||0));
+}
+async function saveEntry(entry){
+  const arr = readAll(); arr.push(entry); writeAll(arr);
+}
+async function deleteEntry(id){
+  writeAll(readAll().filter(e=>e.id!==id));
+}
+
+/* ---------- Save ---------- */
+document.getElementById('save-btn').addEventListener('click', async ()=>{
+  if(sessionStorage.getItem('humidorUnlocked')!=='1'){ showToast('Unlock editing first'); return; }
+  const name = document.getElementById('f-name').value.trim();
+  if(!name){ showToast('Add a cigar name first'); return; }
+  const entry = {
+    id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    created: Date.now(),
+    name,
+    maker: document.getElementById('f-maker').value.trim(),
+    origin: document.getElementById('f-origin').value.trim(),
+    size: document.getElementById('f-size').value.trim(),
+    price: document.getElementById('f-price').value.trim(),
+    date: document.getElementById('f-date').value,
+    pairing: document.getElementById('f-pairing').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
+    stars, strength, buyAgain,
+    flavors: {...wheelState}
+  };
+  try{
+    await saveEntry(entry);
+    showToast('Saved to humidor ✓');
+    clearForm();
+    refreshAll();
+  }catch(e){ showToast('Save failed — try again'); }
+});
+
+document.getElementById('clear-btn').addEventListener('click', clearForm);
+function clearForm(){
+  ['f-name','f-maker','f-origin','f-size','f-price','f-date','f-pairing','f-notes'].forEach(id=>document.getElementById(id).value='');
+  stars=0; strength=''; buyAgain='';
+  paintStars();
+  document.querySelectorAll('.str-opt').forEach(x=>x.classList.remove('sel'));
+  FLAVORS.forEach(f=>wheelState[f]=0);
+  drawWheel(document.getElementById('wheel'), wheelState, true);
+}
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    if(t.dataset.tab==='new' && sessionStorage.getItem('humidorUnlocked')!=='1'){ return; }
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    if(t.dataset.tab!=='new') refreshAll();
+  });
+});
+
+/* ---------- Render log ---------- */
+function starStr(n){ return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n); }
+async function renderLog(){
+  const entries = await loadEntries();
+  const el = document.getElementById('log-list');
+  if(!entries.length){ el.innerHTML = '<div class="empty">Your humidor log is empty.<br>Light one up and record it.</div>'; return; }
+  el.innerHTML = entries.map(e=>{
+    const flavs = Object.entries(e.flavors||{}).filter(([k,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k])=>`<span class="flav-tag">${k}</span>`).join('');
+    const buy = e.buyAgain==='yes'?'<span class="buy-badge buy-yes">Buy Again</span>':e.buyAgain==='no'?'<span class="buy-badge buy-no">Pass</span>':'';
+    return `<div class="entry">
+      <button class="del-btn" data-del="${e.id}">✕</button>
+      <div class="entry-head">
+        <div>
+          <div class="entry-name">${esc(e.name)}</div>
+          ${e.maker?`<div class="entry-maker">${esc(e.maker)}</div>`:''}
+        </div>
+        <div class="entry-stars">${starStr(e.stars||0)}</div>
+      </div>
+      <div class="entry-meta">
+        ${e.origin?`<span>📍 ${esc(e.origin)}</span>`:''}
+        ${e.size?`<span>📏 ${esc(e.size)}</span>`:''}
+        ${e.strength?`<span><b>${esc(e.strength)}</b></span>`:''}
+        ${e.price?`<span>💵 ${esc(e.price)}</span>`:''}
+        ${e.pairing?`<span>🥃 ${esc(e.pairing)}</span>`:''}
+        ${buy}
+      </div>
+      ${e.notes?`<div class="entry-notes">"${esc(e.notes)}"</div>`:''}
+      ${flavs?`<div class="entry-flavors">${flavs}</div>`:''}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click', async ()=>{
+      if(confirm('Remove this entry from your log?')){ await deleteEntry(b.dataset.del); refreshAll(); }
+    });
+  });
+}
+
+/* ---------- Taste profile ---------- */
+async function renderTaste(){
+  const entries = await loadEntries();
+  const grid = document.getElementById('stat-grid');
+  const rated = entries.filter(e=>e.stars>0);
+  const avg = rated.length? (rated.reduce((s,e)=>s+e.stars,0)/rated.length).toFixed(1):'—';
+  const buyYes = entries.filter(e=>e.buyAgain==='yes').length;
+  // favorite strength
+  const strCount={}; entries.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
+  const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0];
+  grid.innerHTML = `
+    <div class="stat"><div class="num">${entries.length}</div><div class="lbl">Logged</div></div>
+    <div class="stat"><div class="num">${avg}</div><div class="lbl">Avg Rating</div></div>
+    <div class="stat"><div class="num">${buyYes}</div><div class="lbl">Buy-Agains</div></div>
+    <div class="stat"><div class="num" style="font-size:24px;padding-top:8px;">${favStr?favStr[0]:'—'}</div><div class="lbl">Go-To Strength</div></div>`;
+
+  // aggregate flavor wheel weighted by stars, from cigars rated 4+
+  const liked = entries.filter(e=>e.stars>=4);
+  const agg={}; FLAVORS.forEach(f=>agg[f]=0);
+  liked.forEach(e=> FLAVORS.forEach(f=> agg[f]+=(e.flavors?.[f]||0)));
+  if(liked.length) FLAVORS.forEach(f=> agg[f]=agg[f]/liked.length);
+  drawWheel(document.getElementById('taste-wheel'), agg, false);
+  const top = Object.entries(agg).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k);
+  document.getElementById('taste-summary').textContent = liked.length
+    ? `Based on your ${liked.length} favorite${liked.length>1?'s':''}, you gravitate toward: ${top.join(', ')}.`
+    : 'Rate a few cigars 4★ or higher to map your palate.';
+}
+
+/* ---------- Recommendations engine ---------- */
+const CATALOG = [
+  {name:"Padrón 1964 Anniversary Maduro", maker:"Padrón", origin:"Nicaragua", str:"Med. Full", price:"$16", profile:{Chocolate:5,Earthy:4,Nutty:3,Sweet:3,Woody:3,Leather:3}},
+  {name:"Padrón 1926 Serie No. 6 Maduro", maker:"Padrón", origin:"Nicaragua", str:"Full", price:"$22", profile:{Chocolate:5,Earthy:4,Spicy:3,Sweet:4,Leather:3,Body:4}},
+  {name:"Arturo Fuente Don Carlos No. 4", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Medium", price:"$13", profile:{Nutty:4,Chocolate:3,Woody:3,Spicy:2,Sweet:3}},
+  {name:"Arturo Fuente Hemingway Short Story", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Mild", price:"$8", profile:{Nutty:3,Woody:3,Sweet:3,Vanilla:2,Herbal:2}},
+  {name:"Arturo Fuente Opus X", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Full", price:"$30", profile:{Spicy:5,Earthy:4,Woody:4,Leather:3,Body:5}},
+  {name:"Oliva Serie V Melanio", maker:"Oliva", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Toffee:4,Spicy:3,Leather:3,Sweet:3}},
+  {name:"Oliva Serie V", maker:"Oliva", origin:"Nicaragua", str:"Full", price:"$9", profile:{Earthy:4,Spicy:3,Chocolate:3,Woody:3,Body:4}},
+  {name:"My Father Le Bijou 1922", maker:"My Father", origin:"Nicaragua", str:"Full", price:"$12", profile:{Spicy:5,Chocolate:4,Earthy:4,Leather:3,Body:5}},
+  {name:"My Father Flor de las Antillas", maker:"My Father", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Sweet:4,Nutty:3,Chocolate:3,Spicy:3,Woody:3}},
+  {name:"Aging Room Quattro Nicaragua", maker:"Aging Room", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Spicy:4,Vanilla:3,Woody:4,Sweet:3,Toffee:3}},
+  {name:"Plasencia Alma Fuerte", maker:"Plasencia", origin:"Nicaragua", str:"Full", price:"$20", profile:{Earthy:5,Spicy:4,Leather:4,Woody:3,Body:5}},
+  {name:"Plasencia Alma del Fuego", maker:"Plasencia", origin:"Nicaragua", str:"Full", price:"$14", profile:{Spicy:5,Earthy:3,TropicalFruit:2,Sweet:2,Body:4}},
+  {name:"Montecristo 1935 Anniversary", maker:"Montecristo", origin:"Nicaragua", str:"Full", price:"$15", profile:{DarkFruit:4,Leather:4,Spicy:4,Chocolate:3,Body:4}},
+  {name:"Montecristo White", maker:"Montecristo", origin:"Dominican Rep.", str:"Mild", price:"$11", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:2,Herbal:2}},
+  {name:"Ashton VSG", maker:"Ashton", origin:"Dominican Rep.", str:"Full", price:"$14", profile:{Spicy:4,Earthy:4,Leather:4,Sweet:3,Body:4}},
+  {name:"Ashton Classic", maker:"Ashton", origin:"Dominican Rep.", str:"Mild", price:"$9", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:2,Oily:2}},
+  {name:"Liga Privada No. 9", maker:"Drew Estate", origin:"Nicaragua", str:"Full", price:"$16", profile:{Chocolate:4,Earthy:5,Body:5,Woody:3,Bitter:2}},
+  {name:"Liga Privada T52", maker:"Drew Estate", origin:"Nicaragua", str:"Full", price:"$16", profile:{Spicy:4,Earthy:4,Chocolate:3,Leather:3,Body:5}},
+  {name:"Undercrown Maduro", maker:"Drew Estate", origin:"Nicaragua", str:"Med. Full", price:"$8", profile:{Chocolate:4,Earthy:3,Spicy:3,Sweet:3,Woody:3}},
+  {name:"Romeo y Julieta 1875", maker:"Romeo y Julieta", origin:"Dominican Rep.", str:"Mild", price:"$7", profile:{Nutty:3,Woody:3,Sweet:2,Vanilla:2}},
+  {name:"Romeo y Julieta Reserva Real", maker:"Romeo y Julieta", origin:"Honduras", str:"Mild", price:"$8", profile:{Nutty:3,Vanilla:2,Sweet:3,Woody:3,Herbal:2}},
+  {name:"Foundation Tabernacle", maker:"Foundation", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Spicy:3,Earthy:3,Leather:3,Sweet:2}},
+  {name:"Foundation The Wise Man Maduro", maker:"Foundation", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Spicy:3,Sweet:3,Earthy:3,Leather:3}},
+  {name:"Foundation Charter Oak", maker:"Foundation", origin:"Nicaragua", str:"Medium", price:"$6", profile:{Woody:3,Nutty:3,Sweet:3,Earthy:2,Spicy:2}},
+  {name:"Perdomo Champagne Connecticut", maker:"Perdomo", origin:"Nicaragua", str:"Mild", price:"$8", profile:{Vanilla:3,Nutty:3,Sweet:3,Woody:2}},
+  {name:"Perdomo 10th Anniversary Maduro", maker:"Perdomo", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Coffee:3,Spicy:3,Sweet:3,Woody:3}},
+  {name:"Cohiba Connecticut", maker:"Cohiba", origin:"Dominican Rep.", str:"Mild", price:"$13", profile:{Vanilla:3,Sweet:3,Nutty:3,Herbal:2,Oily:2}},
+  {name:"Cohiba Black", maker:"Cohiba", origin:"Dominican Rep.", str:"Med. Full", price:"$14", profile:{Chocolate:3,Earthy:3,Spicy:3,Leather:3,Sweet:2}},
+  {name:"Crowned Heads Four Kicks", maker:"Crowned Heads", origin:"Nicaragua", str:"Medium", price:"$9", profile:{Woody:4,Spicy:3,Nutty:3,Leather:2,Sweet:2}},
+  {name:"Crowned Heads Le Careme", maker:"Crowned Heads", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Chocolate:4,Sweet:3,Spicy:3,Coffee:3,Earthy:2}},
+  {name:"Crowned Heads Jericho Hill", maker:"Crowned Heads", origin:"Nicaragua", str:"Full", price:"$10", profile:{Spicy:4,Earthy:3,Leather:3,Body:4,Woody:3}},
+  {name:"Rocky Patel Decade", maker:"Rocky Patel", origin:"Honduras", str:"Med. Full", price:"$10", profile:{Spicy:3,Sweet:3,Woody:3,Leather:3,Nutty:2}},
+  {name:"Rocky Patel Sun Grown", maker:"Rocky Patel", origin:"Honduras", str:"Med. Full", price:"$8", profile:{Earthy:3,Spicy:3,Sweet:3,Woody:3,Leather:2}},
+  {name:"Padron 3000 Natural", maker:"Padrón", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Woody:3,Nutty:3,Earthy:3,Coffee:2,Sweet:2}},
+  {name:"AJ Fernandez New World", maker:"AJ Fernandez", origin:"Nicaragua", str:"Med. Full", price:"$7", profile:{Earthy:4,Spicy:3,Chocolate:3,Woody:3,Sweet:2}},
+  {name:"AJ Fernandez Enclave Broadleaf", maker:"AJ Fernandez", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Coffee:3,Sweet:3,Spicy:3,Earthy:3}},
+  {name:"San Cristobal Quintessence", maker:"Ashton", origin:"Nicaragua", str:"Med. Full", price:"$12", profile:{Spicy:3,Sweet:3,Chocolate:3,Woody:3,Leather:3}},
+  {name:"Padron 2000 Maduro", maker:"Padrón", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Chocolate:3,Earthy:3,Coffee:3,Woody:2,Sweet:2}},
+  {name:"Macanudo Cafe", maker:"Macanudo", origin:"Dominican Rep.", str:"Mellow", price:"$7", profile:{Nutty:3,Vanilla:2,Sweet:2,Woody:2,Herbal:2}},
+  {name:"Macanudo Inspirado Black", maker:"Macanudo", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Chocolate:3,Coffee:3,Sweet:3,Earthy:2,Woody:2}},
+  {name:"Davidoff Signature", maker:"Davidoff", origin:"Dominican Rep.", str:"Mild", price:"$16", profile:{Nutty:3,Herbal:3,Woody:3,Vanilla:2,Oily:2}},
+  {name:"Davidoff Nicaragua", maker:"Davidoff", origin:"Nicaragua", str:"Med. Full", price:"$18", profile:{Spicy:4,Coffee:3,Earthy:3,Sweet:3,Woody:3}},
+  {name:"Padron Damaso", maker:"Padrón", origin:"Nicaragua", str:"Mild", price:"$14", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:3,Herbal:2}},
+  {name:"Tatuaje Brown Label", maker:"Tatuaje", origin:"Nicaragua", str:"Full", price:"$10", profile:{Spicy:4,Earthy:4,Leather:3,Woody:3,Body:4}},
+  {name:"Herrera Esteli Norteño", maker:"Drew Estate", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Spicy:3,Coffee:3,Sweet:3,Earthy:3}},
+  {name:"Espinosa Laranja Reserva", maker:"Espinosa", origin:"Nicaragua", str:"Medium", price:"$9", profile:{Sweet:4,Woody:3,Spicy:3,Nutty:3,Toffee:2}},
+  {name:"Oliva Connecticut Reserve", maker:"Oliva", origin:"Nicaragua", str:"Mild", price:"$7", profile:{Vanilla:3,Nutty:3,Sweet:3,Herbal:2,Woody:2}},
+  {name:"E.P. Carrillo Pledge", maker:"E.P. Carrillo", origin:"Nicaragua", str:"Full", price:"$13", profile:{Earthy:4,Spicy:4,Chocolate:3,Leather:3,Body:4}},
+  {name:"Curivari Buenaventura", maker:"Curivari", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Coffee:3,Earthy:3,Sweet:3,Woody:3,Nutty:2}},
+  {name:"La Flor Dominicana Andalusian Bull", maker:"La Flor Dominicana", origin:"Dominican Rep.", str:"Full", price:"$15", profile:{Spicy:5,Earthy:4,Leather:4,Body:5,Woody:3}}
+];
+const KEYMAP = {"Dark Fruit":"DarkFruit","Tropical Fruit":"TropicalFruit","Linger/Finish":"Linger"};
+function pk(f){ return KEYMAP[f]||f; }
+
+async function renderRecs(){
+  const entries = await loadEntries();
+  const liked = entries.filter(e=>e.stars>=4);
+  const el = document.getElementById('rec-list');
+  if(!liked.length){ el.innerHTML = '<div class="empty">Rate a few cigars 4★ or higher and I\'ll suggest what to try next.</div>'; return; }
+
+  // build taste vector
+  const taste={}; FLAVORS.forEach(f=>taste[pk(f)]=0);
+  liked.forEach(e=> FLAVORS.forEach(f=> taste[pk(f)] += (e.flavors?.[f]||0)));
+  // preferred strength
+  const strCount={}; liked.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
+  const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  const owned = new Set(entries.map(e=>e.name.toLowerCase().trim()));
+
+  // score catalog by cosine-ish similarity
+  const scored = CATALOG.filter(c=>!owned.has(c.name.toLowerCase().trim())).map(c=>{
+    let dot=0, magC=0, magT=0;
+    const keys = new Set([...Object.keys(taste), ...Object.keys(c.profile)]);
+    keys.forEach(k=>{ const t=taste[k]||0, p=c.profile[k]||0; dot+=t*p; magC+=p*p; magT+=t*t; });
+    let sim = (magC&&magT)? dot/(Math.sqrt(magC)*Math.sqrt(magT)) : 0;
+    if(favStr && c.str===favStr) sim*=1.15;
+    return {c, sim};
+  }).sort((a,b)=>b.sim-a.sim).slice(0,5);
+
+  // top flavors for "why"
+  const topFl = Object.entries(taste).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>{
+    return Object.keys(KEYMAP).find(x=>KEYMAP[x]===k)||k;
+  });
+
+  el.innerHTML = `<div style="color:var(--smoke); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; margin-bottom:18px; text-align:center;">
+    Matched to your love of ${topFl.join(', ')}${favStr?` and ${favStr.toLowerCase()} smokes`:''}.</div>` +
+    scored.map(({c,sim})=>{
+      const shared = Object.entries(c.profile).filter(([k])=> (taste[k]||0)>0).sort((a,b)=>b[1]-a[1]).slice(0,3)
+        .map(([k])=> Object.keys(KEYMAP).find(x=>KEYMAP[x]===k)||k);
+      return `<div class="rec">
+        <div class="rec-name">${c.name}</div>
+        <div class="rec-why">${Math.round(sim*100)}% match · ${shared.join(' · ')}</div>
+        <div class="rec-meta">${c.maker} — ${c.origin} · ${c.str} · ${c.price}</div>
+      </div>`;
+    }).join('');
+}
+
+/* ---------- utils ---------- */
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+function refreshAll(){ renderLog(); renderTaste(); renderRecs(); }
+
+/* ---------- Export / backup ---------- */
+document.getElementById('export-btn').addEventListener('click', ()=>{
+  const data = readAll();
+  if(!data.length){ showToast('Nothing to back up yet'); return; }
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'humidor-log-backup.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Backup downloaded ✓');
+});
+
+/* ---------- Read-only by default; password unlocks editing ---------- */
+(function(){
+  const PASS = 'cigartest';
+  const unlockBtn = document.getElementById('unlock-btn');
+  const pill = document.getElementById('mode-pill');
+  const tabNew = document.getElementById('tab-new');
+
+  function applyMode(){
+    const unlocked = sessionStorage.getItem('humidorUnlocked')==='1';
+    document.body.classList.toggle('locked', !unlocked);
+    if(unlocked){
+      pill.textContent = '✎ Editing Enabled';
+      pill.style.color = 'var(--ember)';
+      pill.style.borderColor = 'var(--ember)';
+      unlockBtn.style.display = 'none';
+      tabNew.style.display = '';
+    } else {
+      pill.textContent = '👁 Read-Only';
+      unlockBtn.style.display = '';
+      tabNew.style.display = 'none';
+      // if currently on the new-entry tab while locked, bounce to log
+      if(document.getElementById('panel-new').classList.contains('active')){
+        document.querySelector('.tab[data-tab="log"]').click();
+      }
+    }
+  }
+
+  unlockBtn.addEventListener('click', ()=>{
+    const entry = prompt('Enter passphrase to enable editing:');
+    if(entry===null) return;
+    if(entry===PASS){
+      sessionStorage.setItem('humidorUnlocked','1');
+      applyMode();
+    } else {
+      alert('Incorrect passphrase.');
+    }
+  });
+
+  // expose for re-applying after renders
+  window._applyHumidorMode = applyMode;
+  applyMode();
+})();
+
+/* ---------- init ---------- */
+drawWheel(document.getElementById('wheel'), wheelState, true);
+document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+refreshAll();
+</script>
+</body>
+</html>
