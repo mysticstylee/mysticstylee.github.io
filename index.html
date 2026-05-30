@@ -143,7 +143,7 @@
   .gun:first-child{border-top:1px solid var(--line)}
   @media(max-width:720px){.gun{grid-template-columns:1fr;gap:18px}}
   .gun-photos{display:flex;flex-direction:column;gap:8px}
-  .gun-photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);display:block;filter:saturate(0.92)}
+  .gun-photos img{width:100%;height:auto;border:1px solid var(--line);display:block;filter:saturate(0.92)}
   .gun-id .badge{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
   .gun-id .nm{font-family:var(--serif);font-size:34px;font-weight:300;color:var(--cream);line-height:1;letter-spacing:-0.01em}
   .gun-id .cal{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;color:var(--ink-dim);margin-top:8px}
@@ -163,7 +163,7 @@
   .build-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
   @media(max-width:760px){.build-layout{grid-template-columns:1fr;gap:28px}}
   .build-media{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .build-media img,.build-media video{width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--line);display:block;filter:saturate(0.95);background:#14110e}
+  .build-media img,.build-media video{width:100%;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);display:block;filter:saturate(0.95);background:#14110e}
   .build-specs .spec-group{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin:24px 0 4px}
   .build-specs .spec-group:first-child{margin-top:0}
 
