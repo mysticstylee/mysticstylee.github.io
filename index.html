@@ -63,7 +63,6 @@
 
   /* HERO */
   header.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px;position:relative}
-  .hero-kicker{font-family:var(--mono);font-size:12px;letter-spacing:0.4em;text-transform:uppercase;color:var(--amber);margin-bottom:30px;opacity:0;animation:rise .9s ease .1s forwards}
   .hero-title{font-family:var(--serif);font-weight:300;font-size:clamp(56px,11vw,150px);line-height:0.92;letter-spacing:-0.02em;color:var(--cream);margin-bottom:8px;opacity:0;animation:rise 1s ease .25s forwards}
   .hero-title em{font-style:italic;font-weight:300;color:var(--amber-soft)}
   .hero-statement{font-family:var(--read);font-size:clamp(20px,2.6vw,28px);font-weight:300;line-height:1.5;max-width:560px;color:var(--ink);margin-top:28px;opacity:0;animation:rise 1s ease .45s forwards}
@@ -144,7 +143,7 @@
   .gun:first-child{border-top:1px solid var(--line)}
   @media(max-width:720px){.gun{grid-template-columns:1fr;gap:18px}}
   .gun-photos{display:flex;flex-direction:column;gap:8px}
-  .gun-photos img{width:100%;border:1px solid var(--line);display:block;filter:saturate(0.92)}
+  .gun-photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);display:block;filter:saturate(0.92)}
   .gun-id .badge{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
   .gun-id .nm{font-family:var(--serif);font-size:34px;font-weight:300;color:var(--cream);line-height:1;letter-spacing:-0.01em}
   .gun-id .cal{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;color:var(--ink-dim);margin-top:8px}
@@ -164,8 +163,7 @@
   .build-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
   @media(max-width:760px){.build-layout{grid-template-columns:1fr;gap:28px}}
   .build-media{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .build-media img,.build-media video{width:100%;border:1px solid var(--line);display:block;filter:saturate(0.95)}
-  .build-media img:first-child,.build-media video:nth-child(3){grid-column:1 / -1}
+  .build-media img,.build-media video{width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--line);display:block;filter:saturate(0.95);background:#14110e}
   .build-specs .spec-group{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin:24px 0 4px}
   .build-specs .spec-group:first-child{margin-top:0}
 
@@ -213,7 +211,6 @@
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#osrs">RuneScape</a>
-    <a href="#music">Music</a>
     <a href="#hardware">Hardware</a>
     <a href="#cigars">Cigars</a>
     <a href="#build">Build</a>
@@ -224,7 +221,6 @@
 <div class="wrap">
 
   <header class="hero">
-    <div class="hero-kicker">Personal Profile</div>
     <h1 class="hero-title"><em>m</em>ystic</h1>
     <p class="hero-statement">
       Discipline over noise. Precision over luck. A record of the things I take <span class="accent">seriously</span> — the grind, the range, the music, the outdoors.
@@ -243,16 +239,15 @@
     <div class="sec-head reveal"><span class="sec-num">01</span><h2 class="sec-title">About</h2></div>
     <div class="about">
       <div class="about-text reveal">
-        <p class="lead">I'm <em>mystic</em> — also known as mysticstyle. This is my corner of the web, kept deliberately simple.</p>
-        <p>Guns, hunting, music, gaming, fitness, the outdoors. If a thing rewards focus and repetition, it tends to hold my attention. What follows is an honest breakdown of each — no filler.</p>
-        <p>Look around. Thanks for stopping by.</p>
+        <p class="lead">I'm <em>mystic</em> — also known as mysticstyle. Welcome to my corner of the internet.</p>
+        <p>I keep my interests few but deep: the firearms I build and shoot, the cigars I smoke, the music I keep on repeat, the grind in RuneScape, and time spent outdoors. The kind of things that reward patience and a steady hand.</p>
+        <p>Everything below is the real version — no filler, no front. Have a look around.</p>
       </div>
       <div class="pursuits reveal">
         <a class="pursuit" href="#osrs"><span class="name">RuneScape</span><span class="idx">01 →</span></a>
-        <a class="pursuit" href="#music"><span class="name">Music</span><span class="idx">02 →</span></a>
-        <a class="pursuit" href="#hardware"><span class="name">Hardware</span><span class="idx">03 →</span></a>
-        <a class="pursuit" href="#cigars"><span class="name">The Humidor</span><span class="idx">04 →</span></a>
-        <a class="pursuit" href="#build"><span class="name">The Build</span><span class="idx">05 →</span></a>
+        <a class="pursuit" href="#hardware"><span class="name">Hardware</span><span class="idx">02 →</span></a>
+        <a class="pursuit" href="#cigars"><span class="name">The Humidor</span><span class="idx">03 →</span></a>
+        <a class="pursuit" href="#build"><span class="name">The Build</span><span class="idx">04 →</span></a>
       </div>
     </div>
   </section>
@@ -277,31 +272,15 @@
     </div>
   </section>
 
-  <span class="anchor" id="music"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title">Music</h2></div>
-    <div class="reveal">
-      <p class="music-intro">A running collection of what I've been listening to — trance, electronic, and whatever else earns a repeat. Straight from my SoundCloud likes.</p>
-      <div class="music-frame">
-        <iframe id="sc-iframe" height="450" allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/chop/likes&color=%23c8932f&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true&show_artwork=true"></iframe>
-      </div>
-      <div class="music-foot">
-        <div class="tags"><span class="tag">Trance</span><span class="tag">Electronic</span><span class="tag">Liked Tracks</span></div>
-        <a href="https://soundcloud.com/chop/likes" target="_blank">Open on SoundCloud ↗</a>
-      </div>
-    </div>
-  </section>
-
   <span class="anchor" id="hardware"></span>
   <section>
-    <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title">Hardware</h2></div>
+    <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title">Hardware</h2></div>
     <div class="hw reveal">
 
       <div class="gun">
         <div class="gun-photos">
-          <img src="images/ar15-1.jpeg" alt="AR-15">
-          <img src="images/ar15-2.jpeg" alt="AR-15">
+          <img src="ar15-1.jpeg" alt="AR-15">
+          <img src="ar15-2.jpeg" alt="AR-15">
         </div>
         <div class="gun-id">
           <div class="badge">Primary</div>
@@ -351,7 +330,7 @@
 
   <span class="anchor" id="cigars"></span>
   <section>
-    <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">The <em>Humidor</em></h2></div>
+    <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title">The <em>Humidor</em></h2></div>
     <div class="reveal">
       <p class="music-intro">A working journal of every cigar I smoke — ratings, flavor notes, pairings, and what's worth buying again. Browse freely; editing is mine alone.</p>
       <div class="cigar-frame">
@@ -366,7 +345,7 @@
 
   <span class="anchor" id="build"></span>
   <section>
-    <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">The <em>Build</em></h2></div>
+    <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">The <em>Build</em></h2></div>
     <div class="reveal">
 
       <div class="build-top">
@@ -417,7 +396,7 @@
 
   <span class="anchor" id="contact"></span>
   <section>
-    <div class="sec-head reveal"><span class="sec-num">07</span><h2 class="sec-title">Contact</h2></div>
+    <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">Contact</h2></div>
     <div class="contact reveal">
       <div>
         <p class="lead">Want to link up for a session, talk firearms, or just say <em>what's up?</em> The line's open.</p>
@@ -425,7 +404,7 @@
           <a class="channel" href="https://discord.com/users/mysticalstyle" target="_blank"><span class="cn">mysticalstyle</span><span class="ch">Discord</span></a>
           <a class="channel" href="https://steamcommunity.com/id/chrispy2k" target="_blank"><span class="cn">chrispy2k</span><span class="ch">Steam</span></a>
           <a class="channel" href="https://x.com/mysticalstyle" target="_blank"><span class="cn">@mysticalstyle</span><span class="ch">X</span></a>
-          <a class="channel" href="https://soundcloud.com/chop/likes" target="_blank"><span class="cn">chop</span><span class="ch">SoundCloud</span></a>
+          <a class="channel" href="https://soundcloud.com/chop" target="_blank"><span class="cn">chop</span><span class="ch">SoundCloud</span></a>
         </div>
       </div>
       <form class="cform" onsubmit="return false">
