@@ -3,474 +3,357 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mystic</title>
+<title>mystic — World 446</title>
+<meta name="description" content="mystic (mysticstyle) — OSRS Ironman grind, the armoury, the humidor, and the NASA Spacestation Winter battlestation.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%233E3529%22/><text x=%2250%22 y=%2272%22 font-size=%2264%22 text-anchor=%22middle%22 fill=%22%23FFB83F%22 font-family=%22Georgia%22 font-weight=%22bold%22>m</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#14110e;
-    --bg-2:#1b1714;
-    --panel:#201b17;
-    --line:rgba(214,196,168,0.14);
-    --line-strong:rgba(214,196,168,0.28);
-    --ink:#ece4d6;
-    --ink-dim:#a89c89;
-    --ink-faint:#6f6657;
-    --amber:#c8932f;
-    --amber-soft:#dcae54;
-    --cream:#f3ecdd;
-    --serif:'Fraunces',Georgia,serif;
-    --read:'Newsreader',Georgia,serif;
-    --mono:'IBM Plex Mono',monospace;
+    --stone:#494034; --stone-d:#3E3529; --stone-l:#5A4F3F; --edge:#2B241B;
+    --gold:#FFB83F; --yellow:#FFFF00; --white:#F4EFE4; --green:#00C800;
+    --red:#C83A2C; --tool-bg:#FFFFE0; --tool-bd:#5A5340;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
   body{
-    background:var(--bg);color:var(--ink);font-family:var(--read);
-    font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    font-family:'VT323',monospace; font-size:20px; color:var(--white);
+    background:#23201A url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" opacity=".06"><rect width="60" height="60" fill="%23000"/><rect x="60" y="60" width="60" height="60" fill="%23000"/></svg>');
+    min-height:100vh; line-height:1.35; image-rendering:pixelated;
   }
-  ::selection{background:rgba(200,147,47,0.3);color:var(--cream)}
-  body::before{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.025;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  ::selection{background:var(--gold);color:#222}
+
+  .client{
+    max-width:1060px;margin:26px auto;padding:10px;
+    background:var(--stone);
+    border:4px solid var(--edge); outline:2px solid var(--stone-l); outline-offset:-8px;
+    box-shadow:0 14px 40px rgba(0,0,0,.55), inset 0 0 60px rgba(0,0,0,.35);
+    border-radius:4px;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
-  @media(max-width:640px){.wrap{padding:0 22px}}
+  .titlebar{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;margin-bottom:8px;
+    background:linear-gradient(#5A4F3F,#3E3529);border:2px solid var(--edge);border-radius:3px}
+  .titlebar h1{font-family:'Pixelify Sans',monospace;font-size:1.25rem;color:var(--gold);text-shadow:2px 2px 0 #000;letter-spacing:.04em}
+  .titlebar .world{color:var(--green);text-shadow:1px 1px 0 #000;font-size:1rem}
 
-  /* INTRO */
-  #intro{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 1s ease,visibility 1s ease}
-  #intro.done{opacity:0;visibility:hidden}
-  .intro-mark{font-family:var(--serif);font-weight:300;font-size:clamp(60px,14vw,140px);color:var(--cream);letter-spacing:0.02em;line-height:1;opacity:0;transform:translateY(14px);animation:introUp 1.4s cubic-bezier(.2,.7,.2,1) .2s forwards}
-  .intro-mark em{font-style:italic;color:var(--amber-soft)}
-  .intro-line{width:0;height:1px;background:var(--line-strong);margin:26px 0 22px;animation:introLine 1.2s ease 1s forwards}
-  @keyframes introUp{to{opacity:1;transform:translateY(0)}}
-  @keyframes introLine{to{width:min(280px,60vw)}}
-  @keyframes introFade{to{opacity:1}}
+  .frame{display:grid;grid-template-columns:1fr 232px;gap:8px}
 
-  /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:18px 32px;background:rgba(20,17,14,0);border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,padding .4s ease}
-  nav.solid{background:rgba(18,15,12,0.97);border-bottom:1px solid var(--line);padding:14px 32px}
-  @media(max-width:640px){nav{padding:14px 22px}nav.solid{padding:12px 22px}}
-  .nav-mark{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--cream);letter-spacing:0.02em}
-  .nav-mark em{font-style:italic;color:var(--amber-soft)}
-  .nav-links{display:flex;gap:30px}
-  @media(max-width:720px){.nav-links{display:none}}
-  .nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none;transition:color .25s;position:relative;padding:4px 0}
-  .nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--amber);transition:width .3s}
-  .nav-links a:hover{color:var(--cream)}
-  .nav-links a:hover::after{width:100%}
+  /* viewport = main content */
+  .viewport{background:var(--stone-d);border:2px solid var(--edge);border-radius:3px;min-height:520px;padding:18px;position:relative;overflow:hidden}
+  .viewport::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.07) 0 2px,transparent 2px 4px)}
 
-  /* HERO */
-  header.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px;position:relative}
-  .hero-title{font-family:var(--serif);font-weight:300;font-size:clamp(56px,11vw,150px);line-height:0.92;letter-spacing:-0.02em;color:var(--cream);margin-bottom:8px;opacity:0;animation:rise 1s ease .25s forwards}
-  .hero-title em{font-style:italic;font-weight:300;color:var(--amber-soft)}
-  .hero-statement{font-family:var(--read);font-size:clamp(20px,2.6vw,28px);font-weight:300;line-height:1.5;max-width:560px;color:var(--ink);margin-top:28px;opacity:0;animation:rise 1s ease .45s forwards}
-  .hero-statement .accent{font-style:italic;color:var(--amber-soft)}
-  .hero-meta{display:flex;gap:28px;margin-top:48px;flex-wrap:wrap;opacity:0;animation:rise 1s ease .65s forwards}
-  .hero-meta .item{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint)}
-  .hero-meta .item b{color:var(--ink-dim);font-weight:500}
-  .scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-faint);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:rise 1s ease 1s forwards}
-  .scroll-cue .bar{width:1px;height:38px;background:linear-gradient(var(--amber),transparent);animation:pulse 2.4s ease-in-out infinite}
-  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+  /* sidebar tabs */
+  .side{display:flex;flex-direction:column;gap:8px}
+  .tabgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;background:var(--stone-d);border:2px solid var(--edge);padding:6px;border-radius:3px}
+  .gtab{
+    font-family:'VT323',monospace;font-size:1rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);
+    padding:10px 6px;cursor:pointer;text-align:center;border-radius:2px;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+  }
+  .gtab .ico{font-size:1.35rem;line-height:1}
+  .gtab:hover{filter:brightness(1.18)}
+  .gtab[aria-selected="true"]{background:linear-gradient(#7a3a2c,#5c2b21);border-color:#1d1812;color:var(--gold)}
+  .gtab:focus-visible{outline:2px solid var(--gold)}
 
-  /* SECTIONS */
-  section{padding:90px 0;border-top:1px solid var(--line)}
-  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:48px}
-  .sec-num{font-family:var(--mono);font-size:12px;letter-spacing:0.2em;color:var(--amber)}
-  .sec-title{font-family:var(--serif);font-weight:300;font-size:clamp(32px,5vw,52px);letter-spacing:-0.01em;color:var(--cream)}
-  .sec-title em{font-style:italic;color:var(--amber-soft)}
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
-  .reveal.in{opacity:1;transform:none}
+  .minimap{background:var(--stone-d);border:2px solid var(--edge);border-radius:3px;padding:10px;text-align:center}
+  .minimap .orb{display:inline-block;width:84px;height:84px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #6b8f4e, #2f4d28 60%, #1c2e18);
+    border:3px solid var(--edge);position:relative;box-shadow:inset 0 0 14px rgba(0,0,0,.6)}
+  .minimap .orb i{position:absolute;left:50%;top:50%;width:5px;height:5px;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 6px #fff}
+  .minimap p{margin-top:6px;font-size:.95rem;color:var(--gold);text-shadow:1px 1px 0 #000}
 
-  /* ABOUT */
-  .about{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:start}
-  @media(max-width:760px){.about{grid-template-columns:1fr;gap:40px}}
-  .about p{font-size:21px;font-weight:300;line-height:1.7;color:var(--ink);margin-bottom:22px;max-width:52ch}
-  .about p:last-child{margin-bottom:0}
-  .about .lead{font-size:26px;line-height:1.55}
-  .about .lead em{font-style:italic;color:var(--amber-soft)}
-  .pursuits{display:flex;flex-direction:column;border-top:1px solid var(--line)}
-  .pursuit{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;cursor:pointer;transition:padding-left .3s ease,background .3s}
-  .pursuit:hover{padding-left:14px;background:rgba(200,147,47,0.04)}
-  .pursuit .name{font-family:var(--serif);font-size:23px;font-weight:400;color:var(--ink)}
-  .pursuit:hover .name{color:var(--cream)}
-  .pursuit .idx{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:var(--ink-faint);transition:color .3s}
-  .pursuit:hover .idx{color:var(--amber)}
+  /* chatbox */
+  .chatbox{margin-top:8px;background:#B8A282;border:2px solid var(--edge);border-radius:3px;padding:8px 12px;min-height:104px;color:#2c1c08}
+  .chatbox .line{margin:1px 0}
+  .chatbox .who{color:#0000C8}
+  .chatbox .sys{color:#7a1010}
+  .chatbox .cursor{display:inline-block;width:9px;height:14px;background:#2c1c08;animation:blink 1s steps(1) infinite;vertical-align:-2px}
+  @keyframes blink{50%{opacity:0}}
 
-  /* OSRS */
-  .osrs-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px}
-  .osrs-name{font-family:var(--serif);font-size:30px;color:var(--cream);font-weight:400}
-  .osrs-name em{font-style:italic;color:var(--amber-soft)}
-  .osrs-tags{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--ink-faint);margin-top:6px;text-transform:uppercase}
-  .osrs-bignums{display:flex;gap:40px}
-  .bn .v{font-family:var(--serif);font-size:34px;color:var(--amber-soft);font-weight:400;line-height:1}
-  .bn .l{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-faint);margin-top:8px}
-  .skills{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:40px}
-  @media(max-width:760px){.skills{grid-template-columns:repeat(4,1fr)}}
-  @media(max-width:460px){.skills{grid-template-columns:repeat(3,1fr)}}
-  .skill{background:var(--bg);padding:14px 12px;display:flex;flex-direction:column;gap:4px;transition:background .3s}
-  .skill:hover{background:var(--panel)}
-  .skill .sn{font-family:var(--mono);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint)}
-  .skill .sl{font-family:var(--serif);font-size:24px;color:var(--ink);font-weight:400}
-  .skill.max .sl{color:var(--amber-soft)}
-  .bosses-toggle{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);background:none;border:1px solid var(--line-strong);padding:13px 24px;cursor:pointer;transition:all .3s;border-radius:1px}
-  .bosses-toggle:hover{border-color:var(--amber);background:rgba(200,147,47,0.06)}
-  .bosses{max-height:0;overflow:hidden;transition:max-height .6s ease}
-  .bosses.open{max-height:1800px;margin-top:32px}
-  .boss-grid{columns:3;column-gap:36px}
-  @media(max-width:760px){.boss-grid{columns:2;column-gap:24px}}
-  @media(max-width:460px){.boss-grid{columns:1}}
-  .boss{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);break-inside:avoid}
-  .boss .bnm{font-family:var(--read);font-size:15px;color:var(--ink-dim)}
-  .boss .bkc{font-family:var(--mono);font-size:13px;color:var(--ink)}
-  .boss .bkc.hot{color:var(--amber-soft)}
+  /* content widgets */
+  .panel{display:none;animation:fade .25s ease}
+  .panel.on{display:block}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  h2.qtitle{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:2px 2px 0 #000;font-size:1.5rem;margin-bottom:12px;border-bottom:2px solid var(--edge);padding-bottom:6px}
+  .qtext{color:var(--white);max-width:64ch;margin-bottom:14px}
+  .gold{color:var(--gold)} .grn{color:var(--green)}
 
-  /* MUSIC */
-  .music-intro{font-size:21px;font-weight:300;color:var(--ink-dim);max-width:50ch;margin-bottom:34px}
-  .music-frame{border:1px solid var(--line);background:var(--panel);padding:10px}
-  .music-frame iframe{display:block;width:100%;border:none}
-  .music-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap;gap:12px}
-  .music-foot .tags{display:flex;gap:10px;flex-wrap:wrap}
-  .tag{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);padding:5px 11px}
-  .music-foot a{font-family:var(--mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber);text-decoration:none;transition:color .25s}
-  .music-foot a:hover{color:var(--amber-soft)}
+  /* item slots (photos) */
+  .invgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:12px 0}
+  .slot{background:rgba(0,0,0,.25);border:2px solid var(--edge);border-radius:3px;padding:6px;cursor:pointer;position:relative}
+  .slot:hover{border-color:var(--gold)}
+  .slot img,.slot video{width:100%;height:110px;object-fit:cover;display:block;filter:saturate(1.05)}
+  .slot .qty{position:absolute;top:8px;left:9px;color:var(--yellow);font-size:.95rem;text-shadow:1px 1px 0 #000}
 
-  /* HARDWARE */
-  .hw{display:flex;flex-direction:column}
-  .gun{display:grid;grid-template-columns:140px 1fr auto;gap:30px;align-items:start;padding:32px 0;border-bottom:1px solid var(--line)}
-  .gun:first-child{border-top:1px solid var(--line)}
-  @media(max-width:720px){.gun{grid-template-columns:1fr;gap:18px}}
-  .gun-photos{display:flex;flex-direction:column;gap:8px}
-  .gun-photos img{width:100%;height:auto;border:1px solid var(--line);display:block;filter:saturate(0.92)}
-  .gun-id .badge{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
-  .gun-id .nm{font-family:var(--serif);font-size:34px;font-weight:300;color:var(--cream);line-height:1;letter-spacing:-0.01em}
-  .gun-id .cal{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;color:var(--ink-dim);margin-top:8px}
-  .gun-specs{display:flex;flex-direction:column;min-width:280px}
-  @media(max-width:720px){.gun-specs{min-width:0}}
-  .gun-specs .row{display:flex;justify-content:space-between;gap:18px;padding:7px 0;border-bottom:1px solid var(--line)}
-  .gun-specs .row:first-child{border-top:1px solid var(--line)}
-  .gun-specs .k{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint)}
-  .gun-specs .v{font-family:var(--read);font-size:15px;color:var(--ink);text-align:right}
+  /* stat rows + xp bars */
+  .statrow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(0,0,0,.35);padding:7px 2px;cursor:default}
+  .statrow:hover{background:rgba(255,184,63,.08)}
+  .statrow .k{color:var(--gold)} .statrow .v{color:var(--white)}
+  .xp{height:12px;background:#241F18;border:2px solid var(--edge);border-radius:2px;overflow:hidden;margin:10px 0 4px;max-width:460px}
+  .xp i{display:block;height:100%;width:0;background:linear-gradient(#62D926,#2E8B12);transition:width 1.5s ease}
+  .xpcap{font-size:.95rem;color:var(--gold)}
 
-  /* BUILD */
-  .build-top{margin-bottom:36px}
-  .build-top .badge{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
-  .build-name{font-family:var(--serif);font-size:44px;font-weight:300;color:var(--cream);line-height:1;letter-spacing:-0.01em}
-  .build-name em{font-style:italic;color:var(--amber-soft)}
-  .build-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
-  .build-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
-  @media(max-width:760px){.build-layout{grid-template-columns:1fr;gap:28px}}
-  .build-media{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .build-media img,.build-media video{width:100%;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);display:block;filter:saturate(0.95);background:#14110e}
-  .build-specs .spec-group{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin:24px 0 4px}
-  .build-specs .spec-group:first-child{margin-top:0}
+  .gbtn{
+    display:inline-block;font-family:'VT323',monospace;font-size:1.15rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    background:linear-gradient(#7a3a2c,#5c2b21);border:2px solid var(--edge);padding:8px 18px;border-radius:3px;
+    cursor:pointer;text-decoration:none;margin-top:8px;
+  }
+  .gbtn:hover{filter:brightness(1.2)}
 
-  /* CIGARS */
-  .cigar-frame{border:1px solid var(--line);background:var(--panel);padding:10px;height:760px}
-  .cigar-frame iframe{display:block;width:100%;height:100%;border:none;border-radius:2px;background:#14110e}
-  @media(max-width:640px){.cigar-frame{height:680px}}
+  /* OSRS-style tooltip */
+  #tooltip{
+    position:fixed;z-index:99;pointer-events:none;display:none;
+    background:var(--tool-bg);color:#3a3220;border:1px solid var(--tool-bd);
+    font-family:'VT323',monospace;font-size:1rem;padding:4px 9px;max-width:280px;
+    box-shadow:2px 2px 0 rgba(0,0,0,.45);
+  }
+  #tooltip b{color:#1d4ed8}
 
-  /* CONTACT */
-  .contact{display:grid;grid-template-columns:1fr 1fr;gap:60px}
-  @media(max-width:760px){.contact{grid-template-columns:1fr;gap:40px}}
-  .contact .lead{font-family:var(--serif);font-size:28px;font-weight:300;line-height:1.4;color:var(--cream);margin-bottom:24px}
-  .contact .lead em{font-style:italic;color:var(--amber-soft)}
-  .channels{display:flex;flex-direction:column;border-top:1px solid var(--line)}
-  .channel{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 4px;border-bottom:1px solid var(--line);text-decoration:none;transition:padding-left .3s,background .3s}
-  .channel:hover{padding-left:12px;background:rgba(200,147,47,0.04)}
-  .channel .cn{font-family:var(--read);font-size:18px;color:var(--ink)}
-  .channel:hover .cn{color:var(--cream)}
-  .channel .ch{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-faint);transition:color .3s}
-  .channel:hover .ch{color:var(--amber)}
-  .cform{display:flex;flex-direction:column;gap:18px}
-  .cform label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:8px}
-  .cform input,.cform textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);color:var(--ink);font-family:var(--read);font-size:16px;padding:12px 14px;outline:none;transition:border-color .25s;resize:vertical}
-  .cform input:focus,.cform textarea:focus{border-color:var(--amber)}
-  .cform button{font-family:var(--mono);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;background:var(--amber);color:#1a140a;border:none;padding:14px 28px;cursor:pointer;transition:background .25s;align-self:flex-start;font-weight:500}
-  .cform button:hover{background:var(--amber-soft)}
+  @media(max-width:760px){
+    .frame{grid-template-columns:1fr}
+    .side{flex-direction:column-reverse}
+    .tabgrid{grid-template-columns:repeat(5,1fr)}
+    .minimap{display:none}
+    body{font-size:18px}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
-  /* FOOTER */
-  footer{padding:56px 0;border-top:1px solid var(--line);text-align:center}
-  .f-mark{font-family:var(--serif);font-size:32px;font-weight:300;color:var(--cream)}
-  .f-mark em{font-style:italic;color:var(--amber-soft)}
-  .f-meta{font-family:var(--mono);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--ink-faint);margin-top:14px}
-  .anchor{position:relative;top:-70px}
+  /* ===== login screen ===== */
+  #login{
+    position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(ellipse at 50% 100%, #4a2410 0%, #1d0f06 45%, #0a0603 100%);
+    transition:opacity .7s ease;
+  }
+  #login.gone{opacity:0;pointer-events:none}
+  #login .flames{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  #login .fl{position:absolute;bottom:-40px;width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle,#FFB83F,#C8602F 60%,transparent 70%);
+    filter:blur(6px);animation:rise linear infinite;opacity:.7}
+  @keyframes rise{to{transform:translateY(-110vh);opacity:0}}
+  .loginbox{
+    position:relative;z-index:2;width:min(440px,92vw);text-align:center;
+    background:var(--stone-d);border:3px solid var(--gold);border-radius:6px;
+    box-shadow:0 0 0 3px var(--edge), 0 0 60px rgba(255,184,63,.25), inset 0 0 40px rgba(0,0,0,.5);
+    padding:34px 26px;
+  }
+  .loginbox h2{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:2px 2px 0 #000;font-size:1.5rem;margin-bottom:6px}
+  .loginbox p{color:var(--white);text-shadow:1px 1px 0 #000;margin-bottom:22px}
+  .loginbox .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .lbtn{
+    font-family:'VT323',monospace;font-size:1.25rem;color:var(--white);text-shadow:1px 1px 0 #000;cursor:pointer;
+    background:linear-gradient(#564B3A,#3a3226);border:2px solid var(--edge);outline:1px solid #6b5d48;outline-offset:-4px;
+    padding:12px 28px;border-radius:4px;min-width:150px;
+  }
+  .lbtn:hover{filter:brightness(1.25)}
+  .loginbox .build{margin-top:20px;color:var(--gold);font-size:.9rem;text-shadow:1px 1px 0 #000;opacity:.8}
 </style>
 </head>
 <body>
 
-<div id="intro">
-  <div class="intro-mark"><em>m</em>ystic</div>
-  <div class="intro-line"></div>
-</div>
-
-<nav id="nav" style="opacity:0">
-  <div class="nav-mark"><em>m</em>ystic</div>
-  <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="#osrs">RuneScape</a>
-    <a href="#hardware">Hardware</a>
-    <a href="#cigars">Cigars</a>
-    <a href="#build">Build</a>
-    <a href="#contact">Contact</a>
+<div id="login" role="dialog" aria-label="Login screen">
+  <div class="flames" id="flames"></div>
+  <div class="loginbox">
+    <h2>Welcome to mystic's page</h2>
+    <p>Old School Interface · World 446</p>
+    <div class="btns">
+      <button class="lbtn" data-user="adventurer">New User</button>
+      <button class="lbtn" data-user="mysticstyle">Existing User</button>
+    </div>
+    <div class="build">build 2287 · members object: yes</div>
   </div>
-</nav>
-
-<div class="wrap">
-
-  <header class="hero">
-    <h1 class="hero-title"><em>m</em>ystic</h1>
-    <p class="hero-statement">
-      Discipline over noise. Precision over luck. A record of the things I take <span class="accent">seriously</span> — the grind, the range, the music, the outdoors.
-    </p>
-    <div class="hero-meta">
-      <span class="item"><b>Gaming</b></span>
-      <span class="item"><b>Music</b></span>
-      <span class="item"><b>Marksmanship</b></span>
-      <span class="item"><b>The Outdoors</b></span>
-    </div>
-    <div class="scroll-cue"><span class="bar"></span></div>
-  </header>
-
-  <span class="anchor" id="about"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">01</span><h2 class="sec-title">About</h2></div>
-    <div class="about">
-      <div class="about-text reveal">
-        <p class="lead">I'm <em>mystic</em> — also known as mysticstyle. Welcome to my corner of the internet.</p>
-        <p>I keep my interests few but deep: the firearms I build and shoot, the cigars I smoke, the music I keep on repeat, the grind in RuneScape, and time spent outdoors. The kind of things that reward patience and a steady hand.</p>
-        <p>Everything below is the real version — no filler, no front. Have a look around.</p>
-      </div>
-      <div class="pursuits reveal">
-        <a class="pursuit" href="#osrs"><span class="name">RuneScape</span><span class="idx">01 →</span></a>
-        <a class="pursuit" href="#hardware"><span class="name">Hardware</span><span class="idx">02 →</span></a>
-        <a class="pursuit" href="#cigars"><span class="name">The Humidor</span><span class="idx">03 →</span></a>
-        <a class="pursuit" href="#build"><span class="name">The Build</span><span class="idx">04 →</span></a>
-      </div>
-    </div>
-  </section>
-
-  <span class="anchor" id="osrs"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title">Old School <em>RuneScape</em></h2></div>
-    <div class="reveal">
-      <div class="osrs-top">
-        <div>
-          <div class="osrs-name"><em>mysticstyle</em></div>
-          <div class="osrs-tags">Ironman · Rank #23,341 · Clan: Not So Alone · Recorded May 30 2026</div>
-        </div>
-        <div class="osrs-bignums">
-          <div class="bn"><div class="v">2,287</div><div class="l">Total Level</div></div>
-          <div class="bn"><div class="v">291.3M</div><div class="l">Total XP</div></div>
-        </div>
-      </div>
-      <div class="skills" id="skills"></div>
-      <button class="bosses-toggle" id="bossToggle">View Boss Kill Counts →</button>
-      <div class="bosses" id="bosses"><div class="boss-grid" id="bossGrid"></div></div>
-    </div>
-  </section>
-
-  <span class="anchor" id="hardware"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title">Hardware</h2></div>
-    <div class="hw reveal">
-
-      <div class="gun">
-        <div class="gun-photos">
-          <img src="ar15-1.jpeg" alt="AR-15">
-          <img src="ar15-2.jpeg" alt="AR-15">
-        </div>
-        <div class="gun-id">
-          <div class="badge">Primary</div>
-          <div class="nm">AR-15</div>
-          <div class="cal">5.56 × 45mm NATO</div>
-        </div>
-        <div class="gun-specs">
-          <div class="row"><span class="k">Action</span><span class="v">Semi-Automatic</span></div>
-          <div class="row"><span class="k">Trigger</span><span class="v">Artius FRT / Rave 140</span></div>
-          <div class="row"><span class="k">Optic</span><span class="v">Vortex Gen II HD MRAD</span></div>
-          <div class="row"><span class="k">Mount</span><span class="v">Antimatter Scopeswitch 2.0</span></div>
-          <div class="row"><span class="k">Barrel</span><span class="v">Criterion Core 13.9</span></div>
-          <div class="row"><span class="k">Rail</span><span class="v">BCM Raider M13</span></div>
-          <div class="row"><span class="k">Suppressor</span><span class="v">Polo K</span></div>
-          <div class="row"><span class="k">Stock</span><span class="v">B5 Systems Sopmod</span></div>
-          <div class="row"><span class="k">Lower</span><span class="v">SOLGW Angry Patriot</span></div>
-          <div class="row"><span class="k">Upper</span><span class="v">BCM Blem</span></div>
-        </div>
-      </div>
-
-      <div class="gun">
-        <div class="gun-id" style="grid-column:1 / 3">
-          <div class="badge">Pistol</div>
-          <div class="nm">Micro Draco</div>
-          <div class="cal">7.62 × 39mm</div>
-        </div>
-        <div class="gun-specs">
-          <div class="row"><span class="k">Maker</span><span class="v">Century Arms</span></div>
-          <div class="row"><span class="k">Type</span><span class="v">Semi-Auto · AK Platform</span></div>
-        </div>
-      </div>
-
-      <div class="gun">
-        <div class="gun-id" style="grid-column:1 / 3">
-          <div class="badge">Hunting</div>
-          <div class="nm">Mossberg 270</div>
-          <div class="cal">.270 Winchester</div>
-        </div>
-        <div class="gun-specs">
-          <div class="row"><span class="k">Action</span><span class="v">Bolt Action</span></div>
-          <div class="row"><span class="k">Use</span><span class="v">Hunting</span></div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <span class="anchor" id="cigars"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title">The <em>Humidor</em></h2></div>
-    <div class="reveal">
-      <p class="music-intro">A working journal of every cigar I smoke — ratings, flavor notes, pairings, and what's worth buying again. Browse freely; editing is mine alone.</p>
-      <div class="cigar-frame">
-        <iframe src="humidor.html" title="The Humidor Log" loading="lazy"></iframe>
-      </div>
-      <div class="music-foot">
-        <div class="tags"><span class="tag">Tasting Journal</span><span class="tag">Flavor Wheel</span><span class="tag">Recommendations</span></div>
-        <a href="humidor.html" target="_blank">Open Full Page ↗</a>
-      </div>
-    </div>
-  </section>
-
-  <span class="anchor" id="build"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">05</span><h2 class="sec-title">The <em>Build</em></h2></div>
-    <div class="reveal">
-
-      <div class="build-top">
-        <div>
-          <div class="badge">NASA Spacestation</div>
-          <div class="build-name"><em>Winter</em></div>
-          <div class="build-sub">Dedicated battlestation · status: online</div>
-        </div>
-      </div>
-
-      <div class="build-layout">
-        <div class="build-media">
-          <img src="setup2.jpeg" alt="Monitor stack" loading="lazy">
-          <img src="setup1.jpeg" alt="Side monitor" loading="lazy">
-          <video src="setup_vid1.mp4" autoplay muted loop playsinline></video>
-          <video src="setup_vid2.mp4" autoplay muted loop playsinline></video>
-        </div>
-
-        <div class="build-specs">
-          <div class="spec-group">Core Hardware</div>
-          <div class="gun-specs">
-            <div class="row"><span class="k">CPU</span><span class="v">AMD Ryzen 9950X3D</span></div>
-            <div class="row"><span class="k">GPU</span><span class="v">AORUS ICE PRO 5090</span></div>
-            <div class="row"><span class="k">RAM</span><span class="v">64GB G.Skill Trident Z5</span></div>
-            <div class="row"><span class="k">Storage</span><span class="v">4TB Samsung 990 PCIe 4.0</span></div>
-            <div class="row"><span class="k">Board</span><span class="v">AORUS ICE X870E</span></div>
-            <div class="row"><span class="k">Case</span><span class="v">HAVN HS420 White</span></div>
-            <div class="row"><span class="k">PSU</span><span class="v">Corsair HX1500i</span></div>
-          </div>
-
-          <div class="spec-group">Display Array</div>
-          <div class="gun-specs">
-            <div class="row"><span class="k">Top</span><span class="v">49″ Samsung OLED 240Hz</span></div>
-            <div class="row"><span class="k">Bottom</span><span class="v">45″ LG 5K2K OLED 165Hz</span></div>
-            <div class="row"><span class="k">Side</span><span class="v">27″ Alienware AW2721D 240Hz</span></div>
-          </div>
-
-          <div class="spec-group">Peripherals</div>
-          <div class="gun-specs">
-            <div class="row"><span class="k">Mouse</span><span class="v">Logitech G Pro X Superlight 2</span></div>
-            <div class="row"><span class="k">Headset</span><span class="v">Astro A50 Wireless</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <span class="anchor" id="contact"></span>
-  <section>
-    <div class="sec-head reveal"><span class="sec-num">06</span><h2 class="sec-title">Contact</h2></div>
-    <div class="contact reveal">
-      <div>
-        <p class="lead">Want to link up for a session, talk firearms, or just say <em>what's up?</em> The line's open.</p>
-        <div class="channels">
-          <a class="channel" href="https://discord.com/users/mysticalstyle" target="_blank"><span class="cn">mysticalstyle</span><span class="ch">Discord</span></a>
-          <a class="channel" href="https://steamcommunity.com/id/chrispy2k" target="_blank"><span class="cn">chrispy2k</span><span class="ch">Steam</span></a>
-          <a class="channel" href="https://x.com/mysticalstyle" target="_blank"><span class="cn">@mysticalstyle</span><span class="ch">X</span></a>
-          <a class="channel" href="https://soundcloud.com/chop" target="_blank"><span class="cn">chop</span><span class="ch">SoundCloud</span></a>
-        </div>
-      </div>
-      <form class="cform" onsubmit="return false">
-        <div><label>Name</label><input type="text" placeholder="Your name or handle"></div>
-        <div><label>Email</label><input type="email" placeholder="your@email.com"></div>
-        <div><label>Message</label><textarea rows="4" placeholder="Say something…"></textarea></div>
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  </section>
-
 </div>
 
-<footer>
-  <div class="f-mark"><em>m</em>ystic</div>
-  <div class="f-meta">© 2026 · All rights reserved · 38°52′N 77°00′W</div>
-</footer>
+<div class="client">
+  <div class="titlebar">
+    <h1>mystic — Old School Interface</h1>
+    <div class="world">World 446 · Members</div>
+  </div>
+
+  <div class="frame">
+    <!-- VIEWPORT -->
+    <div class="viewport">
+
+      <div class="panel on" id="p-rs" data-greet="Welcome to mystic's stats.">
+        <h2 class="qtitle">⚔ Quest: The Iron Grind</h2>
+        <p class="qtext">Account <span class="gold" data-tip="Ironman btw. No GE, no trades, no help.">mysticstyle</span> — Ironman of clan <span class="gold">Not So Alone</span>. Overall rank <span class="grn">#23,341</span>. Recorded 30 May 2026.</p>
+        <div class="statrow" data-tip="Sum of all 23 skills."><span class="k">Total Level</span><span class="v">2,287</span></div>
+        <div class="statrow" data-tip="That is a lot of clicking."><span class="k">Total XP</span><span class="v">291.3M</span></div>
+        <div class="statrow" data-tip="Ironman hiscores, overall."><span class="k">Rank</span><span class="v">#23,341</span></div>
+        <div class="xp"><i data-w="82%"></i></div>
+        <div class="xpcap">Progress to max — keep grinding</div>
+        <div class="invgrid" style="grid-template-columns:minmax(220px,420px)">
+          <div class="slot" data-full="osrs_hiscores.png" data-tip="Examine: The official hiscores. Proof."><img src="osrs_hiscores.png" alt="OSRS hiscores for mysticstyle"></div>
+        </div>
+        <a class="gbtn" href="https://secure.runescape.com/m=hiscore_oldschool_ironman/hiscorepersonal?user1=mysticstyle" target="_blank" rel="noopener" data-tip="Opens official OSRS hiscores">Open hiscores</a>
+      </div>
+
+      <div class="panel" id="p-guns" data-greet="You open the armoury.">
+        <h2 class="qtitle">🛡 The Armoury</h2>
+        <div class="invgrid">
+          <div class="slot" data-full="ar15-1.jpeg" data-tip="Examine: AR-15. The primary. 5.56 NATO."><span class="qty">1</span><img src="ar15-1.jpeg" alt="AR-15 photo one"></div>
+          <div class="slot" data-full="ar15-2.jpeg" data-tip="Examine: AR-15, detail. Criterion Core 13.9 barrel."><span class="qty">1</span><img src="ar15-2.jpeg" alt="AR-15 photo two"></div>
+        </div>
+        <div class="statrow" data-tip="Artius FRT / Rave 140 trigger"><span class="k">AR-15 · 5.56×45 NATO</span><span class="v">Semi-auto</span></div>
+        <div class="statrow" data-tip="Vortex Gen II HD MRAD on Antimatter Scopeswitch 2.0"><span class="k">Optic / Mount</span><span class="v">Vortex Gen II · Scopeswitch 2.0</span></div>
+        <div class="statrow" data-tip="BCM Raider M13 rail, B5 Sopmod stock"><span class="k">Barrel / Rail</span><span class="v">Criterion Core 13.9 · BCM M13</span></div>
+        <div class="statrow" data-tip="SOLGW Angry Patriot lower, BCM Blem upper"><span class="k">Suppressor</span><span class="v">Polo K</span></div>
+        <div class="statrow" data-tip="Century Arms. Loud."><span class="k">Micro Draco · 7.62×39</span><span class="v">Semi-auto AK</span></div>
+        <div class="statrow" data-tip="For the hunt."><span class="k">Mossberg 270 · .270 Win</span><span class="v">Bolt action</span></div>
+      </div>
+
+      <div class="panel" id="p-humidor" data-greet="A rich aroma fills the air.">
+        <h2 class="qtitle">🔥 The Humidor</h2>
+        <p class="qtext">A working journal of every cigar smoked — <span class="gold">ratings</span>, <span class="gold">flavor notes</span>, <span class="gold">pairings</span>, and what's worth buying again. Browse freely; editing is mine alone.</p>
+        <div class="statrow" data-tip="Every stick logged and scored."><span class="k">Tasting Journal</span><span class="v">Open</span></div>
+        <div class="statrow" data-tip="Cedar, leather, cocoa, pepper..."><span class="k">Flavor Wheel</span><span class="v">Open</span></div>
+        <div class="statrow" data-tip="What to buy again."><span class="k">Recommendations</span><span class="v">Open</span></div>
+        <a class="gbtn" href="humidor.html" data-tip="Travel to the Humidor page">Enter the Humidor</a>
+      </div>
+
+      <div class="panel" id="p-build" data-greet="The station hums. Status: online.">
+        <h2 class="qtitle">⚙ NASA Spacestation Winter</h2>
+        <p class="qtext">Dedicated battlestation · status: <span class="grn">online</span></p>
+        <div class="invgrid">
+          <div class="slot" data-full="setup1.jpeg" data-tip="Examine: The station, front."><img src="setup1.jpeg" alt="PC setup photo one"></div>
+          <div class="slot" data-full="setup2.jpeg" data-tip="Examine: The station, alt angle."><img src="setup2.jpeg" alt="PC setup photo two"></div>
+          <div class="slot" data-full="setup_vid1.mp4" data-video data-tip="Examine: Moving picture. Click to play."><video src="setup_vid1.mp4" preload="metadata" muted playsinline></video></div>
+          <div class="slot" data-full="setup_vid2.mp4" data-video data-tip="Examine: Another moving picture."><video src="setup_vid2.mp4" preload="metadata" muted playsinline></video></div>
+        </div>
+        <div class="statrow" data-tip="16 cores of grind"><span class="k">CPU</span><span class="v">AMD Ryzen 9950X3D</span></div>
+        <div class="statrow" data-tip="ICE PRO. White. Cold."><span class="k">GPU</span><span class="v">AORUS ICE PRO 5090</span></div>
+        <div class="statrow" data-tip="G.Skill Trident Z5"><span class="k">RAM</span><span class="v">64GB DDR5</span></div>
+        <div class="statrow" data-tip="Samsung 990 PCIe 4.0"><span class="k">Storage</span><span class="v">4TB NVMe</span></div>
+        <div class="statrow" data-tip="AORUS ICE X870E board in a HAVN HS420 White, Corsair HX1500i"><span class="k">Board / Case / PSU</span><span class="v">X870E · HS420 · HX1500i</span></div>
+        <div class="statrow" data-tip="49&quot; Samsung OLED 240Hz over a 45&quot; LG 5K2K OLED 165Hz, 27&quot; Alienware 240Hz on the side"><span class="k">Displays</span><span class="v">49″ + 45″ + 27″ OLED array</span></div>
+        <div class="statrow" data-tip="G Pro X Superlight 2 + Astro A50"><span class="k">Peripherals</span><span class="v">Superlight 2 · A50 Wireless</span></div>
+      </div>
+
+      <div class="panel" id="p-contact" data-greet="Sending message...">
+        <h2 class="qtitle">✉ Add Friend</h2>
+        <p class="qtext">Want to link up for a session, talk firearms, or just say what's up? The line's open. <span class="gold">Click a handle to copy it.</span></p>
+        <div class="statrow copy" data-copy="mysticalstyle" data-tip="Best way to reach me. Click to copy."><span class="k">Discord</span><span class="v">mysticalstyle</span></div>
+        <div class="statrow copy" data-copy="chrispy2k" data-tip="GGs only. Click to copy."><span class="k">Steam</span><span class="v">chrispy2k</span></div>
+        <div class="statrow copy" data-copy="@mysticalstyle" data-tip="Posts occasionally. Click to copy."><span class="k">X</span><span class="v">@mysticalstyle</span></div>
+        <div class="statrow copy" data-copy="chop" data-tip="On repeat. Click to copy."><span class="k">SoundCloud</span><span class="v">chop</span></div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="side">
+      <div class="minimap" aria-hidden="true">
+        <span class="orb"><i></i></span>
+        <p>38°52′N 77°00′W</p>
+      </div>
+      <div class="tabgrid" role="tablist" aria-label="Sections">
+        <button class="gtab" role="tab" aria-selected="true" data-p="p-rs" data-tip="Skills — the iron grind"><span class="ico">⚔</span>Stats</button>
+        <button class="gtab" role="tab" aria-selected="false" data-p="p-guns" data-tip="Equipment — the armoury"><span class="ico">🛡</span>Armoury</button>
+        <button class="gtab" role="tab" aria-selected="false" data-p="p-humidor" data-tip="Cooking adjacent — the humidor"><span class="ico">🔥</span>Humidor</button>
+        <button class="gtab" role="tab" aria-selected="false" data-p="p-build" data-tip="Construction — the battlestation"><span class="ico">⚙</span>Build</button>
+        <button class="gtab" role="tab" aria-selected="false" data-p="p-contact" data-tip="Friends list"><span class="ico">✉</span>Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOX -->
+  <div class="chatbox" id="chat" aria-live="polite">
+    <div class="line"><span class="sys">Welcome to mystic's corner of the internet.</span></div>
+  </div>
+</div>
+
+<div id="tooltip" role="tooltip"></div>
+
+<!-- lightbox -->
+<dialog id="lb" style="border:4px solid #2B241B;background:#3E3529;padding:10px;max-width:94vw">
+  <div id="lbslot"></div>
+  <button class="gbtn" id="lbclose" style="margin-top:10px">Close window</button>
+</dialog>
 
 <script>
-const SKILLS = [
-  ["Attack",98],["Defence",98],["Strength",99],["Hitpoints",99],["Ranged",99],["Prayer",86],
-  ["Magic",99],["Cooking",99],["Woodcut",93],["Fletching",96],["Fishing",92],["Firemaking",90],
-  ["Crafting",99],["Smithing",91],["Mining",98],["Herblore",96],["Agility",93],["Thieving",99],
-  ["Slayer",96],["Farming",97],["Runecraft",87],["Hunter",85],["Construction",99],["Sailing",99]
-];
-const BOSSES = [
-  ["Abyssal Sire",273],["Alchemical Hydra",287],["Araxxor",268],["Artio",27],["Barrows Chests",737],
-  ["Brutus",45],["Bryophyta",5],["Calvar'ion",95],["Cerberus",1340],["Chambers of Xeric",128],
-  ["Chaos Fanatic",138],["Commander Zilyana",5],["Crazy Archaeologist",44],["Dagannoth Prime",177],
-  ["Dagannoth Rex",81],["Dagannoth Supreme",51],["Duke Sucellus",1],["General Graardor",578],
-  ["Giant Mole",6],["Grotesque Guardians",10],["Hespori",77],["Kalphite Queen",10],
-  ["King Black Dragon",121],["Kraken",931],["Kree'Arra",1],["K'ril Tsutsaroth",92],["Lunar Chests",113],
-  ["Mimic",3],["Nightmare",13],["Phantom Muspah",384],["Sarachnis",17],["Skotizo",22],["Spindel",445],
-  ["Tempoross",121],["The Corrupted Gauntlet",394],["The Hueycoatl",71],["Thermo. Smoke Devil",233],
-  ["Tombs of Amascut",61],["ToA: Expert",45],["Venenatis",50],["Vorkath",4],["Wintertodt",246],
-  ["Yama",220],["Zalcano",78],["Zulrah",985]
-];
-document.getElementById('skills').innerHTML = SKILLS.map(([n,l])=>
-  `<div class="skill${l===99?' max':''}"><span class="sn">${n}</span><span class="sl">${l}${l===99?'<span style="color:var(--amber);font-size:14px">★</span>':''}</span></div>`
-).join('');
-document.getElementById('bossGrid').innerHTML = BOSSES.map(([n,k])=>
-  `<div class="boss"><span class="bnm">${n}</span><span class="bkc${k>=200?' hot':''}">${k.toLocaleString()}</span></div>`
-).join('');
-const bt=document.getElementById('bossToggle'), bx=document.getElementById('bosses');
-bt.addEventListener('click',()=>{
-  bx.classList.toggle('open');
-  bt.textContent = bx.classList.contains('open') ? 'Hide Boss Kill Counts ←' : 'View Boss Kill Counts →';
-});
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    document.getElementById('intro').classList.add('done');
-    document.getElementById('nav').style.transition='opacity 1s ease';
-    document.getElementById('nav').style.opacity='1';
-  },2300);
-});
-const io=new IntersectionObserver((es)=>{
-  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-},{threshold:0.15});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const chat=document.getElementById('chat');
+  function say(msg,who){
+    const d=document.createElement('div');d.className='line';
+    d.innerHTML=(who?'<span class="who">'+who+':</span> ':'<span class="sys">')+msg+(who?'':'</span>');
+    chat.appendChild(d);
+    while(chat.children.length>5) chat.removeChild(chat.firstChild);
+  }
 
-/* nav solidifies after hero */
-const navEl=document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  if(window.scrollY>window.innerHeight*0.6){ navEl.classList.add('solid'); }
-  else { navEl.classList.remove('solid'); }
-},{passive:true});
+  // tabs
+  const gtabs=[...document.querySelectorAll('.gtab')], panels=[...document.querySelectorAll('.panel')];
+  gtabs.forEach(t=>t.addEventListener('click',()=>{
+    gtabs.forEach(x=>x.setAttribute('aria-selected',x===t));
+    panels.forEach(p=>p.classList.toggle('on',p.id===t.dataset.p));
+    const pn=document.getElementById(t.dataset.p);
+    say(pn.dataset.greet||'');
+    if(t.dataset.p==='p-rs') fillXP();
+  }));
+
+  function fillXP(){document.querySelectorAll('.xp i').forEach(b=>requestAnimationFrame(()=>b.style.width=b.dataset.w))}
+  fillXP();
+
+  // OSRS tooltip
+  const tip=document.getElementById('tooltip');
+  document.addEventListener('mousemove',e=>{
+    const t=e.target.closest('[data-tip]');
+    if(t){tip.style.display='block';tip.innerHTML=t.dataset.tip;
+      tip.style.left=Math.min(e.clientX+14,innerWidth-290)+'px';
+      tip.style.top=(e.clientY+18)+'px';}
+    else tip.style.display='none';
+  });
+
+  // examine clicks -> lightbox + chat line
+  const lb=document.getElementById('lb'), slot=document.getElementById('lbslot');
+  document.querySelectorAll('.slot').forEach(s=>s.addEventListener('click',()=>{
+    slot.innerHTML='';
+    if(s.hasAttribute('data-video')){const v=document.createElement('video');v.src=s.dataset.full;v.controls=true;v.autoplay=true;v.style.maxWidth='86vw';v.style.maxHeight='74vh';slot.appendChild(v);}
+    else{const i=new Image();i.src=s.dataset.full;i.style.maxWidth='86vw';i.style.maxHeight='74vh';slot.appendChild(i);}
+    say((s.dataset.tip||'You examine the item.').replace('Examine: ',''));
+    lb.showModal();
+  }));
+  document.getElementById('lbclose').addEventListener('click',()=>{slot.innerHTML='';lb.close()});
+
+  // login screen
+  const flames=document.getElementById('flames');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    for(let i=0;i<24;i++){
+      const f=document.createElement('span');f.className='fl';
+      f.style.left=Math.random()*100+'%';
+      f.style.animationDuration=(5+Math.random()*7)+'s';
+      f.style.animationDelay=(-Math.random()*8)+'s';
+      f.style.transform='scale('+(0.5+Math.random()*1.4)+')';
+      flames.appendChild(f);
+    }
+  }
+  document.querySelectorAll('.lbtn').forEach(b=>b.addEventListener('click',()=>{
+    document.getElementById('login').classList.add('gone');
+    say('Welcome to RuneScape... I mean, to my page.','mystic');
+    say(b.dataset.user==='mysticstyle' ? 'Logged in as: mysticstyle. Welcome back.' : 'Logged in as: guest adventurer. Look around.');
+    say('Tip: press 1–5 to switch tabs.');
+  }));
+
+  // click-to-copy contact handles
+  document.querySelectorAll('.statrow.copy').forEach(r=>{
+    r.style.cursor='pointer';
+    r.addEventListener('click',()=>{
+      const h=r.dataset.copy;
+      navigator.clipboard?.writeText(h).then(
+        ()=>say('Copied <b>'+h+'</b> to your clipboard.'),
+        ()=>say('Handle: <b>'+h+'</b> — copy it manually.')
+      );
+    });
+  });
+
+  // keyboard shortcuts: 1–5 switch tabs (like F-keys)
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    const i=parseInt(e.key,10);
+    if(i>=1 && i<=gtabs.length) gtabs[i-1].click();
+  });
+
+  // idle flavor lines
+  const idle=["You feel the urge to grind.","The humidor is at 69% RH. Nice.","Your AR-15 gleams.","The station hums quietly.","Bullets loaded."];
+  setInterval(()=>{say(idle[Math.floor(Math.random()*idle.length)])},22000);
+  say("Type nothing. 3 tick everything.","mystic");
 </script>
 </body>
 </html>
