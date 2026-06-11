@@ -3,348 +3,309 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Humidor Log</title>
+<title>The Humidor — World 446</title>
+<meta name="description" content="mystic's humidor — a tasting journal of every cigar smoked: ratings, flavor wheels, pairings, and recommendations.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%233E3529%22/><text x=%2250%22 y=%2272%22 font-size=%2258%22 text-anchor=%22middle%22>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;500;600&display=swap');
-
-  :root {
-    --cedar: #6b4f2e;
-    --cedar-dark: #4a3620;
-    --cedar-light: #8a6b42;
-    --parchment: #f4ecd8;
-    --parchment-dark: #e8dcc0;
-    --ember: #b5341f;
-    --ember-glow: #d4502f;
-    --gold: #b08d3e;
-    --ink: #2a2018;
-    --smoke: #9a8d78;
-    --leather: #3d2b1a;
+  :root{
+    --stone:#494034; --stone-d:#3E3529; --stone-l:#5A4F3F; --edge:#2B241B;
+    --gold:#FFB83F; --orange:#FF981F; --yellow:#FFFF00; --white:#F4EFE4; --green:#00C800;
+    --ember:#D4602F; --red:#C83A2C; --tool-bg:#FFFFE0; --tool-bd:#5A5340; --chatbg:#B8A282;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Josefin Sans', sans-serif;
-    background:
-      radial-gradient(ellipse at top, #3d2b1a 0%, #2a1d12 60%, #1a1209 100%);
-    color: var(--ink);
-    min-height: 100vh;
-    padding: 24px 16px 80px;
-    background-attachment: fixed;
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'VT323',monospace;font-size:20px;color:var(--white);line-height:1.35;
+    background:#23201A url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" opacity=".06"><rect width="60" height="60" fill="%23000"/><rect x="60" y="60" width="60" height="60" fill="%23000"/></svg>');
+    min-height:100vh;padding:24px 8px 60px;image-rendering:pixelated;
   }
+  ::selection{background:var(--gold);color:#222}
 
-  .grain {
-    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .client{
+    max-width:1000px;margin:0 auto;background:var(--stone);
+    border:4px solid var(--edge);outline:2px solid var(--stone-l);outline-offset:-8px;
+    box-shadow:0 14px 40px rgba(0,0,0,.55), inset 0 0 60px rgba(0,0,0,.35);
+    border-radius:4px;padding:10px;
   }
+  .titlebar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+    padding:6px 12px;margin-bottom:8px;background:linear-gradient(#5A4F3F,#3E3529);
+    border:2px solid var(--edge);border-radius:3px}
+  .titlebar h1{font-family:'Pixelify Sans',monospace;font-size:1.25rem;color:var(--gold);text-shadow:2px 2px 0 #000}
+  .titlebar .right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .titlebar .world{color:var(--green);text-shadow:1px 1px 0 #000;font-size:1rem}
+  #mode-pill{font-size:.92rem;color:var(--white);text-shadow:1px 1px 0 #000;border:1px solid var(--stone-l);padding:2px 10px;border-radius:3px}
 
-  .wrap { max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
-
-  header { text-align: center; margin-bottom: 32px; }
-  header .mark {
-    font-size: 13px; letter-spacing: 0.5em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 6px; font-weight: 500;
+  /* tab strip */
+  .tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+  .gtab{
+    flex:1;min-width:110px;font-family:'VT323',monospace;font-size:1.02rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);border-radius:3px;
+    padding:9px 6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;
   }
-  header h1 {
-    font-family: 'Cormorant Garamond', serif; font-weight: 700;
-    font-size: clamp(38px, 8vw, 62px); color: var(--parchment);
-    line-height: 0.95; letter-spacing: 0.01em;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-  }
-  header .sub {
-    font-family: 'Cormorant Garamond', serif; font-style: italic;
-    font-size: 18px; color: var(--smoke); margin-top: 8px;
-  }
+  .gtab .ico{font-size:1.2rem;line-height:1}
+  .gtab:hover{filter:brightness(1.18)}
+  .gtab.active{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
+  .gtab:focus-visible{outline:2px solid var(--gold)}
+  #tab-new{display:none}
+  body:not(.locked) #tab-new{display:flex}
 
-  .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap; }
-  .tab {
-    font-family: 'Josefin Sans'; font-size: 13px; letter-spacing: 0.15em;
-    text-transform: uppercase; padding: 11px 22px; border: 1px solid var(--cedar-light);
-    background: rgba(244,236,216,0.04); color: var(--parchment); cursor: pointer;
-    border-radius: 2px; transition: all 0.25s; font-weight: 400;
+  /* viewport */
+  .viewport{background:var(--stone-d);border:2px solid var(--edge);border-radius:3px;min-height:520px;padding:16px;position:relative;overflow:hidden}
+  .viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 2px,transparent 2px 4px)}
+  .panel{display:none;animation:fade .25s ease;position:relative;z-index:1}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  h2.qtitle{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:2px 2px 0 #000;font-size:1.4rem;margin-bottom:12px;border-bottom:2px solid var(--edge);padding-bottom:6px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  h2.qtitle small{font-family:'VT323',monospace;font-size:.95rem;color:var(--white);opacity:.8}
+  .lead{color:var(--white);max-width:64ch;margin-bottom:14px}
+  .gold{color:var(--gold)} .grn{color:var(--green)}
+
+  /* buttons */
+  .gbtn{
+    display:inline-block;font-family:'VT323',monospace;font-size:1.1rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    background:linear-gradient(#7a3a2c,#5c2b21);border:2px solid var(--edge);padding:8px 18px;border-radius:3px;
+    cursor:pointer;text-decoration:none;
   }
-  .tab:hover { background: rgba(244,236,216,0.1); }
-  .tab.active { background: var(--ember); border-color: var(--ember); color: #fff; }
+  .gbtn:hover{filter:brightness(1.2)}
+  .gbtn.alt{background:linear-gradient(#564B3A,#463D2F)}
+  .gbtn:focus-visible{outline:2px solid var(--gold)}
 
-  .panel { display: none; animation: fade 0.4s ease; }
-  .panel.active { display: block; }
-  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  .card {
-    background:
-      linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
-    border-radius: 4px; padding: 30px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.5);
-    position: relative; border: 1px solid rgba(107,79,46,0.2);
+  /* ===== journal entries ===== */
+  .entry{
+    background:rgba(0,0,0,.22);border:2px solid var(--edge);border-radius:3px;
+    padding:12px 14px;margin-bottom:12px;position:relative;
   }
-  .card::before {
-    content: ''; position: absolute; inset: 8px; border: 1px solid rgba(107,79,46,0.15);
-    border-radius: 2px; pointer-events: none;
+  .entry:hover{border-color:var(--stone-l)}
+  .entry-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .entry-name{font-family:'Pixelify Sans',monospace;color:var(--orange);font-size:1.1rem;text-shadow:1px 1px 0 #000}
+  .entry-maker{color:var(--white);opacity:.75;font-size:.95rem}
+  .entry-stars{color:var(--yellow);text-shadow:1px 1px 0 #000;letter-spacing:2px}
+  .entry-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.95rem;color:var(--white);opacity:.85;margin-top:6px}
+  .entry-notes{font-style:italic;color:var(--gold);margin-top:8px;font-size:1rem}
+  .entry-flavors{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+  .flav-tag{font-size:.85rem;color:#2c1c08;background:var(--chatbg);border:1px solid var(--edge);padding:1px 8px;border-radius:2px}
+  .buy-badge{font-size:.85rem;padding:1px 8px;border-radius:2px;border:1px solid var(--edge);text-shadow:none}
+  .buy-yes{background:#1d6b1d;color:#dff5df}
+  .buy-no{background:#7a1d14;color:#f5e0dd}
+  .del-btn{
+    position:absolute;top:8px;right:8px;width:24px;height:24px;line-height:18px;
+    background:linear-gradient(#7a3a2c,#5c2b21);border:2px solid var(--edge);color:var(--white);
+    cursor:pointer;font-family:'VT323',monospace;font-size:.95rem;border-radius:2px;display:none;
   }
+  body:not(.locked) .del-btn{display:block}
+  .del-btn:hover{filter:brightness(1.25)}
+  .empty{text-align:center;color:var(--white);opacity:.7;padding:40px 10px;font-style:italic}
 
-  .field { margin-bottom: 18px; }
-  .field label {
-    display: block; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--cedar); margin-bottom: 6px; font-weight: 600;
+  /* ===== form ===== */
+  .formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:16px}
+  .field label{display:block;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:.95rem;margin-bottom:3px}
+  .field input,.field textarea{
+    width:100%;font-family:'VT323',monospace;font-size:1.05rem;color:#2c1c08;background:var(--chatbg);
+    border:2px solid var(--edge);padding:6px 9px;border-radius:2px;
   }
-  .field input, .field select, .field textarea {
-    width: 100%; background: rgba(255,255,255,0.5); border: none;
-    border-bottom: 1.5px dotted var(--cedar); padding: 8px 4px;
-    font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--ink);
-    outline: none; transition: all 0.2s;
+  .field input:focus,.field textarea:focus{outline:2px solid var(--gold)}
+  .field.full{grid-column:1/-1}
+  textarea{min-height:74px;resize:vertical}
+
+  .pickrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .star{font-size:1.7rem;cursor:pointer;color:#6b5d48;text-shadow:1px 1px 0 #000;user-select:none}
+  .star.lit{color:var(--yellow)}
+  .opt{
+    font-family:'VT323',monospace;font-size:.98rem;color:var(--white);text-shadow:1px 1px 0 #000;cursor:pointer;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);padding:5px 12px;border-radius:3px;
   }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-bottom-color: var(--ember); background: rgba(255,255,255,0.8);
+  .opt:hover{filter:brightness(1.18)}
+  .opt.sel{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
+
+  /* ===== wheel ===== */
+  .wheelwrap{display:flex;justify-content:center;margin:8px 0}
+  .wheelwrap svg{width:min(440px,92vw);height:auto;background:rgba(0,0,0,.18);border:2px solid var(--edge);border-radius:3px}
+  .wheel-hint{text-align:center;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:1rem;margin-top:8px}
+
+  /* stats */
+  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+  .stat{background:rgba(0,0,0,.22);border:2px solid var(--edge);border-radius:3px;padding:12px 8px;text-align:center}
+  .stat .num{font-family:'Pixelify Sans',monospace;font-size:1.6rem;color:var(--gold);text-shadow:2px 2px 0 #000}
+  .stat .lbl{font-size:.85rem;color:var(--white);opacity:.8}
+
+  /* recs */
+  .rec{background:rgba(0,0,0,.22);border:2px solid var(--edge);border-left:4px solid var(--ember);border-radius:3px;padding:12px 14px;margin-bottom:10px}
+  .rec-name{font-family:'Pixelify Sans',monospace;color:var(--orange);font-size:1.05rem;text-shadow:1px 1px 0 #000}
+  .rec-why{color:var(--green);text-shadow:1px 1px 0 #000;font-size:.95rem;margin-top:2px}
+  .rec-meta{color:var(--white);opacity:.8;font-size:.95rem;margin-top:2px}
+
+  /* chatbox */
+  .chatbox{margin-top:8px;background:var(--chatbg);border:2px solid var(--edge);border-radius:3px;padding:8px 12px;min-height:96px;color:#2c1c08}
+  .chatbox .line{margin:1px 0}
+  .chatbox .who{color:#0000C8}
+  .chatbox .sys{color:#7a1010}
+
+  /* tooltip */
+  #tooltip{position:fixed;z-index:99;pointer-events:none;display:none;background:var(--tool-bg);color:#3a3220;
+    border:1px solid var(--tool-bd);font-family:'VT323',monospace;font-size:1rem;padding:4px 9px;max-width:280px;
+    box-shadow:2px 2px 0 rgba(0,0,0,.45)}
+
+  /* toast */
+  #toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:120;
+    font-family:'VT323',monospace;font-size:1.05rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);padding:8px 20px;border-radius:3px;
+    transition:opacity .25s, transform .25s;pointer-events:none;
   }
-  .field textarea { resize: vertical; min-height: 70px; border: 1.5px dotted var(--cedar); border-radius: 3px; padding: 10px; }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
-  @media (max-width: 600px) { .row, .row-3 { grid-template-columns: 1fr; } }
-
-  /* Star rating */
-  .stars { display: flex; gap: 6px; }
-  .star {
-    font-size: 32px; color: rgba(107,79,46,0.25); cursor: pointer; transition: all 0.15s;
-    line-height: 1;
+  @media(max-width:640px){
+    body{font-size:18px}
+    .gtab{min-width:44%}
   }
-  .star:hover, .star.lit { color: var(--gold); transform: scale(1.1); }
-  .star.lit { text-shadow: 0 0 10px rgba(176,141,62,0.5); }
-
-  /* Strength meter */
-  .strength-opts { display: flex; flex-direction: column; gap: 4px; }
-  .str-opt {
-    display: flex; align-items: center; gap: 10px; padding: 6px 10px; cursor: pointer;
-    border-radius: 3px; transition: all 0.2s; font-family: 'Cormorant Garamond', serif; font-size: 17px;
-  }
-  .str-opt:hover { background: rgba(107,79,46,0.08); }
-  .str-opt.sel { background: var(--ember); color: #fff; }
-  .str-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--cedar); }
-  .str-opt.sel .str-dot { background: #fff; border-color: #fff; }
-
-  /* Flavor wheel */
-  .wheel-wrap { display: flex; flex-direction: column; align-items: center; }
-  svg.wheel { max-width: 360px; width: 100%; height: auto; touch-action: manipulation; }
-  .wheel-hint { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--smoke); font-size: 15px; margin-top: 6px; text-align: center; }
-
-  .btn {
-    font-family: 'Josefin Sans'; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase;
-    background: var(--ember); color: #fff; border: none; padding: 15px 32px;
-    border-radius: 3px; cursor: pointer; transition: all 0.25s; font-weight: 500;
-    box-shadow: 0 4px 14px rgba(181,52,31,0.4);
-  }
-  .btn:hover { background: var(--ember-glow); transform: translateY(-2px); box-shadow: 0 7px 20px rgba(181,52,31,0.5); }
-  .btn-ghost { background: transparent; color: var(--cedar); border: 1px solid var(--cedar); box-shadow: none; }
-  .btn-ghost:hover { background: rgba(107,79,46,0.08); transform: none; }
-
-  .section-label {
-    font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600;
-    color: var(--cedar-dark); margin: 26px 0 14px; padding-bottom: 8px;
-    border-bottom: 1.5px solid rgba(107,79,46,0.25); display: flex; align-items: center; gap: 10px;
-  }
-  .section-label::before { content: '❧'; color: var(--ember); font-size: 22px; }
-
-  /* Log entries */
-  .entry {
-    background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
-    border-radius: 4px; padding: 22px 24px; margin-bottom: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-left: 4px solid var(--ember);
-    position: relative; transition: transform 0.2s;
-  }
-  .entry:hover { transform: translateX(3px); }
-  .entry-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-  .entry-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.05; }
-  .entry-maker { font-size: 13px; color: var(--cedar); letter-spacing: 0.05em; margin-top: 2px; }
-  .entry-stars { color: var(--gold); font-size: 18px; letter-spacing: 2px; white-space: nowrap; }
-  .entry-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--cedar-dark); font-family: 'Cormorant Garamond', serif; font-size: 16px; }
-  .entry-meta span { display: inline-flex; align-items: center; gap: 5px; }
-  .entry-meta b { color: var(--ember); font-weight: 600; }
-  .entry-notes { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: #4a3c2c; margin-top: 12px; line-height: 1.4; }
-  .entry-flavors { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .flav-tag { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(107,79,46,0.12); color: var(--cedar-dark); padding: 4px 10px; border-radius: 20px; }
-  .del-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(107,79,46,0.4); cursor: pointer; font-size: 18px; transition: color 0.2s; }
-  .del-btn:hover { color: var(--ember); }
-  body.locked .del-btn { display: none; }
-  body.locked #export-btn { display: none; }
-  .buy-badge { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
-  .buy-yes { background: rgba(76,124,58,0.18); color: #3a6128; }
-  .buy-no { background: rgba(181,52,31,0.15); color: var(--ember); }
-
-  .empty { text-align: center; padding: 60px 20px; color: var(--smoke); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; }
-
-  /* Stats / taste profile */
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
-  .stat {
-    background: linear-gradient(135deg, var(--parchment) 0%, var(--parchment-dark) 100%);
-    border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,0.28);
-  }
-  .stat .num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--ember); line-height: 1; }
-  .stat .lbl { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cedar); margin-top: 8px; }
-
-  .rec {
-    background: linear-gradient(135deg, #2a1d12 0%, #3d2b1a 100%);
-    border: 1px solid var(--gold); border-radius: 4px; padding: 22px 24px; margin-bottom: 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden;
-  }
-  .rec::after { content: '★'; position: absolute; top: -10px; right: 10px; font-size: 80px; color: rgba(176,141,62,0.08); }
-  .rec-name { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 700; color: var(--parchment); }
-  .rec-why { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gold); margin-top: 4px; }
-  .rec-meta { font-size: 13px; color: var(--smoke); margin-top: 10px; line-height: 1.5; }
-
-  .toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: var(--ember); color: #fff; padding: 14px 28px; border-radius: 4px;
-    font-size: 14px; letter-spacing: 0.1em; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    z-index: 100; transition: transform 0.35s cubic-bezier(.2,1.2,.3,1); text-transform: uppercase;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  .loading { text-align: center; color: var(--smoke); padding: 40px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; }
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body>
-<div class="grain"></div>
-<div class="wrap">
-  <header>
-    <div class="mark">Est. Your Humidor</div>
-    <h1>The Humidor Log</h1>
-    <div class="sub">a record of leaf, smoke &amp; memory</div>
-    <div id="mode-bar" style="margin-top:18px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
-      <span id="mode-pill" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--cedar);border:1px solid rgba(107,79,46,0.4);padding:6px 14px;border-radius:20px;">👁 Read-Only</span>
-      <button id="unlock-btn" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;background:none;border:1px solid var(--cedar);color:var(--cedar);padding:7px 16px;border-radius:3px;cursor:pointer;">🔓 Unlock Editing</button>
+<body class="locked">
+
+<div class="client">
+  <div class="titlebar">
+    <h1>🔥 The Humidor</h1>
+    <div class="right">
+      <span id="mode-pill">👁 Read-Only</span>
+      <button id="unlock-btn" class="gbtn alt" data-tip="Enter the passphrase to log new smokes" style="font-size:.95rem;padding:4px 12px">Enter PIN</button>
+      <span class="world">World 446 · Members</span>
     </div>
-  </header>
+  </div>
 
   <div class="tabs">
-    <button class="tab" data-tab="new" id="tab-new">✎ New Entry</button>
-    <button class="tab active" data-tab="log">☰ My Log</button>
-    <button class="tab" data-tab="taste">◉ Taste Profile</button>
-    <button class="tab" data-tab="recs">★ Recommendations</button>
+    <a class="gtab" href="index.html" data-tip="Back to the main page"><span class="ico">⌂</span>Home</a>
+    <button class="gtab tab active" data-tab="log" data-tip="Every cigar logged and scored"><span class="ico">📜</span>Journal</button>
+    <button class="gtab tab" id="tab-new" data-tab="new" data-tip="Log a new smoke"><span class="ico">✎</span>New Entry</button>
+    <button class="gtab tab" data-tab="taste" data-tip="Your palate, mapped"><span class="ico">☸</span>Palate</button>
+    <button class="gtab tab" data-tab="recs" data-tip="What to hunt for next"><span class="ico">⭐</span>Recs</button>
   </div>
 
-  <!-- NEW ENTRY -->
-  <div class="panel" id="panel-new">
-    <div class="card">
-      <div class="row">
-        <div class="field"><label>Cigar Name</label><input id="f-name" placeholder="e.g. Padrón 1926 No. 9"></div>
+  <div class="viewport">
+
+    <!-- JOURNAL -->
+    <div class="panel active" id="panel-log">
+      <h2 class="qtitle">📜 Tasting Journal <small>every stick, scored</small>
+        <button id="export-btn" class="gbtn alt" data-tip="Download your log as JSON" style="font-size:.92rem;padding:4px 12px">Backup log</button>
+      </h2>
+      <div id="log-list"></div>
+    </div>
+
+    <!-- NEW ENTRY -->
+    <div class="panel" id="panel-new">
+      <h2 class="qtitle">✎ Log a Smoke <small>fill what you know</small></h2>
+      <div class="formgrid">
+        <div class="field"><label>Cigar name</label><input id="f-name" placeholder="e.g. Padrón 1926 No. 9"></div>
         <div class="field"><label>Maker</label><input id="f-maker" placeholder="e.g. Padrón"></div>
-      </div>
-      <div class="row-3">
-        <div class="field"><label>Origin</label><input id="f-origin" placeholder="Nicaragua"></div>
-        <div class="field"><label>Length / Ring</label><input id="f-size" placeholder='5.5" / 56'></div>
-        <div class="field"><label>Price</label><input id="f-price" placeholder="$18"></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Date Smoked</label><input id="f-date" type="date"></div>
-        <div class="field"><label>Pairing (drink / occasion)</label><input id="f-pairing" placeholder="Bourbon, after dinner"></div>
+        <div class="field"><label>Origin</label><input id="f-origin" placeholder="e.g. Nicaragua"></div>
+        <div class="field"><label>Size / vitola</label><input id="f-size" placeholder="e.g. Toro 6×52"></div>
+        <div class="field"><label>Price</label><input id="f-price" placeholder="e.g. $14"></div>
+        <div class="field"><label>Date smoked</label><input id="f-date" type="date"></div>
+        <div class="field full"><label>Pairing</label><input id="f-pairing" placeholder="e.g. bourbon, black coffee"></div>
+        <div class="field full"><label>Notes</label><textarea id="f-notes" placeholder="draw, burn, where you smoked it, who with..."></textarea></div>
       </div>
 
-      <div class="field"><label>Tasting Notes</label><textarea id="f-notes" placeholder="First third was all cocoa and espresso, mellowed into leather and a touch of black pepper on the finish..."></textarea></div>
-
-      <div class="section-label">Rating</div>
-      <div class="stars" id="f-stars">
-        <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span>
-        <span class="star" data-v="3">★</span><span class="star" data-v="4">★</span>
-        <span class="star" data-v="5">★</span>
-      </div>
-
-      <div class="row" style="margin-top:20px;">
-        <div>
-          <div class="section-label">Strength</div>
-          <div class="strength-opts" id="f-strength">
-            <div class="str-opt" data-v="Mellow"><span class="str-dot"></span>Mellow</div>
-            <div class="str-opt" data-v="Mild"><span class="str-dot"></span>Mild</div>
-            <div class="str-opt" data-v="Medium"><span class="str-dot"></span>Medium</div>
-            <div class="str-opt" data-v="Med. Full"><span class="str-dot"></span>Medium-Full</div>
-            <div class="str-opt" data-v="Full"><span class="str-dot"></span>Full</div>
-          </div>
-          <div class="section-label" style="margin-top:24px;">Buy Again?</div>
-          <div class="strength-opts" id="f-buy">
-            <div class="str-opt" data-v="yes"><span class="str-dot"></span>Yes — absolutely</div>
-            <div class="str-opt" data-v="maybe"><span class="str-dot"></span>Maybe</div>
-            <div class="str-opt" data-v="no"><span class="str-dot"></span>No</div>
-          </div>
+      <div class="field" style="margin-bottom:14px"><label>Rating</label>
+        <div class="pickrow" id="f-stars">
+          <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
         </div>
-        <div>
-          <div class="section-label">Flavor Wheel</div>
-          <div class="wheel-wrap">
-            <svg class="wheel" id="wheel" viewBox="0 0 400 400"></svg>
-            <div class="wheel-hint">Tap each spoke to set intensity (0–5)</div>
-          </div>
+      </div>
+      <div class="field" style="margin-bottom:14px"><label>Strength</label>
+        <div class="pickrow" id="f-strength">
+          <span class="opt" data-v="Mellow">Mellow</span><span class="opt" data-v="Mild">Mild</span><span class="opt" data-v="Medium">Medium</span><span class="opt" data-v="Med. Full">Med. Full</span><span class="opt" data-v="Full">Full</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:14px"><label>Buy again?</label>
+        <div class="pickrow" id="f-buy">
+          <span class="opt" data-v="yes">Buy again</span><span class="opt" data-v="no">Pass</span>
         </div>
       </div>
 
-      <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
-        <button class="btn" id="save-btn">Save to Humidor Log</button>
-        <button class="btn btn-ghost" id="clear-btn">Clear</button>
+      <div class="field" style="margin-bottom:6px"><label>Flavor wheel <span style="color:var(--white);opacity:.7">— click the rings, 1 (faint) to 5 (loud); click again to step down</span></label></div>
+      <div class="wheelwrap"><svg id="wheel" viewBox="0 0 400 400" role="img" aria-label="Interactive flavor wheel"></svg></div>
+
+      <div class="pickrow" style="margin-top:16px">
+        <button class="gbtn" id="save-btn" data-tip="Adds this smoke to the journal">Save to journal</button>
+        <button class="gbtn alt" id="clear-btn" data-tip="Wipe the form">Clear form</button>
       </div>
     </div>
-  </div>
 
-  <!-- LOG -->
-  <div class="panel" id="panel-log">
-    <div style="text-align:right; margin-bottom:14px;">
-      <button class="btn btn-ghost" id="export-btn" style="font-size:12px; padding:9px 18px;">⬇ Back Up Log</button>
+    <!-- PALATE -->
+    <div class="panel" id="panel-taste">
+      <h2 class="qtitle">☸ Your Palate <small>built from your 4★+ smokes</small></h2>
+      <div class="statgrid" id="stat-grid"></div>
+      <div class="wheelwrap"><svg id="taste-wheel" viewBox="0 0 400 400" role="img" aria-label="Aggregated taste profile"></svg></div>
+      <div class="wheel-hint" id="taste-summary">Smoke and rate a few cigars to map your palate.</div>
     </div>
-    <div id="log-list"><div class="loading">Opening the humidor…</div></div>
-  </div>
 
-  <!-- TASTE PROFILE -->
-  <div class="panel" id="panel-taste">
-    <div class="stat-grid" id="stat-grid"></div>
-    <div class="card">
-      <div class="section-label">Your Palate</div>
-      <div class="wheel-wrap">
-        <svg class="wheel" id="taste-wheel" viewBox="0 0 400 400" style="max-width:420px;"></svg>
-        <div class="wheel-hint" id="taste-summary">Smoke and rate a few cigars to map your palate.</div>
-      </div>
+    <!-- RECS -->
+    <div class="panel" id="panel-recs">
+      <h2 class="qtitle">⭐ Recommendations <small>matched to your palate</small></h2>
+      <div id="rec-list"><div class="empty">Rate a few cigars 4★ or higher and I'll suggest what to try next.</div></div>
     </div>
+
   </div>
 
-  <!-- RECS -->
-  <div class="panel" id="panel-recs">
-    <div id="rec-list"><div class="empty">Rate a few cigars 4★ or higher and I'll suggest what to try next.</div></div>
+  <div class="chatbox" id="chat" aria-live="polite">
+    <div class="line"><span class="sys">Welcome to the humidor. 69% RH, as always.</span></div>
   </div>
 </div>
 
-<div class="toast" id="toast">Saved ✓</div>
+<div id="tooltip" role="tooltip"></div>
+<div id="toast"></div>
 
 <script>
+/* ================= chat + tooltip + toast ================= */
+const chat=document.getElementById('chat');
+function say(msg,who){
+  const d=document.createElement('div');d.className='line';
+  d.innerHTML=(who?'<span class="who">'+who+':</span> ':'<span class="sys">')+msg+(who?'':'</span>');
+  chat.appendChild(d);
+  while(chat.children.length>5) chat.removeChild(chat.firstChild);
+}
+const tip=document.getElementById('tooltip');
+document.addEventListener('mousemove',e=>{
+  const t=e.target.closest('[data-tip]');
+  if(t){tip.style.display='block';tip.innerHTML=t.dataset.tip;
+    tip.style.left=Math.min(e.clientX+14,innerWidth-290)+'px';
+    tip.style.top=(e.clientY+18)+'px';}
+  else tip.style.display='none';
+});
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+/* ================= flavor model ================= */
 const FLAVORS = ["Body","Dark Fruit","Tropical Fruit","Herbal","Spicy","Sweet","Vanilla","Toffee","Chocolate","Nutty","Woody","Earthy","Leather","Bitter","Oily","Linger/Finish"];
 const wheelState = {};
 FLAVORS.forEach(f => wheelState[f] = 0);
-
 let stars = 0, strength = "", buyAgain = "";
 
-/* ---------- Flavor wheel renderer ---------- */
+/* ---------- Flavor wheel renderer (OSRS palette) ---------- */
 function drawWheel(svg, state, interactive) {
   const cx=200, cy=200, maxR=150, rings=5;
   let html = '';
   for (let r=1; r<=rings; r++){
-    html += `<circle cx="${cx}" cy="${cy}" r="${maxR*r/rings}" fill="none" stroke="rgba(107,79,46,0.18)" stroke-width="1"/>`;
+    html += `<circle cx="${cx}" cy="${cy}" r="${maxR*r/rings}" fill="none" stroke="rgba(255,184,63,0.22)" stroke-width="1"/>`;
   }
   const n = FLAVORS.length;
   const pts = [];
   FLAVORS.forEach((f,i)=>{
     const ang = (i/n)*2*Math.PI - Math.PI/2;
     const ex = cx+Math.cos(ang)*maxR, ey = cy+Math.sin(ang)*maxR;
-    html += `<line x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}" stroke="rgba(107,79,46,0.18)" stroke-width="1"/>`;
+    html += `<line x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}" stroke="rgba(255,184,63,0.18)" stroke-width="1"/>`;
     const v = state[f]||0;
     const vr = maxR*v/rings;
     pts.push([cx+Math.cos(ang)*vr, cy+Math.sin(ang)*vr]);
-    // label
     const lx = cx+Math.cos(ang)*(maxR+22), ly = cy+Math.sin(ang)*(maxR+22);
     let anchor = 'middle';
     if (lx < cx-10) anchor='end'; else if (lx>cx+10) anchor='start';
-    html += `<text x="${lx}" y="${ly}" font-size="9" fill="#6b4f2e" text-anchor="${anchor}" dominant-baseline="middle" font-family="Josefin Sans" letter-spacing="0.05em">${f.toUpperCase()}</text>`;
+    html += `<text x="${lx}" y="${ly}" font-size="10" fill="#FFB83F" text-anchor="${anchor}" dominant-baseline="middle" font-family="VT323" letter-spacing="0.04em">${f.toUpperCase()}</text>`;
   });
-  // filled polygon
   if (pts.some(p=>p[0]!==cx||p[1]!==cy)) {
     const poly = pts.map(p=>p.join(',')).join(' ');
-    html += `<polygon points="${poly}" fill="rgba(181,52,31,0.25)" stroke="#b5341f" stroke-width="2"/>`;
-    pts.forEach(p=> html += `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#b5341f"/>`);
+    html += `<polygon points="${poly}" fill="rgba(212,96,47,0.3)" stroke="#FF981F" stroke-width="2"/>`;
+    pts.forEach(p=> html += `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#FFFF00"/>`);
   }
-  // interactive hit zones
   if (interactive){
     FLAVORS.forEach((f,i)=>{
       const ang = (i/n)*2*Math.PI - Math.PI/2;
@@ -369,25 +330,21 @@ function drawWheel(svg, state, interactive) {
 
 /* ---------- Stars / strength / buy ---------- */
 const starEls = document.querySelectorAll('#f-stars .star');
-starEls.forEach(s=>{
-  s.addEventListener('click',()=>{ stars=+s.dataset.v; paintStars(); });
-  s.addEventListener('mouseenter',()=>paintStars(+s.dataset.v));
-});
-document.getElementById('f-stars').addEventListener('mouseleave',()=>paintStars());
-function paintStars(hover){ starEls.forEach(s=> s.classList.toggle('lit', +s.dataset.v <= (hover||stars))); }
-
-function bindOpts(id, setter){
-  document.querySelectorAll('#'+id+' .str-opt').forEach(o=>{
+function paintStars(){ starEls.forEach(s=> s.classList.toggle('lit', +s.dataset.v<=stars)); }
+starEls.forEach(s=> s.addEventListener('click',()=>{ stars = (+s.dataset.v===stars)?0:+s.dataset.v; paintStars(); }));
+function bindOpts(id, set){
+  document.querySelectorAll('#'+id+' .opt').forEach(o=>{
     o.addEventListener('click',()=>{
-      document.querySelectorAll('#'+id+' .str-opt').forEach(x=>x.classList.remove('sel'));
-      o.classList.add('sel'); setter(o.dataset.v);
+      const was = o.classList.contains('sel');
+      document.querySelectorAll('#'+id+' .opt').forEach(x=>x.classList.remove('sel'));
+      if(!was){ o.classList.add('sel'); set(o.dataset.v); } else set('');
     });
   });
 }
 bindOpts('f-strength', v=>strength=v);
 bindOpts('f-buy', v=>buyAgain=v);
 
-/* ---------- Storage helpers (browser localStorage) ---------- */
+/* ---------- Storage (same key as before — existing entries persist) ---------- */
 const STORE_KEY = 'humidorLog.entries';
 function readAll(){
   try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); }catch(e){ return []; }
@@ -395,19 +352,13 @@ function readAll(){
 function writeAll(arr){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }catch(e){}
 }
-async function loadEntries(){
-  return readAll().sort((a,b)=> (b.created||0)-(a.created||0));
-}
-async function saveEntry(entry){
-  const arr = readAll(); arr.push(entry); writeAll(arr);
-}
-async function deleteEntry(id){
-  writeAll(readAll().filter(e=>e.id!==id));
-}
+async function loadEntries(){ return readAll().sort((a,b)=> (b.created||0)-(a.created||0)); }
+async function saveEntry(entry){ const arr = readAll(); arr.push(entry); writeAll(arr); }
+async function deleteEntry(id){ writeAll(readAll().filter(e=>e.id!==id)); }
 
 /* ---------- Save ---------- */
 document.getElementById('save-btn').addEventListener('click', async ()=>{
-  if(sessionStorage.getItem('humidorUnlocked')!=='1'){ showToast('Unlock editing first'); return; }
+  if(sessionStorage.getItem('humidorUnlocked')!=='1'){ showToast('Enter the PIN first'); return; }
   const name = document.getElementById('f-name').value.trim();
   if(!name){ showToast('Add a cigar name first'); return; }
   const entry = {
@@ -426,23 +377,24 @@ document.getElementById('save-btn').addEventListener('click', async ()=>{
   };
   try{
     await saveEntry(entry);
-    showToast('Saved to humidor ✓');
+    showToast('Saved to the humidor');
+    say('Your journal gains an entry: <b>'+esc(name)+'</b>.');
     clearForm();
     refreshAll();
   }catch(e){ showToast('Save failed — try again'); }
 });
-
 document.getElementById('clear-btn').addEventListener('click', clearForm);
 function clearForm(){
   ['f-name','f-maker','f-origin','f-size','f-price','f-date','f-pairing','f-notes'].forEach(id=>document.getElementById(id).value='');
   stars=0; strength=''; buyAgain='';
   paintStars();
-  document.querySelectorAll('.str-opt').forEach(x=>x.classList.remove('sel'));
+  document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
   FLAVORS.forEach(f=>wheelState[f]=0);
   drawWheel(document.getElementById('wheel'), wheelState, true);
 }
 
 /* ---------- Tabs ---------- */
+const greet={log:'Opening the journal.',new:'Quill ready. Log a smoke.',taste:'Mapping your palate...',recs:'Consulting the catalogue...'};
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click',()=>{
     if(t.dataset.tab==='new' && sessionStorage.getItem('humidorUnlocked')!=='1'){ return; }
@@ -450,6 +402,7 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
     document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    say(greet[t.dataset.tab]||'');
     if(t.dataset.tab!=='new') refreshAll();
   });
 });
@@ -464,7 +417,7 @@ async function renderLog(){
     const flavs = Object.entries(e.flavors||{}).filter(([k,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k])=>`<span class="flav-tag">${k}</span>`).join('');
     const buy = e.buyAgain==='yes'?'<span class="buy-badge buy-yes">Buy Again</span>':e.buyAgain==='no'?'<span class="buy-badge buy-no">Pass</span>':'';
     return `<div class="entry">
-      <button class="del-btn" data-del="${e.id}">✕</button>
+      <button class="del-btn" data-del="${e.id}" data-tip="Remove this entry">✕</button>
       <div class="entry-head">
         <div>
           <div class="entry-name">${esc(e.name)}</div>
@@ -486,7 +439,7 @@ async function renderLog(){
   }).join('');
   el.querySelectorAll('[data-del]').forEach(b=>{
     b.addEventListener('click', async ()=>{
-      if(confirm('Remove this entry from your log?')){ await deleteEntry(b.dataset.del); refreshAll(); }
+      if(confirm('Remove this entry from your log?')){ await deleteEntry(b.dataset.del); say('An entry crumbles to ash.'); refreshAll(); }
     });
   });
 }
@@ -498,16 +451,13 @@ async function renderTaste(){
   const rated = entries.filter(e=>e.stars>0);
   const avg = rated.length? (rated.reduce((s,e)=>s+e.stars,0)/rated.length).toFixed(1):'—';
   const buyYes = entries.filter(e=>e.buyAgain==='yes').length;
-  // favorite strength
   const strCount={}; entries.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
   const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0];
   grid.innerHTML = `
     <div class="stat"><div class="num">${entries.length}</div><div class="lbl">Logged</div></div>
     <div class="stat"><div class="num">${avg}</div><div class="lbl">Avg Rating</div></div>
     <div class="stat"><div class="num">${buyYes}</div><div class="lbl">Buy-Agains</div></div>
-    <div class="stat"><div class="num" style="font-size:24px;padding-top:8px;">${favStr?favStr[0]:'—'}</div><div class="lbl">Go-To Strength</div></div>`;
-
-  // aggregate flavor wheel weighted by stars, from cigars rated 4+
+    <div class="stat"><div class="num" style="font-size:1.1rem;padding-top:8px">${favStr?favStr[0]:'—'}</div><div class="lbl">Go-To Strength</div></div>`;
   const liked = entries.filter(e=>e.stars>=4);
   const agg={}; FLAVORS.forEach(f=>agg[f]=0);
   liked.forEach(e=> FLAVORS.forEach(f=> agg[f]+=(e.flavors?.[f]||0)));
@@ -581,15 +531,12 @@ async function renderRecs(){
   const el = document.getElementById('rec-list');
   if(!liked.length){ el.innerHTML = '<div class="empty">Rate a few cigars 4★ or higher and I\'ll suggest what to try next.</div>'; return; }
 
-  // build taste vector
   const taste={}; FLAVORS.forEach(f=>taste[pk(f)]=0);
   liked.forEach(e=> FLAVORS.forEach(f=> taste[pk(f)] += (e.flavors?.[f]||0)));
-  // preferred strength
   const strCount={}; liked.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
   const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
   const owned = new Set(entries.map(e=>e.name.toLowerCase().trim()));
 
-  // score catalog by cosine-ish similarity
   const scored = CATALOG.filter(c=>!owned.has(c.name.toLowerCase().trim())).map(c=>{
     let dot=0, magC=0, magT=0;
     const keys = new Set([...Object.keys(taste), ...Object.keys(c.profile)]);
@@ -599,12 +546,11 @@ async function renderRecs(){
     return {c, sim};
   }).sort((a,b)=>b.sim-a.sim).slice(0,5);
 
-  // top flavors for "why"
   const topFl = Object.entries(taste).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>{
     return Object.keys(KEYMAP).find(x=>KEYMAP[x]===k)||k;
   });
 
-  el.innerHTML = `<div style="color:var(--smoke); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; margin-bottom:18px; text-align:center;">
+  el.innerHTML = `<div style="color:var(--gold);text-shadow:1px 1px 0 #000;margin-bottom:14px;text-align:center">
     Matched to your love of ${topFl.join(', ')}${favStr?` and ${favStr.toLowerCase()} smokes`:''}.</div>` +
     scored.map(({c,sim})=>{
       const shared = Object.entries(c.profile).filter(([k])=> (taste[k]||0)>0).sort((a,b)=>b[1]-a[1]).slice(0,3)
@@ -619,7 +565,6 @@ async function renderRecs(){
 
 /* ---------- utils ---------- */
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 function refreshAll(){ renderLog(); renderTaste(); renderRecs(); }
 
 /* ---------- Export / backup ---------- */
@@ -632,30 +577,29 @@ document.getElementById('export-btn').addEventListener('click', ()=>{
   a.href = url; a.download = 'humidor-log-backup.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('Backup downloaded ✓');
+  showToast('Backup downloaded');
+  say('Your journal is copied to a scroll for safekeeping.');
 });
 
-/* ---------- Read-only by default; password unlocks editing ---------- */
+/* ---------- Read-only by default; PIN unlocks editing ---------- */
 (function(){
   const PASS = 'cigartest';
   const unlockBtn = document.getElementById('unlock-btn');
   const pill = document.getElementById('mode-pill');
-  const tabNew = document.getElementById('tab-new');
 
   function applyMode(){
     const unlocked = sessionStorage.getItem('humidorUnlocked')==='1';
     document.body.classList.toggle('locked', !unlocked);
     if(unlocked){
       pill.textContent = '✎ Editing Enabled';
-      pill.style.color = 'var(--ember)';
-      pill.style.borderColor = 'var(--ember)';
+      pill.style.color = 'var(--gold)';
+      pill.style.borderColor = 'var(--gold)';
       unlockBtn.style.display = 'none';
-      tabNew.style.display = '';
     } else {
       pill.textContent = '👁 Read-Only';
+      pill.style.color = 'var(--white)';
+      pill.style.borderColor = 'var(--stone-l)';
       unlockBtn.style.display = '';
-      tabNew.style.display = 'none';
-      // if currently on the new-entry tab while locked, bounce to log
       if(document.getElementById('panel-new').classList.contains('active')){
         document.querySelector('.tab[data-tab="log"]').click();
       }
@@ -663,25 +607,31 @@ document.getElementById('export-btn').addEventListener('click', ()=>{
   }
 
   unlockBtn.addEventListener('click', ()=>{
-    const entry = prompt('Enter passphrase to enable editing:');
+    const entry = prompt('Enter bank PIN (passphrase) to enable editing:');
     if(entry===null) return;
     if(entry===PASS){
       sessionStorage.setItem('humidorUnlocked','1');
       applyMode();
+      say('PIN accepted. Editing enabled.','mystic');
     } else {
-      alert('Incorrect passphrase.');
+      say('Incorrect PIN. The humidor stays sealed.');
+      showToast('Incorrect passphrase');
     }
   });
 
-  // expose for re-applying after renders
   window._applyHumidorMode = applyMode;
   applyMode();
 })();
+
+/* ---------- idle flavor lines ---------- */
+const idle=["The cedar shelves creak softly.","69% RH. Holding steady.","Somewhere, a Padrón ages gracefully.","You resist the urge to light one before noon."];
+setInterval(()=>say(idle[Math.floor(Math.random()*idle.length)]),26000);
 
 /* ---------- init ---------- */
 drawWheel(document.getElementById('wheel'), wheelState, true);
 document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
 refreshAll();
+say('Browse freely. Editing is mine alone.','mystic');
 </script>
 </body>
 </html>
