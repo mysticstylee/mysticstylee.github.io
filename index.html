@@ -99,6 +99,69 @@
     cursor:pointer;text-decoration:none;margin-top:8px;
   }
   .gbtn:hover{filter:brightness(1.2)}
+  .gbtn.alt{background:linear-gradient(#2e6b66,#1d4a46)}
+
+  /* ===== account cards ===== */
+  .acct{
+    position:relative;background:rgba(0,0,0,.22);border:2px solid var(--edge);border-radius:3px;
+    padding:14px 16px;margin-bottom:14px;
+  }
+  .acct.gim{
+    border:2px dashed #57a8a0; /* rope line */
+    background:
+      linear-gradient(rgba(46,107,102,.16), rgba(0,0,0,.25));
+    box-shadow:inset 0 0 0 2px var(--edge), inset 0 0 30px rgba(46,107,102,.18);
+  }
+  .acct.main{border-left:4px solid #7B3FB8;overflow:hidden;cursor:pointer}
+  .acct.main .acct-body{padding-right:130px}
+  #whirl{position:absolute;inset:0;width:100%;height:100%;z-index:0;image-rendering:pixelated;pointer-events:none}
+
+  .spellbook{
+    position:absolute;right:16px;top:50%;width:108px;z-index:2;
+    image-rendering:pixelated;cursor:pointer;
+    filter:drop-shadow(3px 4px 0 rgba(0,0,0,.55));
+    transform:translateY(-50%);
+    animation:bookfloat 3.4s ease-in-out infinite;
+  }
+  @keyframes bookfloat{
+    0%,100%{transform:translateY(-50%) rotate(-2deg)}
+    50%{transform:translateY(-46%) rotate(2deg)}
+  }
+  .spellbook.casting{animation:bookcast .8s cubic-bezier(.3,.1,.3,1) 1}
+  @keyframes bookcast{
+    0%   {transform:translateY(-50%) rotate(0)}
+    8%   {transform:translateY(-50%) translateX(-6px) rotate(-8deg)}
+    16%  {transform:translateY(-50%) translateX(6px) rotate(8deg)}
+    24%  {transform:translateY(-50%) translateX(-8px) rotate(-11deg)}
+    32%  {transform:translateY(-50%) translateX(8px) rotate(11deg)}
+    42%  {transform:translateY(-50%) translateX(-9px) rotate(-13deg);filter:drop-shadow(0 0 8px #9B59D0) brightness(1.2)}
+    52%  {transform:translateY(-50%) scale(.78) rotate(0);filter:drop-shadow(0 0 12px #9B59D0) brightness(1.5)}
+    64%  {transform:translateY(-50%) scaleX(1.6) scaleY(.5);filter:drop-shadow(0 0 22px #B07FE0) brightness(2.6)}
+    78%  {transform:translateY(-50%) scale(1.15);filter:drop-shadow(0 0 18px #4FC75A) brightness(1.8)}
+    100% {transform:translateY(-50%) scale(1);filter:drop-shadow(3px 4px 0 rgba(0,0,0,.55))}
+  }
+  @media(max-width:560px){
+    .spellbook{width:72px;right:10px}
+    .acct.main .acct-body{padding-right:86px}
+  }
+  .acct-body{position:relative;z-index:1}
+  .crew-banner{
+    display:inline-block;font-family:'Pixelify Sans',monospace;font-size:.95rem;letter-spacing:.12em;
+    color:#8fe3da;text-shadow:2px 2px 0 #000;background:rgba(29,74,70,.6);
+    border:2px solid var(--edge);border-radius:3px;padding:4px 12px;margin-bottom:8px;
+  }
+  .acct-name{font-family:'Pixelify Sans',monospace;font-size:1.25rem;color:var(--gold);text-shadow:2px 2px 0 #000}
+  .acct.gim .acct-name{color:#FFD56A}
+  .acct-sub{color:var(--white);opacity:.85;font-size:1rem;margin:4px 0 6px}
+  .acct-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .anchor-badge{
+    position:absolute;top:8px;right:14px;font-size:2.2rem;opacity:.9;z-index:1;
+    filter:drop-shadow(2px 2px 0 #000);
+    transform-origin:50% 12%;
+    animation:sway 3.6s ease-in-out infinite;
+  }
+  @keyframes sway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+  @media(max-width:520px){.anchor-badge{font-size:1.6rem;top:6px;right:10px}}
 
   /* OSRS-style tooltip */
   #tooltip{
@@ -173,18 +236,38 @@
     <!-- VIEWPORT -->
     <div class="viewport">
 
-      <div class="panel on" id="p-rs" data-greet="Welcome to mystic's stats.">
+      <div class="panel on" id="p-rs" data-greet="Welcome to mystic's stats. The crew says yarr.">
         <h2 class="qtitle">⚔ Quest: The Iron Grind</h2>
-        <p class="qtext">Account <span class="gold" data-tip="Ironman btw. No GE, no trades, no help.">mysticstyle</span> — Ironman of clan <span class="gold">Not So Alone</span>. Overall rank <span class="grn">#23,341</span>. Recorded 30 May 2026.</p>
-        <div class="statrow" data-tip="Sum of all 23 skills."><span class="k">Total Level</span><span class="v">2,287</span></div>
-        <div class="statrow" data-tip="That is a lot of clicking."><span class="k">Total XP</span><span class="v">291.3M</span></div>
-        <div class="statrow" data-tip="Ironman hiscores, overall."><span class="k">Rank</span><span class="v">#23,341</span></div>
-        <div class="xp"><i data-w="82%"></i></div>
-        <div class="xpcap">Progress to max — keep grinding</div>
-        <div class="invgrid" style="grid-template-columns:minmax(220px,420px)">
-          <div class="slot" data-full="osrs_hiscores.png" data-tip="Examine: The official hiscores. Proof."><img src="osrs_hiscores.png" alt="OSRS hiscores for mysticstyle"></div>
+
+        <!-- GIM: Iron Anchors -->
+        <div class="acct gim">
+          <div class="anchor-badge" aria-hidden="true">⚓</div>
+          <div class="acct-body">
+            <div class="crew-banner" data-tip="A Group Ironman crew. The anchor holds.">⚓ THE IRON ANCHORS ⚓</div>
+            <div class="acct-name" data-tip="Yarr. One eye on the XP, always.">🏴‍☠️ EyepatchDale</div>
+            <div class="acct-sub">Group Ironman · sworn to the crew · no trades outside the ship</div>
+            <div class="acct-btns">
+              <a class="gbtn" href="https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal?user1=EyepatchDale" target="_blank" rel="noopener" data-tip="EyepatchDale's personal hiscores">Captain's log ↗</a>
+              <a class="gbtn alt" href="https://secure.runescape.com/m=hiscore_oldschool_ironman/group-ironman/view-group?name=Iron+Anchors" target="_blank" rel="noopener" data-tip="The whole crew's progress">Crew manifest ↗</a>
+            </div>
+          </div>
         </div>
-        <a class="gbtn" href="https://secure.runescape.com/m=hiscore_oldschool_ironman/hiscorepersonal?user1=mysticstyle" target="_blank" rel="noopener" data-tip="Opens official OSRS hiscores">Open hiscores</a>
+
+        <!-- Main: mysticstyle -->
+        <div class="acct main" id="mystic-card" data-tip="An ancient tome hums on the shelf. Click to unleash it.">
+          <canvas id="whirl" aria-hidden="true"></canvas>
+          <img src="spellbook.png" id="spellbook" class="spellbook" alt="A purple pixel-art spellbook">
+          <div class="acct-body">
+            <div class="acct-name" data-tip="Ironman btw. No GE, no trades, no help.">⚔ mysticstyle</div>
+            <div class="acct-sub">Ironman · clan <span class="gold">Not So Alone</span> · recorded 30 May 2026</div>
+            <div class="statrow" data-tip="Sum of all 23 skills."><span class="k">Total Level</span><span class="v">2,287</span></div>
+            <div class="statrow" data-tip="That is a lot of clicking."><span class="k">Total XP</span><span class="v">291.3M</span></div>
+            <div class="statrow" data-tip="Ironman hiscores, overall."><span class="k">Rank</span><span class="v">#23,341</span></div>
+            <div class="xp"><i data-w="82%"></i></div>
+            <div class="xpcap">Progress to max — keep grinding</div>
+            <a class="gbtn" style="margin-top:10px" href="https://secure.runescape.com/m=hiscore_oldschool_ironman/hiscorepersonal?user1=mysticstyle" target="_blank" rel="noopener" data-tip="Opens official OSRS hiscores">Open hiscores ↗</a>
+          </div>
+        </div>
       </div>
 
       <div class="panel" id="p-guns" data-greet="You open the armoury.">
@@ -329,6 +412,7 @@
     say('Welcome to RuneScape... I mean, to my page.','mystic');
     say(b.dataset.user==='mysticstyle' ? 'Logged in as: mysticstyle. Welcome back.' : 'Logged in as: guest adventurer. Look around.');
     say('Tip: press 1–5 to switch tabs.');
+    setTimeout(()=>{ if(window._castTome) window._castTome(); }, 900);
   }));
 
   // click-to-copy contact handles
@@ -350,8 +434,77 @@
     if(i>=1 && i<=gtabs.length) gtabs[i-1].click();
   });
 
+  // ===== the tome & the maelstrom (mysticstyle card) =====
+  (function(){
+    const card=document.getElementById('mystic-card'), cv=document.getElementById('whirl'), book=document.getElementById('spellbook');
+    if(!card||!cv||!book) return;
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced){ book.style.animation='none'; return; }
+    const cx2=cv.getContext('2d');
+    const GRID=4;
+    const COLORS=['#9B59D0','#7B3FB8','#B07FE0','#4FC75A','#00C800','#2E8B57','#E8D4FF'];
+    let W,H,parts=[],casting=false;
+
+    function size(){ W=cv.width=card.clientWidth; H=cv.height=card.clientHeight; }
+    size(); addEventListener('resize',size);
+
+    function origin(){
+      // center of the book, relative to the card
+      const cb=card.getBoundingClientRect(), bb=book.getBoundingClientRect();
+      return { x: bb.left-cb.left+bb.width/2, y: bb.top-cb.top+bb.height/2 };
+    }
+
+    function spawn(erupt){
+      return{
+        a:Math.random()*Math.PI*2,
+        r:4+Math.random()*8,
+        spin:(0.05+Math.random()*0.08)*(Math.random()<0.5?-1:1),
+        grow:erupt?(2.2+Math.random()*2.8):(0.35+Math.random()*0.5),
+        size:GRID*(Math.random()<0.7?1:2),
+        c:COLORS[Math.floor(Math.random()*COLORS.length)],
+        alpha:erupt?(0.85+Math.random()*0.15):(0.3+Math.random()*0.3),
+        decay:erupt?(0.012+Math.random()*0.012):(0.004+Math.random()*0.004),
+        squish:0.45+Math.random()*0.25
+      };
+    }
+
+    function frame(){
+      cx2.clearRect(0,0,W,H);
+      const o=origin();
+      // ambient trickle from the book
+      if(parts.length<26 && Math.random()<0.35) parts.push(spawn(false));
+      for(let i=parts.length-1;i>=0;i--){
+        const p=parts[i];
+        p.a+=p.spin; p.r+=p.grow; p.alpha-=p.decay;
+        if(p.alpha<=0 || p.r>Math.max(W,H)){ parts.splice(i,1); continue; }
+        const x=Math.floor((o.x+Math.cos(p.a)*p.r*1.25)/GRID)*GRID;
+        const y=Math.floor((o.y+Math.sin(p.a)*p.r*p.squish)/GRID)*GRID;
+        cx2.globalAlpha=Math.max(p.alpha,0);
+        cx2.fillStyle=p.c;
+        cx2.fillRect(x,y,p.size,p.size);
+      }
+      cx2.globalAlpha=1;
+      requestAnimationFrame(frame);
+    }
+    frame();
+
+    const casts=["The tome slams open!","A maelstrom of purple and green pours forth.","You cast Mystic Maelstrom.","The pages scream with power.","Runes spill into the air."];
+    function cast(){
+      if(casting) return; casting=true;
+      book.classList.add('casting');
+      // eruption synced to the slam-open moment of the animation
+      setTimeout(()=>{
+        for(let i=0;i<90;i++) parts.push(spawn(true));
+        say(casts[Math.floor(Math.random()*casts.length)]);
+      },480);
+      setTimeout(()=>{book.classList.remove('casting');casting=false;},850);
+    }
+    card.addEventListener('click',e=>{ if(e.target.closest('a')) return; cast(); });
+    window._castTome=cast;
+  })();
+
   // idle flavor lines
-  const idle=["You feel the urge to grind.","The humidor is at 69% RH. Nice.","Your AR-15 gleams.","The station hums quietly.","Bullets loaded."];
+  const idle=["You feel the urge to grind.","The humidor is at 69% RH. Nice.","Your AR-15 gleams.","The station hums quietly.","Bullets loaded.","The Iron Anchors hold fast. Yarr.","EyepatchDale spots XP on the horizon."];
   setInterval(()=>{say(idle[Math.floor(Math.random()*idle.length)])},22000);
   say("Type nothing. 3 tick everything.","mystic");
 </script>
