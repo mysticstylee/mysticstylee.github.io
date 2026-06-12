@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Humidor — World 446</title>
-<meta name="description" content="mystic's humidor — a tasting journal of every cigar smoked: ratings, flavor wheels, pairings, and recommendations.">
+<meta name="description" content="mystic's humidor — the master inventory, the story behind every cigar, and mood picks.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%233E3529%22/><text x=%2250%22 y=%2272%22 font-size=%2258%22 text-anchor=%22middle%22>🔥</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -12,11 +12,11 @@
   :root{
     --stone:#494034; --stone-d:#3E3529; --stone-l:#5A4F3F; --edge:#2B241B;
     --gold:#FFB83F; --orange:#FF981F; --yellow:#FFFF00; --white:#F4EFE4; --green:#00C800;
-    --ember:#D4602F; --red:#C83A2C; --tool-bg:#FFFFE0; --tool-bd:#5A5340; --chatbg:#B8A282;
+    --ember:#D4602F; --tool-bg:#FFFFE0; --tool-bd:#5A5340; --chatbg:#B8A282;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{
-    font-family:'VT323',monospace;font-size:20px;color:var(--white);line-height:1.35;
+    font-family:'VT323',monospace;font-size:20px;color:var(--white);line-height:1.4;
     background:#23201A url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" opacity=".06"><rect width="60" height="60" fill="%23000"/><rect x="60" y="60" width="60" height="60" fill="%23000"/></svg>');
     min-height:100vh;padding:24px 8px 60px;image-rendering:pixelated;
   }
@@ -25,21 +25,18 @@
   .client{
     max-width:1000px;margin:0 auto;background:var(--stone);
     border:4px solid var(--edge);outline:2px solid var(--stone-l);outline-offset:-8px;
-    box-shadow:0 14px 40px rgba(0,0,0,.55), inset 0 0 60px rgba(0,0,0,.35);
-    border-radius:4px;padding:10px;
+    border-radius:4px;box-shadow:0 14px 40px rgba(0,0,0,.55), inset 0 0 60px rgba(0,0,0,.35);
+    padding:10px;
   }
   .titlebar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
     padding:6px 12px;margin-bottom:8px;background:linear-gradient(#5A4F3F,#3E3529);
     border:2px solid var(--edge);border-radius:3px}
   .titlebar h1{font-family:'Pixelify Sans',monospace;font-size:1.25rem;color:var(--gold);text-shadow:2px 2px 0 #000}
-  .titlebar .right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .titlebar .world{color:var(--green);text-shadow:1px 1px 0 #000;font-size:1rem}
-  #mode-pill{font-size:.92rem;color:var(--white);text-shadow:1px 1px 0 #000;border:1px solid var(--stone-l);padding:2px 10px;border-radius:3px}
 
-  /* tab strip */
   .tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
   .gtab{
-    flex:1;min-width:110px;font-family:'VT323',monospace;font-size:1.02rem;color:var(--white);text-shadow:1px 1px 0 #000;
+    flex:1;min-width:106px;font-family:'VT323',monospace;font-size:1.02rem;color:var(--white);text-shadow:1px 1px 0 #000;
     background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);border-radius:3px;
     padding:9px 6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;
   }
@@ -47,10 +44,7 @@
   .gtab:hover{filter:brightness(1.18)}
   .gtab.active{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
   .gtab:focus-visible{outline:2px solid var(--gold)}
-  #tab-new{display:none}
-  body:not(.locked) #tab-new{display:flex}
 
-  /* viewport */
   .viewport{background:var(--stone-d);border:2px solid var(--edge);border-radius:3px;min-height:520px;padding:16px;position:relative;overflow:hidden}
   .viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 2px,transparent 2px 4px)}
   .panel{display:none;animation:fade .25s ease;position:relative;z-index:1}
@@ -58,191 +52,352 @@
   @keyframes fade{from{opacity:0}to{opacity:1}}
   h2.qtitle{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:2px 2px 0 #000;font-size:1.4rem;margin-bottom:12px;border-bottom:2px solid var(--edge);padding-bottom:6px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
   h2.qtitle small{font-family:'VT323',monospace;font-size:.95rem;color:var(--white);opacity:.8}
-  .lead{color:var(--white);max-width:64ch;margin-bottom:14px}
-  .gold{color:var(--gold)} .grn{color:var(--green)}
+  .gold{color:var(--gold)} .grn{color:var(--green)} .org{color:var(--orange)}
 
-  /* buttons */
-  .gbtn{
-    display:inline-block;font-family:'VT323',monospace;font-size:1.1rem;color:var(--white);text-shadow:1px 1px 0 #000;
-    background:linear-gradient(#7a3a2c,#5c2b21);border:2px solid var(--edge);padding:8px 18px;border-radius:3px;
-    cursor:pointer;text-decoration:none;
+  /* ===== inventory ===== */
+  .invrow{
+    display:grid;grid-template-columns:minmax(180px,2.2fr) minmax(80px,1fr) minmax(120px,1.3fr);
+    gap:10px;align-items:center;border-bottom:1px solid rgba(0,0,0,.35);padding:8px 4px;
   }
-  .gbtn:hover{filter:brightness(1.2)}
-  .gbtn.alt{background:linear-gradient(#564B3A,#463D2F)}
-  .gbtn:focus-visible{outline:2px solid var(--gold)}
-
-  /* ===== journal entries ===== */
-  .entry{
-    background:rgba(0,0,0,.22);border:2px solid var(--edge);border-radius:3px;
-    padding:12px 14px;margin-bottom:12px;position:relative;
+  .invrow:hover{background:rgba(255,184,63,.08)}
+  .invrow.head{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:.9rem;border-bottom:2px solid var(--edge)}
+  .invrow .nm{color:var(--orange);text-shadow:1px 1px 0 #000}
+  .invrow .nm .vault{font-size:.9rem}
+  .invrow .sz{color:var(--white);opacity:.85;font-size:.95rem}
+  .invrow .str{font-size:.95rem}
+  .dots{color:var(--gold);letter-spacing:2px}
+  .dots .off{color:#6b5d48}
+  .strlabel{color:var(--white);opacity:.8;font-size:.85rem;display:block}
+  .filterrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+  .filterrow span{color:var(--gold);text-shadow:1px 1px 0 #000;font-size:.95rem}
+  .fbtn{
+    font-family:'VT323',monospace;font-size:.95rem;color:var(--white);text-shadow:1px 1px 0 #000;cursor:pointer;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);padding:4px 12px;border-radius:3px;
   }
-  .entry:hover{border-color:var(--stone-l)}
-  .entry-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
-  .entry-name{font-family:'Pixelify Sans',monospace;color:var(--orange);font-size:1.1rem;text-shadow:1px 1px 0 #000}
-  .entry-maker{color:var(--white);opacity:.75;font-size:.95rem}
-  .entry-stars{color:var(--yellow);text-shadow:1px 1px 0 #000;letter-spacing:2px}
-  .entry-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.95rem;color:var(--white);opacity:.85;margin-top:6px}
-  .entry-notes{font-style:italic;color:var(--gold);margin-top:8px;font-size:1rem}
-  .entry-flavors{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
-  .flav-tag{font-size:.85rem;color:#2c1c08;background:var(--chatbg);border:1px solid var(--edge);padding:1px 8px;border-radius:2px}
-  .buy-badge{font-size:.85rem;padding:1px 8px;border-radius:2px;border:1px solid var(--edge);text-shadow:none}
-  .buy-yes{background:#1d6b1d;color:#dff5df}
-  .buy-no{background:#7a1d14;color:#f5e0dd}
-  .del-btn{
-    position:absolute;top:8px;right:8px;width:24px;height:24px;line-height:18px;
-    background:linear-gradient(#7a3a2c,#5c2b21);border:2px solid var(--edge);color:var(--white);
-    cursor:pointer;font-family:'VT323',monospace;font-size:.95rem;border-radius:2px;display:none;
+  .fbtn:hover{filter:brightness(1.18)}
+  .fbtn.sel{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
+  .invfoot{margin-top:12px;color:var(--white);opacity:.8;font-size:.95rem}
+
+  /* ===== collection stories ===== */
+  .brand{margin-bottom:26px}
+  .brand>h3{
+    font-family:'Pixelify Sans',monospace;color:var(--orange);text-shadow:2px 2px 0 #000;font-size:1.15rem;
+    background:rgba(0,0,0,.25);border:2px solid var(--edge);border-radius:3px;padding:8px 12px;margin-bottom:4px;
+    cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
   }
-  body:not(.locked) .del-btn{display:block}
-  .del-btn:hover{filter:brightness(1.25)}
-  .empty{text-align:center;color:var(--white);opacity:.7;padding:40px 10px;font-style:italic}
-
-  /* ===== form ===== */
-  .formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:16px}
-  .field label{display:block;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:.95rem;margin-bottom:3px}
-  .field input,.field textarea{
-    width:100%;font-family:'VT323',monospace;font-size:1.05rem;color:#2c1c08;background:var(--chatbg);
-    border:2px solid var(--edge);padding:6px 9px;border-radius:2px;
+  .brand>h3 .sub{font-family:'VT323',monospace;font-size:.9rem;color:var(--gold);font-style:italic}
+  .brand>h3::after{content:"+";color:var(--gold);font-size:1.2rem}
+  .brand.open>h3::after{content:"–"}
+  .brand .body{display:none;padding:10px 4px 0}
+  .brand.open .body{display:block;animation:fade .25s ease}
+  .brand .intro{color:var(--white);opacity:.92;margin-bottom:14px;max-width:70ch}
+  .cigar{
+    background:rgba(0,0,0,.22);border:2px solid var(--edge);border-left:4px solid var(--ember);
+    border-radius:3px;padding:12px 14px;margin-bottom:12px;
   }
-  .field input:focus,.field textarea:focus{outline:2px solid var(--gold)}
-  .field.full{grid-column:1/-1}
-  textarea{min-height:74px;resize:vertical}
+  .cigar .head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+  .cigar .head b{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:1.02rem;font-weight:400}
+  .cigar .head .meta{color:var(--white);opacity:.8;font-size:.92rem}
+  .cigar p{margin-bottom:6px;font-size:.98rem}
+  .cigar p:last-child{margin-bottom:0}
+  .cigar .st{color:var(--white)}
+  .cigar .pf{color:var(--gold)}
+  .award{color:var(--green);text-shadow:1px 1px 0 #000}
+  .tipbox{background:rgba(255,184,63,.1);border:2px solid var(--edge);border-left:4px solid var(--gold);border-radius:3px;padding:10px 14px;margin:4px 0 12px;font-size:.98rem}
+  .tipbox b{color:var(--gold)}
 
-  .pickrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .star{font-size:1.7rem;cursor:pointer;color:#6b5d48;text-shadow:1px 1px 0 #000;user-select:none}
-  .star.lit{color:var(--yellow)}
-  .opt{
-    font-family:'VT323',monospace;font-size:.98rem;color:var(--white);text-shadow:1px 1px 0 #000;cursor:pointer;
-    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);padding:5px 12px;border-radius:3px;
+  /* ===== mood picker ===== */
+  .moods{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:16px}
+  .mood{
+    font-family:'VT323',monospace;font-size:1.05rem;color:var(--white);text-shadow:1px 1px 0 #000;cursor:pointer;
+    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);border-radius:3px;
+    padding:14px 10px;text-align:center;
   }
-  .opt:hover{filter:brightness(1.18)}
-  .opt.sel{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
+  .mood .ico{display:block;font-size:1.5rem;margin-bottom:4px}
+  .mood:hover{filter:brightness(1.18)}
+  .mood.sel{background:linear-gradient(#7a3a2c,#5c2b21);color:var(--gold)}
+  #mood-result{min-height:90px}
+  .pickcard{background:rgba(0,0,0,.22);border:2px solid var(--edge);border-left:4px solid var(--green);border-radius:3px;padding:12px 14px;animation:fade .25s ease}
+  .pickcard .t{font-family:'Pixelify Sans',monospace;color:var(--gold);text-shadow:1px 1px 0 #000;margin-bottom:6px}
+  .pickcard ul{list-style:none}
+  .pickcard li{padding:3px 0;color:var(--white)}
+  .pickcard li::before{content:"▸ ";color:var(--green)}
 
-  /* ===== wheel ===== */
-  .wheelwrap{display:flex;justify-content:center;margin:8px 0}
-  .wheelwrap svg{width:min(440px,92vw);height:auto;background:rgba(0,0,0,.18);border:2px solid var(--edge);border-radius:3px}
-  .wheel-hint{text-align:center;color:var(--gold);text-shadow:1px 1px 0 #000;font-size:1rem;margin-top:8px}
 
-  /* stats */
-  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
-  .stat{background:rgba(0,0,0,.22);border:2px solid var(--edge);border-radius:3px;padding:12px 8px;text-align:center}
-  .stat .num{font-family:'Pixelify Sans',monospace;font-size:1.6rem;color:var(--gold);text-shadow:2px 2px 0 #000}
-  .stat .lbl{font-size:.85rem;color:var(--white);opacity:.8}
-
-  /* recs */
-  .rec{background:rgba(0,0,0,.22);border:2px solid var(--edge);border-left:4px solid var(--ember);border-radius:3px;padding:12px 14px;margin-bottom:10px}
-  .rec-name{font-family:'Pixelify Sans',monospace;color:var(--orange);font-size:1.05rem;text-shadow:1px 1px 0 #000}
-  .rec-why{color:var(--green);text-shadow:1px 1px 0 #000;font-size:.95rem;margin-top:2px}
-  .rec-meta{color:var(--white);opacity:.8;font-size:.95rem;margin-top:2px}
-
-  /* chatbox */
+  /* chatbox + tooltip */
   .chatbox{margin-top:8px;background:var(--chatbg);border:2px solid var(--edge);border-radius:3px;padding:8px 12px;min-height:96px;color:#2c1c08}
   .chatbox .line{margin:1px 0}
   .chatbox .who{color:#0000C8}
   .chatbox .sys{color:#7a1010}
-
-  /* tooltip */
   #tooltip{position:fixed;z-index:99;pointer-events:none;display:none;background:var(--tool-bg);color:#3a3220;
-    border:1px solid var(--tool-bd);font-family:'VT323',monospace;font-size:1rem;padding:4px 9px;max-width:280px;
+    border:1px solid var(--tool-bd);font-family:'VT323',monospace;font-size:1rem;padding:4px 9px;max-width:300px;
     box-shadow:2px 2px 0 rgba(0,0,0,.45)}
 
-  /* toast */
-  #toast{
-    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:120;
-    font-family:'VT323',monospace;font-size:1.05rem;color:var(--white);text-shadow:1px 1px 0 #000;
-    background:linear-gradient(#564B3A,#463D2F);border:2px solid var(--edge);padding:8px 20px;border-radius:3px;
-    transition:opacity .25s, transform .25s;pointer-events:none;
-  }
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  @media(max-width:640px){
+  @media(max-width:680px){
     body{font-size:18px}
     .gtab{min-width:44%}
+    .invrow{grid-template-columns:1fr;grid-template-areas:"nm" "sz" "str"}
+    .invrow .nm{grid-area:nm}.invrow .sz{grid-area:sz}.invrow .str{grid-area:str}
+    .invrow.head{display:none}
   }
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body class="locked">
+<body>
 
 <div class="client">
   <div class="titlebar">
     <h1>🔥 The Humidor</h1>
-    <div class="right">
-      <span id="mode-pill">👁 Read-Only</span>
-      <button id="unlock-btn" class="gbtn alt" data-tip="Enter the passphrase to log new smokes" style="font-size:.95rem;padding:4px 12px">Enter PIN</button>
-      <span class="world">World 446 · Members</span>
-    </div>
+    <span class="world">World 446 · Members</span>
   </div>
 
   <div class="tabs">
     <a class="gtab" href="index.html" data-tip="Back to the main page"><span class="ico">⌂</span>Home</a>
-    <button class="gtab tab active" data-tab="log" data-tip="Every cigar logged and scored"><span class="ico">📜</span>Journal</button>
-    <button class="gtab tab" id="tab-new" data-tab="new" data-tip="Log a new smoke"><span class="ico">✎</span>New Entry</button>
-    <button class="gtab tab" data-tab="taste" data-tip="Your palate, mapped"><span class="ico">☸</span>Palate</button>
-    <button class="gtab tab" data-tab="recs" data-tip="What to hunt for next"><span class="ico">⭐</span>Recs</button>
+    <button class="gtab tab active" data-tab="inv" data-tip="Everything resting in the box"><span class="ico">📜</span>Inventory</button>
+    <button class="gtab tab" data-tab="col" data-tip="The story behind every stick"><span class="ico">📖</span>Collection</button>
+    <button class="gtab tab" data-tab="mood" data-tip="What to light, by mood"><span class="ico">🎯</span>Mood</button>
   </div>
 
   <div class="viewport">
 
-    <!-- JOURNAL -->
-    <div class="panel active" id="panel-log">
-      <h2 class="qtitle">📜 Tasting Journal <small>every stick, scored</small>
-        <button id="export-btn" class="gbtn alt" data-tip="Download your log as JSON" style="font-size:.92rem;padding:4px 12px">Backup log</button>
-      </h2>
-      <div id="log-list"></div>
+    <!-- ===================== INVENTORY ===================== -->
+    <div class="panel active" id="panel-inv">
+      <h2 class="qtitle">📜 Master Inventory <small>what rests in the box</small></h2>
+      <div class="filterrow">
+        <span>Strength:</span>
+        <button class="fbtn sel" data-f="all">All</button>
+        <button class="fbtn" data-f="Mild–Med">Mild–Med</button>
+        <button class="fbtn" data-f="Medium">Medium</button>
+        <button class="fbtn" data-f="Med–Full">Med–Full</button>
+        <button class="fbtn" data-f="Full">Full</button>
+      </div>
+
+      <div class="invrow head"><span>Cigar</span><span>Size</span><span>Strength</span></div>
+
+      <div class="invrow" data-str="Full" data-tip="Montecristo's first Nicaraguan puro, rolled at Plasencia. The house workhorse.">
+        <span class="nm">Montecristo Espada Oscuro Guard</span><span class="sz">6 × 50</span>
+        <span class="str"><span class="dots">●●●●●</span><span class="strlabel">Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="146th harvest since 1865. #19 Cigar of 2020 — and discontinued. Sniped.">
+        <span class="nm">Plasencia Cosecha 146 La Musica</span><span class="sz">5 × 50</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Full" data-tip="98 points — highest top score Cigar Aficionado has ever given a Cigar of the Year.">
+        <span class="nm">EPC Pledge Sojourn Toro</span><span class="sz">6 × 52</span>
+        <span class="str"><span class="dots">●●●●●</span><span class="strlabel">Full</span></span>      </div>
+      <div class="invrow" data-str="Full" data-tip="The same #1 of 2020 blend in robusto.">
+        <span class="nm">EPC Pledge (robusto)</span><span class="sz">5 × 50</span>
+        <span class="str"><span class="dots">●●●●●</span><span class="strlabel">Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="#1 Cigar of the Year 2018. Fillers aged in palm-bark tercios.">
+        <span class="nm">EPC Encore Majestic</span><span class="sz">5⅜ × 52</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="#2 Cigar of the Year 2014. Vitolas named for the family.">
+        <span class="nm">EPC La Historia E-III</span><span class="sz">6 × 54</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="🏆 Vault. Born from Hurricane Georges. Do not burn casually.">
+        <span class="nm">Fuente Añejo Reserva #66 <span class="vault">🏆</span></span><span class="sz">5.7 × 52</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="Sun-grown rosado wrapper. 94-rated.">
+        <span class="nm">Fuente Rosado Sungrown Magnum R 56</span><span class="sz">5.6 × 56</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Medium" data-tip="A harder-to-find Hemingway perfecto. 91-rated.">
+        <span class="nm">Fuente Hemingway Between the Lines</span><span class="sz">4¾ × 47</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Medium</span></span>      </div>
+      <div class="invrow" data-str="Medium" data-tip="Fuente's mystery line — too personal to label.">
+        <span class="nm">Fuente 2021 Unnamed Reserva</span><span class="sz">—</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Medium</span></span>      </div>
+      <div class="invrow" data-str="Mild–Med" data-tip="The cigar that brought the perfecto back from extinction.">
+        <span class="nm">Fuente Hemingway Signature</span><span class="sz">6 × 47</span>
+        <span class="str"><span class="dots">●●<span class="off">●●●</span></span><span class="strlabel">Mild–Med</span></span>      </div>
+      <div class="invrow" data-str="Medium" data-tip="Carlos Fuente Sr.'s personal blend. Balance for days.">
+        <span class="nm">Fuente Don Carlos No. 4</span><span class="sz">5¼ × 43</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Medium</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="Every Aging Room line carries a musical name.">
+        <span class="nm">Aging Room Sonata</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="Corojo '99 wrapper — lively and spicy.">
+        <span class="nm">Foundation Wise Man Corojo</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="San Andrés maduro over the Güegüense core.">
+        <span class="nm">Foundation Wise Man Maduro</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="Dark sibling of the 2012 Cigar of the Year. Flawless construction.">
+        <span class="nm">My Father Flor de las Antillas Maduro</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Full" data-tip="The Figurado won #1 Cigar of the Year 2014. Value king.">
+        <span class="nm">Oliva Serie V Melanio</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●●●</span><span class="strlabel">Full</span></span>      </div>
+      <div class="invrow" data-str="Med–Full" data-tip="Blended by the Grupo de Maestros — the modern flagship.">
+        <span class="nm">Montecristo 1935 Anniversary</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●●<span class="off">●</span></span><span class="strlabel">Med–Full</span></span>      </div>
+      <div class="invrow" data-str="Medium" data-tip="Volcanic Ometepe leaf. The brightest thing in the box.">
+        <span class="nm">Plasencia Alma del Fuego</span><span class="sz">varies</span>
+        <span class="str"><span class="dots">●●●<span class="off">●●</span></span><span class="strlabel">Medium</span></span>      </div>
+      <div class="invrow" data-str="TBD" data-tip="💎 Shop exclusive, tiny run, never returning. Least-replaceable stick in the box.">
+        <span class="nm">Creekside Broadway Discorona <span class="vault">💎</span></span><span class="sz">Discorona</span>
+        <span class="str"><span class="strlabel">TBD</span></span>      </div>
+
+      <div class="invfoot">🏆 = vault, occasions only · 💎 = irreplaceable · hover any row for the short version, open <span class="gold">Collection</span> for the full story.</div>
     </div>
 
-    <!-- NEW ENTRY -->
-    <div class="panel" id="panel-new">
-      <h2 class="qtitle">✎ Log a Smoke <small>fill what you know</small></h2>
-      <div class="formgrid">
-        <div class="field"><label>Cigar name</label><input id="f-name" placeholder="e.g. Padrón 1926 No. 9"></div>
-        <div class="field"><label>Maker</label><input id="f-maker" placeholder="e.g. Padrón"></div>
-        <div class="field"><label>Origin</label><input id="f-origin" placeholder="e.g. Nicaragua"></div>
-        <div class="field"><label>Size / vitola</label><input id="f-size" placeholder="e.g. Toro 6×52"></div>
-        <div class="field"><label>Price</label><input id="f-price" placeholder="e.g. $14"></div>
-        <div class="field"><label>Date smoked</label><input id="f-date" type="date"></div>
-        <div class="field full"><label>Pairing</label><input id="f-pairing" placeholder="e.g. bourbon, black coffee"></div>
-        <div class="field full"><label>Notes</label><textarea id="f-notes" placeholder="draw, burn, where you smoked it, who with..."></textarea></div>
-      </div>
+    <!-- ===================== COLLECTION ===================== -->
+    <div class="panel" id="panel-col">
+      <h2 class="qtitle">📖 The Collection <small>the story behind every stick — click a maker</small></h2>
 
-      <div class="field" style="margin-bottom:14px"><label>Rating</label>
-        <div class="pickrow" id="f-stars">
-          <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+      <div class="brand open">
+        <h3>Arturo Fuente <span class="sub">Four generations, one hurricane-proof dream</span></h3>
+        <div class="body">
+          <p class="intro">The Fuente story starts in 1912, when Cuban immigrant Arturo Fuente began rolling cigars in West Tampa. The company survived a factory fire, the Cuban embargo (which cut off its tobacco overnight), and repeated relocations — Nicaragua (burned down in the revolution), Honduras, and finally the Dominican Republic in 1980, where Carlos Fuente Sr. and Jr. built it into the most revered name in Dominican cigars. Their motto: "We will never rush the hands of time."</p>
+
+          <div class="cigar">
+            <div class="head"><b>Añejo Reserva #66 🏆</b><span class="meta">5.7 × 52 · Vault</span></div>
+            <p class="st">Born from disaster. In 1998, Hurricane Georges destroyed the wrapper crop for Fuente's legendary Opus X. With no Opus wrapper available, Carlos Fuente Jr. took Connecticut Broadleaf maduro leaf and aged it in cognac barrels as a stopgap — and the "temporary" cigar became a legend in its own right. Released only around Father's Day and Christmas, allocated by hand to retailers, hunted by collectors.</p>
+            <p class="pf">Profile: dark fruit, cocoa, spice, sweet cedar over the Opus X internal blend. <b>Do not burn casually.</b></p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Hemingway Signature</b><span class="meta">6 × 47 perfecto</span></div>
+            <p class="st">In the early 1980s, Carlos Fuente Jr. revived the nearly extinct art of the <i>perfecto</i> — the tapered, hand-shaped figurado that machine production had killed. He named the line for Ernest Hemingway because the shape recalled the cigars of Papa's era. The Hemingway line single-handedly brought the perfecto back to the industry.</p>
+            <p class="pf">Profile: African Cameroon wrapper — cedar, toasted nuts, baking spice, gentle sweetness. The most elegant smoke in the box.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Hemingway Between the Lines</b><span class="meta">4¾ × 47 perfecto</span></div>
+            <p class="st">A modern, harder-to-find Hemingway addition — the name is a nod to reading "between the lines," and some releases wear a rare barber-pole-adjacent presentation. Same revived-perfecto lineage in a shorter, punchier package.</p>
+            <p class="pf">Profile: nutty, cedary Cameroon character. <span class="award">91-rated.</span></p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Don Carlos No. 4</b><span class="meta">5¼ × 43</span></div>
+            <p class="st">The blend Carlos Fuente Sr. made for himself — his personal cigar, eventually shared with the world and named in his honor. After his death in 2016, the line became a living tribute; "The Man's 80th" Don Carlos was <span class="award">Cigar Aficionado's #2 cigar of 2017</span>.</p>
+            <p class="pf">Profile: Cameroon wrapper, aged Dominican filler — black pepper, cedar, cocoa, leather. Balance for days.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Rosado Sungrown Magnum R 56</b><span class="meta">5.6 × 56</span></div>
+            <p class="st">Launched in 2007 to showcase rosado ("rosy") sun-grown wrapper — leaf grown in full sunlight to develop thicker, redder, more flavorful skin, a callback to the pre-embargo Cuban rosado wrappers Fuente loved.</p>
+            <p class="pf">Profile: cedar, spice, espresso, smooth sweetness. <span class="award">94-rated.</span></p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>2021 Unnamed Reserva</b><span class="meta">small batch</span></div>
+            <p class="st">Fuente's mystery line — released without a name because, as the family tells it, some blends are simply too personal to label. Each year's Unnamed Reserva is a small-batch aged release that lets the tobacco speak anonymously.</p>
+            <p class="pf">Profile: polished, age-smoothed Fuente character.</p>
+          </div>
         </div>
       </div>
-      <div class="field" style="margin-bottom:14px"><label>Strength</label>
-        <div class="pickrow" id="f-strength">
-          <span class="opt" data-v="Mellow">Mellow</span><span class="opt" data-v="Mild">Mild</span><span class="opt" data-v="Medium">Medium</span><span class="opt" data-v="Med. Full">Med. Full</span><span class="opt" data-v="Full">Full</span>
-        </div>
-      </div>
-      <div class="field" style="margin-bottom:14px"><label>Buy again?</label>
-        <div class="pickrow" id="f-buy">
-          <span class="opt" data-v="yes">Buy again</span><span class="opt" data-v="no">Pass</span>
+
+      <div class="brand">
+        <h3>E.P. Carrillo <span class="sub">The comeback king's trilogy</span></h3>
+        <div class="body">
+          <p class="intro">Ernesto Perez-Carrillo Jr. is cigar royalty twice over. His father was a Cuban senator and cigar maker who fled Castro; Ernesto took over the family's small Miami factory, El Credito, and in the 1990s created La Gloria Cubana Serie R — one of the cigars that fueled the 90s boom. He sold to General Cigar, worked there a decade, then in 2009 — in his mid-60s, when most men retire — started over from scratch with his children. The "Family Series" trilogy is the proof it worked: three chapters, three #1 or #2 cigars of the year.</p>
+
+          <div class="cigar">
+            <div class="head"><b>La Historia E-III</b><span class="meta">6 × 54</span></div>
+            <p class="st">Chapter one (2014) — "The History." A tribute to the Perez-Carrillo family's Cuban past; the vitolas are named for family members (the E-III honors Ernesto III). <span class="award">#2 Cigar of the Year 2014, 95 pts.</span></p>
+            <p class="pf">Profile: Mexican San Andrés wrapper — cocoa, coffee, pepper, savory sweetness.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Encore Majestic</b><span class="meta">5⅜ × 52</span></div>
+            <p class="st">Chapter two (2018) — the "encore" to La Historia's success. A 100% Nicaraguan puro, its fillers aged in <i>tercios</i> — palm-bark bales, an old Cuban technique that ferments tobacco slower and rounder. <span class="award">#1 Cigar of the Year 2018, 96 pts.</span></p>
+            <p class="pf">Profile: earth, baking spice, cedar, cocoa. The most balanced of the three.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Pledge</b><span class="meta">Sojourn Toro &amp; robusto</span></div>
+            <p class="st">Chapter three (2020) — the "pledge" of the family's future. It scored <span class="award">98 points — the highest top score Cigar Aficionado has ever given a Cigar of the Year</span> — completing a trilogy run no other maker has matched. The wrapper is a dark Connecticut Habano grown in the USA. <span class="award">#1 Cigar of the Year 2020.</span></p>
+            <p class="pf">Profile: black cherry, licorice, spicy oak, black pepper, espresso. Bourbon's best friend.</p>
+          </div>
+          <div class="tipbox"><b>Flight night:</b> smoke La Historia → Encore → Pledge in one sitting and taste a blender's decade of evolution, wrapper by wrapper.</div>
         </div>
       </div>
 
-      <div class="field" style="margin-bottom:6px"><label>Flavor wheel <span style="color:var(--white);opacity:.7">— click the rings, 1 (faint) to 5 (loud); click again to step down</span></label></div>
-      <div class="wheelwrap"><svg id="wheel" viewBox="0 0 400 400" role="img" aria-label="Interactive flavor wheel"></svg></div>
+      <div class="brand">
+        <h3>Montecristo <span class="sub">The old name, the new guard</span></h3>
+        <div class="body">
+          <p class="intro">Montecristo was born in Havana in 1935, named after <i>The Count of Monte Cristo</i> — the novel lectors read aloud to rollers on the factory floor. The non-Cuban rights live with Altadis U.S.A., whose Grupo de Maestros — a council of veteran Cuban-trained masters — handles the premium blends.</p>
 
-      <div class="pickrow" style="margin-top:16px">
-        <button class="gbtn" id="save-btn" data-tip="Adds this smoke to the journal">Save to journal</button>
-        <button class="gbtn alt" id="clear-btn" data-tip="Wipe the form">Clear form</button>
+          <div class="cigar">
+            <div class="head"><b>Espada Oscuro Guard</b><span class="meta">6 × 50</span></div>
+            <p class="st">"Espada" is Spanish for sword — each vitola is named for a part of the blade (Guard, Quillon, Ricasso). The Espada line was Montecristo's first-ever Nicaraguan puro (2014), rolled not in their own house but at the Plasencia factory — making the Espadas cousins to the Plasencias resting beside them. The Oscuro followed as the dark version, wearing a rare, well-aged Habano Rosado Oscuro wrapper.</p>
+            <p class="pf">Profile: dark chocolate, espresso, black pepper, roasted earth. Full-bodied. The house workhorse.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>1935 Anniversary</b><span class="meta">flagship</span></div>
+            <p class="st">Named for Montecristo's founding year, blended by the Grupo de Maestros as the brand's modern flagship — the Nicaragua version won very high ratings, and the line is positioned as the best non-Cuban Montecristo ever made.</p>
+            <p class="pf">Profile: polished cocoa, cedar, pepper.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand">
+        <h3>Plasencia <span class="sub">Five generations of tobacco, 161 harvests</span></h3>
+        <div class="body">
+          <p class="intro">The Plasencias have grown tobacco continuously since 1865, when Eduardo Plasencia began farming in Cuba's Vuelta Abajo. The family fled Castro in the 1960s, lost everything, rebuilt in Nicaragua — then lost it all again in the Sandinista revolution, and rebuilt once more in Honduras. Today they're the largest grower of premium tobacco on earth, supplying countless famous brands, and only began putting their own name on cigars in 2017.</p>
+
+          <div class="cigar">
+            <div class="head"><b>Cosecha 146 La Musica</b><span class="meta">5 × 50 · $8.20/stick</span></div>
+            <p class="st">"Cosecha 146" = the family's 146th harvest since 1865, using organically grown tobacco from the 2011–12 crop. Each vitola is named for an element of Honduran culture — La Musica, the music. <span class="award">#19 Cigar of 2020 (93 pts)</span>, now discontinued — which is how two fivers got sniped at well under market.</p>
+            <p class="pf">Profile: earth, cedar, cocoa, citrus, caramel sweetness.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Alma del Fuego</b><span class="meta">the palate-reset</span></div>
+            <p class="st">Part of the Alma (soul) trilogy — Fuerte (strength), Fuego (fire), del Campo (the fields). Fuego celebrates the volcanic soil of Ometepe, an island of twin volcanoes in Lake Nicaragua where the family grows some of its most mineral-rich leaf.</p>
+            <p class="pf">Profile: citrus, white pepper, floral, mineral. The brightest thing in the box.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand">
+        <h3>Foundation Cigar Co. <span class="sub">The Wise Man of Estelí</span></h3>
+        <div class="body">
+          <p class="intro">Nicholas Melillo spent years as Drew Estate's head of tobacco — the palate behind Liga Privada — before founding Foundation in 2015. His flagship El Güegüense is named for Nicaragua's famous folk play; the title character, "The Wise Man," is a trickster who outwits colonial authorities. The cigar is a love letter to Nicaraguan folklore and soil.</p>
+
+          <div class="cigar">
+            <div class="head"><b>Wise Man Corojo</b></div>
+            <p class="st">The original expression — a Nicaraguan puro draped in Corojo '99, the lively, spicy descendant of classic Cuban wrapper seed.</p>
+            <p class="pf">Profile: cedar, black pepper, citrus, floral, leather.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Wise Man Maduro</b></div>
+            <p class="st">The 2021 rebrand's dark expression — San Andrés maduro over the same Güegüense core.</p>
+            <p class="pf">Profile: cocoa, coffee, earth, dark sweetness.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand">
+        <h3>The One-Offs <span class="sub">singles with stories</span></h3>
+        <div class="body">
+          <div class="cigar">
+            <div class="head"><b>My Father Flor de las Antillas Maduro</b></div>
+            <p class="st">My Father is the García family — Don "Pepin" García, the most celebrated Cuban roller-turned-blender of his generation, and his son Jaime. Flor de las Antillas ("Flower of the Antilles") honors Cuba itself, and the original won <span class="award">Cigar of the Year 2012 (96 pts)</span>. This is the darker San Andrés-wrapped maduro sibling.</p>
+            <p class="pf">Profile: cocoa, espresso, dark fruit, pepper. Famously flawless construction.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Oliva Serie V Melanio</b></div>
+            <p class="st">Named for Melanio Oliva, who grew tobacco in Pinar del Río, Cuba in 1886 — the family patriarch. The Serie V Melanio was the cigar that vaulted Oliva from "great value brand" to elite: the Figurado won <span class="award">#1 Cigar of the Year 2014 (96 pts)</span>. Ecuadorian Sumatra wrapper over Jalapa ligero.</p>
+            <p class="pf">Profile: espresso, sweet baking spice, cedar, leather. Pound-for-pound value king.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Aging Room Sonata</b></div>
+            <p class="st">Aging Room (Boutique Blends) is Rafael Nodal, a Cuban-born former music professional — every line carries a musical name, with vitolas like "Concerto" and "Forte." Nodal's Quattro Nicaragua "Maestro" won <span class="award">Cigar of the Year 2019</span>, putting the brand on the map. The Sonata is made at AJ Fernandez's factory.</p>
+            <p class="pf">Profile: cedar, pepper, cream, baking spice.</p>
+          </div>
+          <div class="cigar">
+            <div class="head"><b>Creekside Broadway Discorona 💎</b></div>
+            <p class="st">A shop-exclusive collaboration between Creekside Cigar Co. of Cincinnati (<span class="award">PCA Lounge of the Year 2025</span>) and Crowned Heads, in the quirky Discorona format. Shop exclusives like this are pressed in tiny runs and never return — the least-replaceable cigar in the box.</p>
+            <p class="pf">Profile: to be discovered on a worthy occasion.</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- PALATE -->
-    <div class="panel" id="panel-taste">
-      <h2 class="qtitle">☸ Your Palate <small>built from your 4★+ smokes</small></h2>
-      <div class="statgrid" id="stat-grid"></div>
-      <div class="wheelwrap"><svg id="taste-wheel" viewBox="0 0 400 400" role="img" aria-label="Aggregated taste profile"></svg></div>
-      <div class="wheel-hint" id="taste-summary">Smoke and rate a few cigars to map your palate.</div>
-    </div>
-
-    <!-- RECS -->
-    <div class="panel" id="panel-recs">
-      <h2 class="qtitle">⭐ Recommendations <small>matched to your palate</small></h2>
-      <div id="rec-list"><div class="empty">Rate a few cigars 4★ or higher and I'll suggest what to try next.</div></div>
+    <!-- ===================== MOOD ===================== -->
+    <div class="panel" id="panel-mood">
+      <h2 class="qtitle">🎯 Mood Picker <small>tap a mood, get the picks</small></h2>
+      <div class="moods">
+        <button class="mood" data-m="morning"><span class="ico">☀️</span>Morning / coffee</button>
+        <button class="mood" data-m="afternoon"><span class="ico">🕐</span>Afternoon, balanced</button>
+        <button class="mood" data-m="dinner"><span class="ico">🌙</span>After dinner, big &amp; dark</button>
+        <button class="mood" data-m="bourbon"><span class="ico">🥃</span>With bourbon</button>
+        <button class="mood" data-m="quick"><span class="ico">⏱️</span>Under 45 min</button>
+        <button class="mood" data-m="occasion"><span class="ico">🎉</span>Occasions only</button>
+        <button class="mood" data-m="guest"><span class="ico">👥</span>For a guest</button>
+      </div>
+      <div id="mood-result"><div class="pickcard"><div class="t">Pick a mood above.</div><ul><li>The humidor will answer.</li></ul></div></div>
     </div>
 
   </div>
@@ -253,10 +408,9 @@
 </div>
 
 <div id="tooltip" role="tooltip"></div>
-<div id="toast"></div>
 
 <script>
-/* ================= chat + tooltip + toast ================= */
+/* chat */
 const chat=document.getElementById('chat');
 function say(msg,who){
   const d=document.createElement('div');d.className='line';
@@ -264,374 +418,73 @@ function say(msg,who){
   chat.appendChild(d);
   while(chat.children.length>5) chat.removeChild(chat.firstChild);
 }
+
+/* tooltip */
 const tip=document.getElementById('tooltip');
 document.addEventListener('mousemove',e=>{
   const t=e.target.closest('[data-tip]');
   if(t){tip.style.display='block';tip.innerHTML=t.dataset.tip;
-    tip.style.left=Math.min(e.clientX+14,innerWidth-290)+'px';
+    tip.style.left=Math.min(e.clientX+14,innerWidth-310)+'px';
     tip.style.top=(e.clientY+18)+'px';}
   else tip.style.display='none';
 });
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
-/* ================= flavor model ================= */
-const FLAVORS = ["Body","Dark Fruit","Tropical Fruit","Herbal","Spicy","Sweet","Vanilla","Toffee","Chocolate","Nutty","Woody","Earthy","Leather","Bitter","Oily","Linger/Finish"];
-const wheelState = {};
-FLAVORS.forEach(f => wheelState[f] = 0);
-let stars = 0, strength = "", buyAgain = "";
-
-/* ---------- Flavor wheel renderer (OSRS palette) ---------- */
-function drawWheel(svg, state, interactive) {
-  const cx=200, cy=200, maxR=150, rings=5;
-  let html = '';
-  for (let r=1; r<=rings; r++){
-    html += `<circle cx="${cx}" cy="${cy}" r="${maxR*r/rings}" fill="none" stroke="rgba(255,184,63,0.22)" stroke-width="1"/>`;
-  }
-  const n = FLAVORS.length;
-  const pts = [];
-  FLAVORS.forEach((f,i)=>{
-    const ang = (i/n)*2*Math.PI - Math.PI/2;
-    const ex = cx+Math.cos(ang)*maxR, ey = cy+Math.sin(ang)*maxR;
-    html += `<line x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}" stroke="rgba(255,184,63,0.18)" stroke-width="1"/>`;
-    const v = state[f]||0;
-    const vr = maxR*v/rings;
-    pts.push([cx+Math.cos(ang)*vr, cy+Math.sin(ang)*vr]);
-    const lx = cx+Math.cos(ang)*(maxR+22), ly = cy+Math.sin(ang)*(maxR+22);
-    let anchor = 'middle';
-    if (lx < cx-10) anchor='end'; else if (lx>cx+10) anchor='start';
-    html += `<text x="${lx}" y="${ly}" font-size="10" fill="#FFB83F" text-anchor="${anchor}" dominant-baseline="middle" font-family="VT323" letter-spacing="0.04em">${f.toUpperCase()}</text>`;
-  });
-  if (pts.some(p=>p[0]!==cx||p[1]!==cy)) {
-    const poly = pts.map(p=>p.join(',')).join(' ');
-    html += `<polygon points="${poly}" fill="rgba(212,96,47,0.3)" stroke="#FF981F" stroke-width="2"/>`;
-    pts.forEach(p=> html += `<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#FFFF00"/>`);
-  }
-  if (interactive){
-    FLAVORS.forEach((f,i)=>{
-      const ang = (i/n)*2*Math.PI - Math.PI/2;
-      for (let lvl=1; lvl<=rings; lvl++){
-        const rr = maxR*lvl/rings;
-        const hx = cx+Math.cos(ang)*rr, hy=cy+Math.sin(ang)*rr;
-        html += `<circle cx="${hx}" cy="${hy}" r="13" fill="transparent" style="cursor:pointer" data-f="${f}" data-lvl="${lvl}"/>`;
-      }
-    });
-  }
-  svg.innerHTML = html;
-  if (interactive){
-    svg.querySelectorAll('[data-f]').forEach(el=>{
-      el.addEventListener('click',()=>{
-        const f = el.getAttribute('data-f'); const lvl=+el.getAttribute('data-lvl');
-        wheelState[f] = (wheelState[f]===lvl)?lvl-1:lvl;
-        drawWheel(svg, wheelState, true);
-      });
-    });
-  }
-}
-
-/* ---------- Stars / strength / buy ---------- */
-const starEls = document.querySelectorAll('#f-stars .star');
-function paintStars(){ starEls.forEach(s=> s.classList.toggle('lit', +s.dataset.v<=stars)); }
-starEls.forEach(s=> s.addEventListener('click',()=>{ stars = (+s.dataset.v===stars)?0:+s.dataset.v; paintStars(); }));
-function bindOpts(id, set){
-  document.querySelectorAll('#'+id+' .opt').forEach(o=>{
-    o.addEventListener('click',()=>{
-      const was = o.classList.contains('sel');
-      document.querySelectorAll('#'+id+' .opt').forEach(x=>x.classList.remove('sel'));
-      if(!was){ o.classList.add('sel'); set(o.dataset.v); } else set('');
-    });
-  });
-}
-bindOpts('f-strength', v=>strength=v);
-bindOpts('f-buy', v=>buyAgain=v);
-
-/* ---------- Storage (same key as before — existing entries persist) ---------- */
-const STORE_KEY = 'humidorLog.entries';
-function readAll(){
-  try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'[]'); }catch(e){ return []; }
-}
-function writeAll(arr){
-  try{ localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }catch(e){}
-}
-async function loadEntries(){ return readAll().sort((a,b)=> (b.created||0)-(a.created||0)); }
-async function saveEntry(entry){ const arr = readAll(); arr.push(entry); writeAll(arr); }
-async function deleteEntry(id){ writeAll(readAll().filter(e=>e.id!==id)); }
-
-/* ---------- Save ---------- */
-document.getElementById('save-btn').addEventListener('click', async ()=>{
-  if(sessionStorage.getItem('humidorUnlocked')!=='1'){ showToast('Enter the PIN first'); return; }
-  const name = document.getElementById('f-name').value.trim();
-  if(!name){ showToast('Add a cigar name first'); return; }
-  const entry = {
-    id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
-    created: Date.now(),
-    name,
-    maker: document.getElementById('f-maker').value.trim(),
-    origin: document.getElementById('f-origin').value.trim(),
-    size: document.getElementById('f-size').value.trim(),
-    price: document.getElementById('f-price').value.trim(),
-    date: document.getElementById('f-date').value,
-    pairing: document.getElementById('f-pairing').value.trim(),
-    notes: document.getElementById('f-notes').value.trim(),
-    stars, strength, buyAgain,
-    flavors: {...wheelState}
-  };
-  try{
-    await saveEntry(entry);
-    showToast('Saved to the humidor');
-    say('Your journal gains an entry: <b>'+esc(name)+'</b>.');
-    clearForm();
-    refreshAll();
-  }catch(e){ showToast('Save failed — try again'); }
-});
-document.getElementById('clear-btn').addEventListener('click', clearForm);
-function clearForm(){
-  ['f-name','f-maker','f-origin','f-size','f-price','f-date','f-pairing','f-notes'].forEach(id=>document.getElementById(id).value='');
-  stars=0; strength=''; buyAgain='';
-  paintStars();
-  document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
-  FLAVORS.forEach(f=>wheelState[f]=0);
-  drawWheel(document.getElementById('wheel'), wheelState, true);
-}
-
-/* ---------- Tabs ---------- */
-const greet={log:'Opening the journal.',new:'Quill ready. Log a smoke.',taste:'Mapping your palate...',recs:'Consulting the catalogue...'};
+/* tabs */
+const greet={inv:'Opening the master inventory.',col:'The stories unfold...',mood:'What are we feeling?'};
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click',()=>{
-    if(t.dataset.tab==='new' && sessionStorage.getItem('humidorUnlocked')!=='1'){ return; }
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
     document.getElementById('panel-'+t.dataset.tab).classList.add('active');
     say(greet[t.dataset.tab]||'');
-    if(t.dataset.tab!=='new') refreshAll();
   });
 });
 
-/* ---------- Render log ---------- */
-function starStr(n){ return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n); }
-async function renderLog(){
-  const entries = await loadEntries();
-  const el = document.getElementById('log-list');
-  if(!entries.length){ el.innerHTML = '<div class="empty">Your humidor log is empty.<br>Light one up and record it.</div>'; return; }
-  el.innerHTML = entries.map(e=>{
-    const flavs = Object.entries(e.flavors||{}).filter(([k,v])=>v>=3).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k])=>`<span class="flav-tag">${k}</span>`).join('');
-    const buy = e.buyAgain==='yes'?'<span class="buy-badge buy-yes">Buy Again</span>':e.buyAgain==='no'?'<span class="buy-badge buy-no">Pass</span>':'';
-    return `<div class="entry">
-      <button class="del-btn" data-del="${e.id}" data-tip="Remove this entry">✕</button>
-      <div class="entry-head">
-        <div>
-          <div class="entry-name">${esc(e.name)}</div>
-          ${e.maker?`<div class="entry-maker">${esc(e.maker)}</div>`:''}
-        </div>
-        <div class="entry-stars">${starStr(e.stars||0)}</div>
-      </div>
-      <div class="entry-meta">
-        ${e.origin?`<span>📍 ${esc(e.origin)}</span>`:''}
-        ${e.size?`<span>📏 ${esc(e.size)}</span>`:''}
-        ${e.strength?`<span><b>${esc(e.strength)}</b></span>`:''}
-        ${e.price?`<span>💵 ${esc(e.price)}</span>`:''}
-        ${e.pairing?`<span>🥃 ${esc(e.pairing)}</span>`:''}
-        ${buy}
-      </div>
-      ${e.notes?`<div class="entry-notes">"${esc(e.notes)}"</div>`:''}
-      ${flavs?`<div class="entry-flavors">${flavs}</div>`:''}
-    </div>`;
-  }).join('');
-  el.querySelectorAll('[data-del]').forEach(b=>{
-    b.addEventListener('click', async ()=>{
-      if(confirm('Remove this entry from your log?')){ await deleteEntry(b.dataset.del); say('An entry crumbles to ash.'); refreshAll(); }
-    });
+/* inventory strength filter */
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('sel'));
+  b.classList.add('sel');
+  const f=b.dataset.f;
+  let shown=0;
+  document.querySelectorAll('.invrow:not(.head)').forEach(r=>{
+    const hit=f==='all'||r.dataset.str===f;
+    r.style.display=hit?'':'none';
+    if(hit)shown++;
   });
-}
+  say(f==='all'?'Showing the whole box.':'Filtering: <b>'+f+'</b> — '+shown+' line'+(shown===1?'':'s')+'.');
+}));
 
-/* ---------- Taste profile ---------- */
-async function renderTaste(){
-  const entries = await loadEntries();
-  const grid = document.getElementById('stat-grid');
-  const rated = entries.filter(e=>e.stars>0);
-  const avg = rated.length? (rated.reduce((s,e)=>s+e.stars,0)/rated.length).toFixed(1):'—';
-  const buyYes = entries.filter(e=>e.buyAgain==='yes').length;
-  const strCount={}; entries.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
-  const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0];
-  grid.innerHTML = `
-    <div class="stat"><div class="num">${entries.length}</div><div class="lbl">Logged</div></div>
-    <div class="stat"><div class="num">${avg}</div><div class="lbl">Avg Rating</div></div>
-    <div class="stat"><div class="num">${buyYes}</div><div class="lbl">Buy-Agains</div></div>
-    <div class="stat"><div class="num" style="font-size:1.1rem;padding-top:8px">${favStr?favStr[0]:'—'}</div><div class="lbl">Go-To Strength</div></div>`;
-  const liked = entries.filter(e=>e.stars>=4);
-  const agg={}; FLAVORS.forEach(f=>agg[f]=0);
-  liked.forEach(e=> FLAVORS.forEach(f=> agg[f]+=(e.flavors?.[f]||0)));
-  if(liked.length) FLAVORS.forEach(f=> agg[f]=agg[f]/liked.length);
-  drawWheel(document.getElementById('taste-wheel'), agg, false);
-  const top = Object.entries(agg).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k])=>k);
-  document.getElementById('taste-summary').textContent = liked.length
-    ? `Based on your ${liked.length} favorite${liked.length>1?'s':''}, you gravitate toward: ${top.join(', ')}.`
-    : 'Rate a few cigars 4★ or higher to map your palate.';
-}
+/* collection accordions */
+document.querySelectorAll('.brand>h3').forEach(h=>h.addEventListener('click',()=>{
+  const b=h.parentElement, was=b.classList.contains('open');
+  b.classList.toggle('open');
+  if(!was) say('You open the chapter on <b>'+h.childNodes[0].textContent.trim()+'</b>.');
+}));
 
-/* ---------- Recommendations engine ---------- */
-const CATALOG = [
-  {name:"Padrón 1964 Anniversary Maduro", maker:"Padrón", origin:"Nicaragua", str:"Med. Full", price:"$16", profile:{Chocolate:5,Earthy:4,Nutty:3,Sweet:3,Woody:3,Leather:3}},
-  {name:"Padrón 1926 Serie No. 6 Maduro", maker:"Padrón", origin:"Nicaragua", str:"Full", price:"$22", profile:{Chocolate:5,Earthy:4,Spicy:3,Sweet:4,Leather:3,Body:4}},
-  {name:"Arturo Fuente Don Carlos No. 4", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Medium", price:"$13", profile:{Nutty:4,Chocolate:3,Woody:3,Spicy:2,Sweet:3}},
-  {name:"Arturo Fuente Hemingway Short Story", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Mild", price:"$8", profile:{Nutty:3,Woody:3,Sweet:3,Vanilla:2,Herbal:2}},
-  {name:"Arturo Fuente Opus X", maker:"Arturo Fuente", origin:"Dominican Rep.", str:"Full", price:"$30", profile:{Spicy:5,Earthy:4,Woody:4,Leather:3,Body:5}},
-  {name:"Oliva Serie V Melanio", maker:"Oliva", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Toffee:4,Spicy:3,Leather:3,Sweet:3}},
-  {name:"Oliva Serie V", maker:"Oliva", origin:"Nicaragua", str:"Full", price:"$9", profile:{Earthy:4,Spicy:3,Chocolate:3,Woody:3,Body:4}},
-  {name:"My Father Le Bijou 1922", maker:"My Father", origin:"Nicaragua", str:"Full", price:"$12", profile:{Spicy:5,Chocolate:4,Earthy:4,Leather:3,Body:5}},
-  {name:"My Father Flor de las Antillas", maker:"My Father", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Sweet:4,Nutty:3,Chocolate:3,Spicy:3,Woody:3}},
-  {name:"Aging Room Quattro Nicaragua", maker:"Aging Room", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Spicy:4,Vanilla:3,Woody:4,Sweet:3,Toffee:3}},
-  {name:"Plasencia Alma Fuerte", maker:"Plasencia", origin:"Nicaragua", str:"Full", price:"$20", profile:{Earthy:5,Spicy:4,Leather:4,Woody:3,Body:5}},
-  {name:"Plasencia Alma del Fuego", maker:"Plasencia", origin:"Nicaragua", str:"Full", price:"$14", profile:{Spicy:5,Earthy:3,TropicalFruit:2,Sweet:2,Body:4}},
-  {name:"Montecristo 1935 Anniversary", maker:"Montecristo", origin:"Nicaragua", str:"Full", price:"$15", profile:{DarkFruit:4,Leather:4,Spicy:4,Chocolate:3,Body:4}},
-  {name:"Montecristo White", maker:"Montecristo", origin:"Dominican Rep.", str:"Mild", price:"$11", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:2,Herbal:2}},
-  {name:"Ashton VSG", maker:"Ashton", origin:"Dominican Rep.", str:"Full", price:"$14", profile:{Spicy:4,Earthy:4,Leather:4,Sweet:3,Body:4}},
-  {name:"Ashton Classic", maker:"Ashton", origin:"Dominican Rep.", str:"Mild", price:"$9", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:2,Oily:2}},
-  {name:"Liga Privada No. 9", maker:"Drew Estate", origin:"Nicaragua", str:"Full", price:"$16", profile:{Chocolate:4,Earthy:5,Body:5,Woody:3,Bitter:2}},
-  {name:"Liga Privada T52", maker:"Drew Estate", origin:"Nicaragua", str:"Full", price:"$16", profile:{Spicy:4,Earthy:4,Chocolate:3,Leather:3,Body:5}},
-  {name:"Undercrown Maduro", maker:"Drew Estate", origin:"Nicaragua", str:"Med. Full", price:"$8", profile:{Chocolate:4,Earthy:3,Spicy:3,Sweet:3,Woody:3}},
-  {name:"Romeo y Julieta 1875", maker:"Romeo y Julieta", origin:"Dominican Rep.", str:"Mild", price:"$7", profile:{Nutty:3,Woody:3,Sweet:2,Vanilla:2}},
-  {name:"Romeo y Julieta Reserva Real", maker:"Romeo y Julieta", origin:"Honduras", str:"Mild", price:"$8", profile:{Nutty:3,Vanilla:2,Sweet:3,Woody:3,Herbal:2}},
-  {name:"Foundation Tabernacle", maker:"Foundation", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Spicy:3,Earthy:3,Leather:3,Sweet:2}},
-  {name:"Foundation The Wise Man Maduro", maker:"Foundation", origin:"Nicaragua", str:"Med. Full", price:"$11", profile:{Chocolate:4,Spicy:3,Sweet:3,Earthy:3,Leather:3}},
-  {name:"Foundation Charter Oak", maker:"Foundation", origin:"Nicaragua", str:"Medium", price:"$6", profile:{Woody:3,Nutty:3,Sweet:3,Earthy:2,Spicy:2}},
-  {name:"Perdomo Champagne Connecticut", maker:"Perdomo", origin:"Nicaragua", str:"Mild", price:"$8", profile:{Vanilla:3,Nutty:3,Sweet:3,Woody:2}},
-  {name:"Perdomo 10th Anniversary Maduro", maker:"Perdomo", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Coffee:3,Spicy:3,Sweet:3,Woody:3}},
-  {name:"Cohiba Connecticut", maker:"Cohiba", origin:"Dominican Rep.", str:"Mild", price:"$13", profile:{Vanilla:3,Sweet:3,Nutty:3,Herbal:2,Oily:2}},
-  {name:"Cohiba Black", maker:"Cohiba", origin:"Dominican Rep.", str:"Med. Full", price:"$14", profile:{Chocolate:3,Earthy:3,Spicy:3,Leather:3,Sweet:2}},
-  {name:"Crowned Heads Four Kicks", maker:"Crowned Heads", origin:"Nicaragua", str:"Medium", price:"$9", profile:{Woody:4,Spicy:3,Nutty:3,Leather:2,Sweet:2}},
-  {name:"Crowned Heads Le Careme", maker:"Crowned Heads", origin:"Nicaragua", str:"Med. Full", price:"$10", profile:{Chocolate:4,Sweet:3,Spicy:3,Coffee:3,Earthy:2}},
-  {name:"Crowned Heads Jericho Hill", maker:"Crowned Heads", origin:"Nicaragua", str:"Full", price:"$10", profile:{Spicy:4,Earthy:3,Leather:3,Body:4,Woody:3}},
-  {name:"Rocky Patel Decade", maker:"Rocky Patel", origin:"Honduras", str:"Med. Full", price:"$10", profile:{Spicy:3,Sweet:3,Woody:3,Leather:3,Nutty:2}},
-  {name:"Rocky Patel Sun Grown", maker:"Rocky Patel", origin:"Honduras", str:"Med. Full", price:"$8", profile:{Earthy:3,Spicy:3,Sweet:3,Woody:3,Leather:2}},
-  {name:"Padron 3000 Natural", maker:"Padrón", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Woody:3,Nutty:3,Earthy:3,Coffee:2,Sweet:2}},
-  {name:"AJ Fernandez New World", maker:"AJ Fernandez", origin:"Nicaragua", str:"Med. Full", price:"$7", profile:{Earthy:4,Spicy:3,Chocolate:3,Woody:3,Sweet:2}},
-  {name:"AJ Fernandez Enclave Broadleaf", maker:"AJ Fernandez", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Coffee:3,Sweet:3,Spicy:3,Earthy:3}},
-  {name:"San Cristobal Quintessence", maker:"Ashton", origin:"Nicaragua", str:"Med. Full", price:"$12", profile:{Spicy:3,Sweet:3,Chocolate:3,Woody:3,Leather:3}},
-  {name:"Padron 2000 Maduro", maker:"Padrón", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Chocolate:3,Earthy:3,Coffee:3,Woody:2,Sweet:2}},
-  {name:"Macanudo Cafe", maker:"Macanudo", origin:"Dominican Rep.", str:"Mellow", price:"$7", profile:{Nutty:3,Vanilla:2,Sweet:2,Woody:2,Herbal:2}},
-  {name:"Macanudo Inspirado Black", maker:"Macanudo", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Chocolate:3,Coffee:3,Sweet:3,Earthy:2,Woody:2}},
-  {name:"Davidoff Signature", maker:"Davidoff", origin:"Dominican Rep.", str:"Mild", price:"$16", profile:{Nutty:3,Herbal:3,Woody:3,Vanilla:2,Oily:2}},
-  {name:"Davidoff Nicaragua", maker:"Davidoff", origin:"Nicaragua", str:"Med. Full", price:"$18", profile:{Spicy:4,Coffee:3,Earthy:3,Sweet:3,Woody:3}},
-  {name:"Padron Damaso", maker:"Padrón", origin:"Nicaragua", str:"Mild", price:"$14", profile:{Nutty:3,Vanilla:3,Sweet:3,Woody:3,Herbal:2}},
-  {name:"Tatuaje Brown Label", maker:"Tatuaje", origin:"Nicaragua", str:"Full", price:"$10", profile:{Spicy:4,Earthy:4,Leather:3,Woody:3,Body:4}},
-  {name:"Herrera Esteli Norteño", maker:"Drew Estate", origin:"Nicaragua", str:"Med. Full", price:"$9", profile:{Chocolate:4,Spicy:3,Coffee:3,Sweet:3,Earthy:3}},
-  {name:"Espinosa Laranja Reserva", maker:"Espinosa", origin:"Nicaragua", str:"Medium", price:"$9", profile:{Sweet:4,Woody:3,Spicy:3,Nutty:3,Toffee:2}},
-  {name:"Oliva Connecticut Reserve", maker:"Oliva", origin:"Nicaragua", str:"Mild", price:"$7", profile:{Vanilla:3,Nutty:3,Sweet:3,Herbal:2,Woody:2}},
-  {name:"E.P. Carrillo Pledge", maker:"E.P. Carrillo", origin:"Nicaragua", str:"Full", price:"$13", profile:{Earthy:4,Spicy:4,Chocolate:3,Leather:3,Body:4}},
-  {name:"Curivari Buenaventura", maker:"Curivari", origin:"Nicaragua", str:"Medium", price:"$7", profile:{Coffee:3,Earthy:3,Sweet:3,Woody:3,Nutty:2}},
-  {name:"La Flor Dominicana Andalusian Bull", maker:"La Flor Dominicana", origin:"Dominican Rep.", str:"Full", price:"$15", profile:{Spicy:5,Earthy:4,Leather:4,Body:5,Woody:3}}
-];
-const KEYMAP = {"Dark Fruit":"DarkFruit","Tropical Fruit":"TropicalFruit","Linger/Finish":"Linger"};
-function pk(f){ return KEYMAP[f]||f; }
+/* mood picker */
+const MOODS={
+  morning:{t:'☀️ Morning / coffee',p:['Hemingway Signature','Alma del Fuego','Hemingway Between the Lines'],c:'Something bright and elegant before noon.'},
+  afternoon:{t:'🕐 Afternoon, balanced',p:['Don Carlos No. 4','Cosecha 146 La Musica','Encore Majestic','Aging Room Sonata'],c:'Mid-day calls for balance.'},
+  dinner:{t:'🌙 After dinner, big & dark',p:['EPC Pledge','Espada Oscuro Guard','Wise Man Maduro','La Historia E-III','Flor de las Antillas Maduro'],c:'Dessert, in leaf form.'},
+  bourbon:{t:'🥃 With bourbon',p:['EPC Pledge','Espada Oscuro Guard','Serie V Melanio'],c:'Pledge and bourbon. Name a better duo.'},
+  quick:{t:'⏱️ Under 45 minutes',p:['Hemingway Between the Lines','Don Carlos No. 4','Creekside Discorona'],c:'In and out, nothing wasted.'},
+  occasion:{t:'🎉 Occasions only',p:['Añejo Reserva #66 🏆','Creekside Broadway 💎','2021 Unnamed Reserva'],c:'The vault opens for a reason.'},
+  guest:{t:'👥 For a guest',p:['Cosecha 146 La Musica','Encore Majestic','Flor de las Antillas'],c:'Crowd-pleasers, no casualties.'}
+};
+document.querySelectorAll('.mood').forEach(m=>m.addEventListener('click',()=>{
+  document.querySelectorAll('.mood').forEach(x=>x.classList.remove('sel'));
+  m.classList.add('sel');
+  const d=MOODS[m.dataset.m];
+  document.getElementById('mood-result').innerHTML=
+    '<div class="pickcard"><div class="t">'+d.t+'</div><ul>'+d.p.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  say(d.c,'mystic');
+}));
 
-async function renderRecs(){
-  const entries = await loadEntries();
-  const liked = entries.filter(e=>e.stars>=4);
-  const el = document.getElementById('rec-list');
-  if(!liked.length){ el.innerHTML = '<div class="empty">Rate a few cigars 4★ or higher and I\'ll suggest what to try next.</div>'; return; }
-
-  const taste={}; FLAVORS.forEach(f=>taste[pk(f)]=0);
-  liked.forEach(e=> FLAVORS.forEach(f=> taste[pk(f)] += (e.flavors?.[f]||0)));
-  const strCount={}; liked.forEach(e=>{ if(e.strength) strCount[e.strength]=(strCount[e.strength]||0)+1; });
-  const favStr = Object.entries(strCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
-  const owned = new Set(entries.map(e=>e.name.toLowerCase().trim()));
-
-  const scored = CATALOG.filter(c=>!owned.has(c.name.toLowerCase().trim())).map(c=>{
-    let dot=0, magC=0, magT=0;
-    const keys = new Set([...Object.keys(taste), ...Object.keys(c.profile)]);
-    keys.forEach(k=>{ const t=taste[k]||0, p=c.profile[k]||0; dot+=t*p; magC+=p*p; magT+=t*t; });
-    let sim = (magC&&magT)? dot/(Math.sqrt(magC)*Math.sqrt(magT)) : 0;
-    if(favStr && c.str===favStr) sim*=1.15;
-    return {c, sim};
-  }).sort((a,b)=>b.sim-a.sim).slice(0,5);
-
-  const topFl = Object.entries(taste).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>{
-    return Object.keys(KEYMAP).find(x=>KEYMAP[x]===k)||k;
-  });
-
-  el.innerHTML = `<div style="color:var(--gold);text-shadow:1px 1px 0 #000;margin-bottom:14px;text-align:center">
-    Matched to your love of ${topFl.join(', ')}${favStr?` and ${favStr.toLowerCase()} smokes`:''}.</div>` +
-    scored.map(({c,sim})=>{
-      const shared = Object.entries(c.profile).filter(([k])=> (taste[k]||0)>0).sort((a,b)=>b[1]-a[1]).slice(0,3)
-        .map(([k])=> Object.keys(KEYMAP).find(x=>KEYMAP[x]===k)||k);
-      return `<div class="rec">
-        <div class="rec-name">${c.name}</div>
-        <div class="rec-why">${Math.round(sim*100)}% match · ${shared.join(' · ')}</div>
-        <div class="rec-meta">${c.maker} — ${c.origin} · ${c.str} · ${c.price}</div>
-      </div>`;
-    }).join('');
-}
-
-/* ---------- utils ---------- */
-function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function refreshAll(){ renderLog(); renderTaste(); renderRecs(); }
-
-/* ---------- Export / backup ---------- */
-document.getElementById('export-btn').addEventListener('click', ()=>{
-  const data = readAll();
-  if(!data.length){ showToast('Nothing to back up yet'); return; }
-  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'humidor-log-backup.json';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('Backup downloaded');
-  say('Your journal is copied to a scroll for safekeeping.');
-});
-
-/* ---------- Read-only by default; PIN unlocks editing ---------- */
-(function(){
-  const PASS = 'cigartest';
-  const unlockBtn = document.getElementById('unlock-btn');
-  const pill = document.getElementById('mode-pill');
-
-  function applyMode(){
-    const unlocked = sessionStorage.getItem('humidorUnlocked')==='1';
-    document.body.classList.toggle('locked', !unlocked);
-    if(unlocked){
-      pill.textContent = '✎ Editing Enabled';
-      pill.style.color = 'var(--gold)';
-      pill.style.borderColor = 'var(--gold)';
-      unlockBtn.style.display = 'none';
-    } else {
-      pill.textContent = '👁 Read-Only';
-      pill.style.color = 'var(--white)';
-      pill.style.borderColor = 'var(--stone-l)';
-      unlockBtn.style.display = '';
-      if(document.getElementById('panel-new').classList.contains('active')){
-        document.querySelector('.tab[data-tab="log"]').click();
-      }
-    }
-  }
-
-  unlockBtn.addEventListener('click', ()=>{
-    const entry = prompt('Enter bank PIN (passphrase) to enable editing:');
-    if(entry===null) return;
-    if(entry===PASS){
-      sessionStorage.setItem('humidorUnlocked','1');
-      applyMode();
-      say('PIN accepted. Editing enabled.','mystic');
-    } else {
-      say('Incorrect PIN. The humidor stays sealed.');
-      showToast('Incorrect passphrase');
-    }
-  });
-
-  window._applyHumidorMode = applyMode;
-  applyMode();
-})();
-
-/* ---------- idle flavor lines ---------- */
-const idle=["The cedar shelves creak softly.","69% RH. Holding steady.","Somewhere, a Padrón ages gracefully.","You resist the urge to light one before noon."];
+/* idle lines */
+const idle=["The cedar shelves creak softly.","69% RH. Holding steady.","The Añejo rests. As it should.","Ten Espadas stand guard.","Everything in here only gets better."];
 setInterval(()=>say(idle[Math.floor(Math.random()*idle.length)]),26000);
-
-/* ---------- init ---------- */
-drawWheel(document.getElementById('wheel'), wheelState, true);
-document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-refreshAll();
-say('Browse freely. Editing is mine alone.','mystic');
+say('Browse the box. Hover anything.','mystic');
 </script>
 </body>
 </html>
