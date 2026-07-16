@@ -56,10 +56,9 @@
   .gtab:focus-visible{outline:2px solid var(--gold)}
 
   .minimap{background:var(--stone-d);border:2px solid var(--edge);border-radius:3px;padding:10px;text-align:center}
-  .minimap .orb{display:inline-block;width:84px;height:84px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #6b8f4e, #2f4d28 60%, #1c2e18);
+  .minimap .orb{display:inline-block;width:84px;height:84px;border-radius:50%;overflow:hidden;
+    background:#000 url('orb.gif') center/cover no-repeat;
     border:3px solid var(--edge);position:relative;box-shadow:inset 0 0 14px rgba(0,0,0,.6)}
-  .minimap .orb i{position:absolute;left:50%;top:50%;width:5px;height:5px;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 6px #fff}
   .minimap p{margin-top:6px;font-size:.95rem;color:var(--gold);text-shadow:1px 1px 0 #000}
 
   /* chatbox */
@@ -325,7 +324,7 @@
     <!-- SIDEBAR -->
     <div class="side">
       <div class="minimap" aria-hidden="true">
-        <span class="orb"><i></i></span>
+        <span class="orb"></span>
         <p>38°52′N 77°00′W</p>
       </div>
       <div class="tabgrid" role="tablist" aria-label="Sections">
