@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mystic — World 446</title>
 <meta name="description" content="mystic (mysticstyle) — OSRS Ironman grind, the armoury, the humidor, and the NASA Spacestation Winter battlestation.">
+<meta property="og:title" content="mystic — World 446">
+<meta property="og:description" content="OSRS Ironman grind, the armoury, the humidor, and the NASA Spacestation Winter battlestation.">
+<meta property="og:image" content="https://mysticstylee.github.io/setup1.jpeg">
+<meta property="og:url" content="https://mysticstylee.github.io/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%233E3529%22/><text x=%2250%22 y=%2272%22 font-size=%2264%22 text-anchor=%22middle%22 fill=%22%23FFB83F%22 font-family=%22Georgia%22 font-weight=%22bold%22>m</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -175,7 +181,6 @@
     .frame{grid-template-columns:1fr}
     .side{flex-direction:column-reverse}
     .tabgrid{grid-template-columns:repeat(5,1fr)}
-    .minimap{display:none}
     body{font-size:18px}
   }
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
@@ -272,8 +277,8 @@
       <div class="panel" id="p-guns" data-greet="You open the armoury.">
         <h2 class="qtitle">🛡 The Armoury</h2>
         <div class="invgrid">
-          <div class="slot" data-full="ar15-1.jpeg" data-tip="Examine: AR-15. The primary. 5.56 NATO."><span class="qty">1</span><img src="ar15-1.jpeg" alt="AR-15 photo one"></div>
-          <div class="slot" data-full="ar15-2.jpeg" data-tip="Examine: AR-15, detail. Criterion Core 13.9 barrel."><span class="qty">1</span><img src="ar15-2.jpeg" alt="AR-15 photo two"></div>
+          <div class="slot" data-full="ar15-1.jpeg" data-tip="Examine: AR-15. The primary. 5.56 NATO."><span class="qty">1</span><img src="ar15-1.jpeg" loading="lazy" alt="AR-15 photo one"></div>
+          <div class="slot" data-full="ar15-2.jpeg" data-tip="Examine: AR-15, detail. Criterion Core 13.9 barrel."><span class="qty">1</span><img src="ar15-2.jpeg" loading="lazy" alt="AR-15 photo two"></div>
         </div>
         <div class="statrow" data-tip="Artius FRT / Rave 140 trigger"><span class="k">AR-15 · 5.56×45 NATO</span><span class="v">Semi-auto</span></div>
         <div class="statrow" data-tip="Vortex Gen II HD MRAD on Antimatter Scopeswitch 2.0"><span class="k">Optic / Mount</span><span class="v">Vortex Gen II · Scopeswitch 2.0</span></div>
@@ -296,8 +301,8 @@
         <h2 class="qtitle">⚙ NASA Spacestation Winter</h2>
         <p class="qtext">Dedicated battlestation · status: <span class="grn">online</span></p>
         <div class="invgrid">
-          <div class="slot" data-full="setup1.jpeg" data-tip="Examine: The station, front."><img src="setup1.jpeg" alt="PC setup photo one"></div>
-          <div class="slot" data-full="setup2.jpeg" data-tip="Examine: The station, alt angle."><img src="setup2.jpeg" alt="PC setup photo two"></div>
+          <div class="slot" data-full="setup1.jpeg" data-tip="Examine: The station, front."><img src="setup1.jpeg" loading="lazy" alt="PC setup photo one"></div>
+          <div class="slot" data-full="setup2.jpeg" data-tip="Examine: The station, alt angle."><img src="setup2.jpeg" loading="lazy" alt="PC setup photo two"></div>
           <div class="slot" data-full="setup_vid1.mp4" data-video data-tip="Examine: Moving picture. Click to play."><video src="setup_vid1.mp4" preload="metadata" muted playsinline></video></div>
           <div class="slot" data-full="setup_vid2.mp4" data-video data-tip="Examine: Another moving picture."><video src="setup_vid2.mp4" preload="metadata" muted playsinline></video></div>
         </div>
@@ -325,7 +330,7 @@
     <div class="side">
       <div class="minimap" aria-hidden="true">
         <span class="orb"></span>
-        <p>38°52′N 77°00′W</p>
+        <p>Welcome</p>
       </div>
       <div class="tabgrid" role="tablist" aria-label="Sections">
         <button class="gtab" role="tab" aria-selected="true" data-p="p-rs" data-tip="Skills — the iron grind"><span class="ico">⚔</span>Stats</button>
@@ -360,15 +365,19 @@
     while(chat.children.length>5) chat.removeChild(chat.firstChild);
   }
 
-  // tabs
+  // tabs (hash-linked: #stats, #armoury, #humidor, #build, #contact)
   const gtabs=[...document.querySelectorAll('.gtab')], panels=[...document.querySelectorAll('.panel')];
-  gtabs.forEach(t=>t.addEventListener('click',()=>{
+  const slugs={'p-rs':'stats','p-guns':'armoury','p-humidor':'humidor','p-build':'build','p-contact':'contact'};
+  function showTab(t,quiet){
     gtabs.forEach(x=>x.setAttribute('aria-selected',x===t));
     panels.forEach(p=>p.classList.toggle('on',p.id===t.dataset.p));
-    const pn=document.getElementById(t.dataset.p);
-    say(pn.dataset.greet||'');
+    if(!quiet) say(document.getElementById(t.dataset.p).dataset.greet||'');
     if(t.dataset.p==='p-rs') fillXP();
-  }));
+    history.replaceState(null,'','#'+slugs[t.dataset.p]);
+  }
+  gtabs.forEach(t=>t.addEventListener('click',()=>showTab(t)));
+  const initialTab=gtabs.find(t=>slugs[t.dataset.p]===location.hash.slice(1));
+  if(initialTab) showTab(initialTab,true);
 
   function fillXP(){document.querySelectorAll('.xp i').forEach(b=>requestAnimationFrame(()=>b.style.width=b.dataset.w))}
   fillXP();
@@ -392,27 +401,42 @@
     say((s.dataset.tip||'You examine the item.').replace('Examine: ',''));
     lb.showModal();
   }));
-  document.getElementById('lbclose').addEventListener('click',()=>{slot.innerHTML='';lb.close()});
+  function lbClear(){slot.innerHTML=''}                            // emptying the slot stops any playing video
+  document.getElementById('lbclose').addEventListener('click',()=>{lbClear();lb.close()});
+  lb.addEventListener('close',lbClear);                            // fires on Esc in standards browsers
+  lb.addEventListener('click',e=>{if(e.target===lb){lbClear();lb.close()}}); // click the backdrop to close
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.open)lbClear()});
 
-  // login screen
-  const flames=document.getElementById('flames');
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-    for(let i=0;i<24;i++){
-      const f=document.createElement('span');f.className='fl';
-      f.style.left=Math.random()*100+'%';
-      f.style.animationDuration=(5+Math.random()*7)+'s';
-      f.style.animationDelay=(-Math.random()*8)+'s';
-      f.style.transform='scale('+(0.5+Math.random()*1.4)+')';
-      flames.appendChild(f);
-    }
-  }
-  document.querySelectorAll('.lbtn').forEach(b=>b.addEventListener('click',()=>{
-    document.getElementById('login').classList.add('gone');
+  // login screen (remembered — returning visitors skip straight in)
+  const login=document.getElementById('login');
+  const savedUser=localStorage.getItem('mystic_user');
+  function enterWorld(user,returning){
     say('Welcome to RuneScape... I mean, to my page.','mystic');
-    say(b.dataset.user==='mysticstyle' ? 'Logged in as: mysticstyle. Welcome back.' : 'Logged in as: guest adventurer. Look around.');
+    say('Logged in as: '+(user==='mysticstyle'?'mysticstyle':'guest adventurer')+(returning?'. Welcome back.':'. Look around.'));
     say('Tip: press 1–5 to switch tabs.');
     setTimeout(()=>{ if(window._castTome) window._castTome(); }, 900);
-  }));
+  }
+  if(savedUser){
+    login.remove();
+    enterWorld(savedUser,true);
+  }else{
+    const flames=document.getElementById('flames');
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      for(let i=0;i<24;i++){
+        const f=document.createElement('span');f.className='fl';
+        f.style.left=Math.random()*100+'%';
+        f.style.animationDuration=(5+Math.random()*7)+'s';
+        f.style.animationDelay=(-Math.random()*8)+'s';
+        f.style.transform='scale('+(0.5+Math.random()*1.4)+')';
+        flames.appendChild(f);
+      }
+    }
+    document.querySelectorAll('.lbtn').forEach(b=>b.addEventListener('click',()=>{
+      localStorage.setItem('mystic_user',b.dataset.user);
+      login.classList.add('gone');
+      enterWorld(b.dataset.user,false);
+    }));
+  }
 
   // click-to-copy contact handles
   document.querySelectorAll('.statrow.copy').forEach(r=>{
